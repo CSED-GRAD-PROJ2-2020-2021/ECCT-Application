@@ -8,18 +8,19 @@ import android.bluetooth.le.BluetoothLeAdvertiser
 import android.util.Log
 import com.desireProj.ble_sdk.model.EbidPacket
 
-class Advertiser{
+class BleAdvertiser{
 
     private var bleAdvertiser: BluetoothLeAdvertiser = BluetoothAdapter.getDefaultAdapter().bluetoothLeAdvertiser
     private val bleTools: BleTools = BleTools()
+
     private val advertisingCallback = object : AdvertiseCallback() {
         override fun onStartSuccess(settingsInEffect: AdvertiseSettings) {
-            Log.e("BLE.Advertiser: ", "Advertising success")
+            Log.e("ble.BleAdvertiser: ", "Advertising success")
             super.onStartSuccess(settingsInEffect)
         }
 
         override fun onStartFailure(errorCode: Int) {
-            Log.e("BLE.Advertiser: ", "Advertising onStartFailure: $errorCode")
+            Log.e("ble.BleAdvertiser: ", "Advertising onStartFailure: $errorCode")
             super.onStartFailure(errorCode)
         }
     }
@@ -62,7 +63,7 @@ class Advertiser{
             buildAdvertiserSettings(),
             ebidLsbData,
             advertisingCallback)
-        Log.e("BLE.Advertiser: ", "Advertising packet 1")
+        Log.e("ble.BleAdvertiser: ", "Advertising packet 1")
         try {
             Thread.sleep(2000)
         } catch (e: InterruptedException) {
@@ -77,7 +78,7 @@ class Advertiser{
             buildAdvertiserSettings(),
             ebidMsbData,
             advertisingCallback)
-        Log.e("BLE.Advertiser: ", "Advertising packet 2")
+        Log.e("ble.BleAdvertiser: ", "Advertising packet 2")
         try {
             Thread.sleep(2000)
         } catch (e: InterruptedException) {
