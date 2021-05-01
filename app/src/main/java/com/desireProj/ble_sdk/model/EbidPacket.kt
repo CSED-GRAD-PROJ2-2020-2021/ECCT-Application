@@ -10,40 +10,14 @@ import java.util.*
 
 class EbidPacket {
     private var ebid: String
-        get() {
-            return ebid
-        }
-        set(value) {
-            ebid = value
-        }
     var ebidByteArray: ByteArray
-        get() {
-            return ebidByteArray
-        }
-        set(value) {
-            ebidByteArray = value
-        }
+
     var packet1: ByteArray
-        get() {
-            return packet1
-        }
-        set(value) {
-            packet1 = value
-        }
+
     var packet2: ByteArray
-        get() {
-            return packet2
-        }
-        set(value) {
-            packet2 = value
-        }
+
     var packetId: ByteArray
-        get() {
-            return packetId
-        }
-        set(value) {
-            packetId = value
-        }
+
 
     constructor(ebid: String) {
         this.ebid = ebid

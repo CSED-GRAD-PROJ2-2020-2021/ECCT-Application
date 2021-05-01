@@ -14,7 +14,7 @@ import no.nordicsemi.android.support.v18.scanner.ScanSettings
 class BleScanner{
 
     private val bleTools: BleTools = BleTools()
-    private var mBluetoothLeScanner: BluetoothLeScannerCompat? = BluetoothLeScannerCompat.getScanner()
+    private var mBluetoothLeScanner: BluetoothLeScannerCompat = BluetoothLeScannerCompat.getScanner()
 
     private val mScanCallback = object : ScanCallback() {
 
@@ -56,18 +56,22 @@ class BleScanner{
     }
 
 
-
-    private fun startScanning() {
+    public fun startScanning() {
         val filters = ArrayList<ScanFilter>()
         val filter = ScanFilter.Builder()
             .setServiceUuid(bleTools.pUuid)
             .build()
         filters.add(filter)
 
-        mBluetoothLeScanner?.startScan(
+        Log.e("ble.BleScanner: ", "Start Scanning")
+        mBluetoothLeScanner.startScan(
             filters,
             buildServiceScanSettings(),
             mScanCallback)
+    }
+
+    public fun stopScanning() {
+        mBluetoothLeScanner.stopScan(mScanCallback)
     }
 
 }

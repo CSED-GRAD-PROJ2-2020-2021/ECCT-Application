@@ -53,7 +53,7 @@ class BleAdvertiser{
         advertising ebit on two packets, advertise packet 1 and wait for 2 seconds,
         then advertise packet 2 for 2 seconds
      */
-    fun startAdvertising(ebid: String) {
+    public fun startAdvertising(ebid: String) {
         var ebidPacket = preparePackets(ebid)
         var ebidLsbData = buildAdvertiseData(ebidPacket.packet1)
         var ebidMsbData = buildAdvertiseData(ebidPacket.packet2)
@@ -88,7 +88,7 @@ class BleAdvertiser{
 
     }
 
-    fun stopAdvertising() {
+    public fun stopAdvertising() {
         bleAdvertiser.stopAdvertising(advertisingCallback)
     }
 
