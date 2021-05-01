@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import java.time.Duration
 import java.util.*
 
-class StoredPET (
+data class StoredPET (
     @SerializedName("PET")
     val PETID :String,
     @SerializedName("distance")
