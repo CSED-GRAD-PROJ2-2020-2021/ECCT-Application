@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity() {
     fun advertise(view: View) {
         //advertise public byte array
 //        bleAdvertiser?.startAdvertising("/A%D*G-KaPdSgVkYp3s6v9y\$B&E(H+Mb")
-        var byteArray: ByteArray = publicKeyByteArray!!.copyOf(32)
+        var byteArray: ByteArray = publicKeyByteArray!!.copyOfRange(1,33)
 
         bleAdvertiser?.startAdvertising(byteArray)
     }
@@ -111,7 +111,9 @@ class MainActivity : AppCompatActivity() {
             for ((k, v) in map) {
                 println("$k = $v")
                 if (v.ebidReady) {
-                    var publicSent: ByteArray? = null
+                    var publicSent: ByteArray? = ByteArray(33)
+                    publicSent!![0] = 0x03
+                    v.ebid.copyInto(publicSent, 1, 0, 32)
                     val secret: Secret = Secret(publicSent, privateKeyByteArray)
                     val secretBytes: ByteArray = secret.doECDH()
                     mText?.setText(secretBytes.toString())
