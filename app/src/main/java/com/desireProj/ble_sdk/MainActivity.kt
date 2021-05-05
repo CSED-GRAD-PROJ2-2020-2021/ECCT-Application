@@ -99,7 +99,9 @@ class MainActivity : AppCompatActivity() {
     fun advertise(view: View) {
         //advertise public byte array
 //        bleAdvertiser?.startAdvertising("/A%D*G-KaPdSgVkYp3s6v9y\$B&E(H+Mb")
-        bleAdvertiser?.startAdvertising(publicKeyByteArray!!)
+        var byteArray: ByteArray = publicKeyByteArray!!.copyOf(32)
+
+        bleAdvertiser?.startAdvertising(byteArray)
     }
 
     fun updateMapStatus(view: View) {
