@@ -27,7 +27,7 @@ class EbidReceived {
         if (lsb.size != 23) return false
 
         var j = 16
-        for (i in 7..lsb.size) {
+        for (i in 7..lsb.size-1) {
             this.ebid[j++] = lsb[i]
         }
         lsbReady = true
@@ -39,7 +39,7 @@ class EbidReceived {
         if (lsb.size != 23) return false
 
         var j = 0
-        for (i in 7..lsb.size) {
+        for (i in 7..lsb.size-1) {
             this.ebid[j++] = lsb[i]
         }
         msbReady = true

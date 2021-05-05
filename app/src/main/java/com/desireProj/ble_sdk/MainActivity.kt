@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat
 import com.desireProj.ble_sdk.ble.BleAdvertiser
 import com.desireProj.ble_sdk.ble.BleScanner
 import com.desireProj.ble_sdk.model.CollectedEbid
+import com.desireProj.ble_sdk.model.EbidReceived
 import java.lang.StringBuilder
 import com.desireProj.ble_sdk.pet.Convertor
 import com.desireProj.ble_sdk.pet.KeyGenerator
@@ -100,10 +101,17 @@ class MainActivity : AppCompatActivity() {
         //advertise public byte array
 //        bleAdvertiser?.startAdvertising("/A%D*G-KaPdSgVkYp3s6v9y\$B&E(H+Mb")
         var byteArray: ByteArray = publicKeyByteArray!!.copyOfRange(1,33)
-
+        Log.e("ble.BleAdvertiser: ", getEbidString(byteArray))
         bleAdvertiser?.startAdvertising(byteArray)
     }
-
+    fun getEbidString(ebid: ByteArray):String {
+        val sb = StringBuilder()
+        // Iterating through each byte in the array
+        for (i in ebid) {
+            sb.append(String.format("%02X", i))
+        }
+        return sb.toString()
+    }
     fun updateMapStatus(view: View) {
         val map = collectedEbid?.receivedEbidMap
         val sb = StringBuilder()
@@ -116,9 +124,10 @@ class MainActivity : AppCompatActivity() {
                     v.ebid.copyInto(publicSent, 1, 0, 32)
                     val secret: Secret = Secret(publicSent, privateKeyByteArray)
                     val secretBytes: ByteArray = secret.doECDH()
-                    mText?.setText(secretBytes.toString())
+                    //mText?.setText(secretBytes.toString())
 
                     sb.append(v.getEbidString())
+                    sb.append('\n')
                     sb.append('\n')
                 }
             }
