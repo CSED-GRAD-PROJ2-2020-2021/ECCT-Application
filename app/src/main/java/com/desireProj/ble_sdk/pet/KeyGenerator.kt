@@ -29,7 +29,7 @@ class KeyGenerator {
         setupBouncyCastle()
         Security.addProvider(BouncyCastleProvider())
         kpgen = KeyPairGenerator.getInstance("ECDH", "BC")
-        kpgen.initialize(ECGenParameterSpec("prime192v1"), SecureRandom())
+        kpgen.initialize(ECGenParameterSpec("secp256k1"), SecureRandom())
     }
     fun generateKeyPair():KeyPair{
         return kpgen.generateKeyPair()
