@@ -16,7 +16,11 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.desireProj.ble_sdk.ble.BleAdvertiser
 import com.desireProj.ble_sdk.ble.BleScanner
+import com.desireProj.ble_sdk.pet.Convertor
+import com.desireProj.ble_sdk.pet.KeyGenerator
+import com.desireProj.ble_sdk.pet.Secret
 import no.nordicsemi.android.support.v18.scanner.BluetoothLeScannerCompat
+import java.security.KeyPair
 
 class MainActivity : AppCompatActivity() {
     private var mText: TextView? = null
@@ -24,6 +28,10 @@ class MainActivity : AppCompatActivity() {
     private var mDiscoverButton: Button? = null
     private var bleAdvertiser: BleAdvertiser? = null
     private var bleScanner: BleScanner? = null
+    private val keyGenerator: KeyGenerator = KeyGenerator()
+    private var privateKeyByteArray: ByteArray? = null
+    private var publicKeyByteArray: ByteArray? = null
+    private val convertor: Convertor = Convertor()
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,14 +66,29 @@ class MainActivity : AppCompatActivity() {
 
         bleAdvertiser = BleAdvertiser()
         bleScanner = BleScanner()
+        //genarate keys
+        var keyPair: KeyPair = keyGenerator.generateKeyPair()
+        //private and  public keys
+        privateKeyByteArray = convertor.savePrivateKey(keyPair.private)
+        publicKeyByteArray = convertor.savePublicKey(keyPair.public)
+
 
     }
 
     fun discover(view: View) {
         bleScanner?.startScanning()
+        /*var publicSent: ByteArray?
+        val secret: Secret = Secret(publicSent, privateKeyByteArray)
+        val secretBytes: ByteArray = secret.doECDH()
+        mText.setText(secretBytes)
+        */
+
+
+
     }
 
     fun advertise(view: View) {
+        //advertise public byte array
         bleAdvertiser?.startAdvertising("/A%D*G-KaPdSgVkYp3s6v9y\$B&E(H+Mb")
     }
 }
