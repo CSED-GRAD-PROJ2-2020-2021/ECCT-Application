@@ -34,6 +34,10 @@ class BleScanner{
 
             val dataReceived: ByteArray? = result.scanRecord?.serviceData?.get(bleTools.pUuid)
 
+            if (dataReceived != null) {
+                collectedEbid?.receiveEbid(dataReceived)
+            }
+
             Log.e(
                 "ble.onScanResult: ",
                 if (dataReceived?.get(6)?.equals(0x01)!!) "Packet 1 received" else "Packet 2 received"

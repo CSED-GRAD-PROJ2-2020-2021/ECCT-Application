@@ -9,7 +9,7 @@ const val index2: Byte = 0x02
 class CollectedEbid {
     lateinit var receivedEbidMap: HashMap<String, EbidReceived>
 
-    fun receiveEbit(dataReceived: ByteArray) {
+    fun receiveEbid(dataReceived: ByteArray) {
         if (dataReceived.size != 23) return
         val id: String
         val index: Byte = dataReceived[packetIndex]
