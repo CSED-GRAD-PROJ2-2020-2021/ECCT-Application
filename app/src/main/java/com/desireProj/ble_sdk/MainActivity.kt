@@ -121,6 +121,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+        sb.append("end line bla bla")
         ebitText?.setText(sb.toString())
     }
 }
