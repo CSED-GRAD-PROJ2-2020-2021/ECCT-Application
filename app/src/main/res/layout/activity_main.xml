@@ -18,8 +18,21 @@
         android:text="Discover"
         android:onClick="discover"/>
 
+    <Button
+        android:id="@+id/print_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Print EBID's"
+        android:onClick="updateMapStatus"/>
+
     <TextView
         android:id="@+id/text_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="test"/>
+
+    <TextView
+        android:id="@+id/ebid_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="test"/>

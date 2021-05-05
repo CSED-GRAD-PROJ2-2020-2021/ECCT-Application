@@ -14,7 +14,7 @@ class BleTools {
         val id: String
         val index: Byte
         val value: String
-        if (receivedData.size != 16) return
+        if (receivedData.size != 23) return
         val sb:StringBuilder = StringBuilder()
         for (i in 0..idSize) {
             sb.append(receivedData[i])

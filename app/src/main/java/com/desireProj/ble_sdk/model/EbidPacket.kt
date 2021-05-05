@@ -9,6 +9,7 @@ import java.util.*
  */
 
 class EbidPacket {
+    // TODO getters and setters gave error
     private var ebid: String
     var ebidByteArray: ByteArray
 

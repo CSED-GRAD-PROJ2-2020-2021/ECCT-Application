@@ -1,6 +1,7 @@
 package com.desireProj.ble_sdk.ble
 
 import android.util.Log
+import com.desireProj.ble_sdk.model.CollectedEbid
 import java.util.*
 
 import no.nordicsemi.android.support.v18.scanner.BluetoothLeScannerCompat
@@ -12,9 +13,14 @@ import no.nordicsemi.android.support.v18.scanner.ScanSettings
 
 
 class BleScanner{
-
     private val bleTools: BleTools = BleTools()
     private var mBluetoothLeScanner: BluetoothLeScannerCompat = BluetoothLeScannerCompat.getScanner()
+
+    private var collectedEbid: CollectedEbid? = null
+
+    constructor(collectedEbid: CollectedEbid) {
+        this.collectedEbid = collectedEbid
+    }
 
     private val mScanCallback = object : ScanCallback() {
 
