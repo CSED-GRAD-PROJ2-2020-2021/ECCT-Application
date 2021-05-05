@@ -10,7 +10,7 @@ import java.util.*
 
 class EbidPacket {
     // TODO getters and setters gave error
-    private var ebid: String
+//    private var ebid: String
     var ebidByteArray: ByteArray
 
     var packet1: ByteArray
@@ -20,13 +20,13 @@ class EbidPacket {
     var packetId: ByteArray
 
 
-    constructor(ebid: String) {
-        this.ebid = ebid
+    constructor(ebidByteArray : ByteArray) {
+//        this.ebid = ebid
         this.packet1 = ByteArray(23)
         this.packet2 = ByteArray(23)
         this.packetId = ByteArray(6)
         Random().nextBytes(packetId)
-        this.ebidByteArray= ebid.toByteArray()
+        this.ebidByteArray = ebidByteArray
     }
 
     fun generateEbidPacket(){
