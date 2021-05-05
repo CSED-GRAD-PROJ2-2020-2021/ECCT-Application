@@ -25,7 +25,7 @@ class BleAdvertiser{
         }
     }
 
-    fun preparePackets(ebid: String): EbidPacket{
+    fun preparePackets(ebid: ByteArray): EbidPacket{
         var ebidPacket = EbidPacket(ebid)
         ebidPacket.generateEbidPacket()
         return ebidPacket
@@ -53,7 +53,7 @@ class BleAdvertiser{
         advertising ebit on two packets, advertise packet 1 and wait for 2 seconds,
         then advertise packet 2 for 2 seconds
      */
-    public fun startAdvertising(ebid: String) {
+    public fun startAdvertising(ebid: ByteArray) {
         var ebidPacket = preparePackets(ebid)
         var ebidLsbData = buildAdvertiseData(ebidPacket.packet1)
         var ebidMsbData = buildAdvertiseData(ebidPacket.packet2)

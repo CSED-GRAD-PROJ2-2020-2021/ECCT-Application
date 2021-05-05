@@ -20,6 +20,7 @@ import com.desireProj.ble_sdk.model.CollectedEbid
 import java.lang.StringBuilder
 import com.desireProj.ble_sdk.pet.Convertor
 import com.desireProj.ble_sdk.pet.KeyGenerator
+import com.desireProj.ble_sdk.pet.Secret
 import java.security.KeyPair
 
 class MainActivity : AppCompatActivity() {
@@ -97,7 +98,8 @@ class MainActivity : AppCompatActivity() {
 
     fun advertise(view: View) {
         //advertise public byte array
-        bleAdvertiser?.startAdvertising("/A%D*G-KaPdSgVkYp3s6v9y\$B&E(H+Mb")
+//        bleAdvertiser?.startAdvertising("/A%D*G-KaPdSgVkYp3s6v9y\$B&E(H+Mb")
+        bleAdvertiser?.startAdvertising(publicKeyByteArray!!)
     }
 
     fun updateMapStatus(view: View) {
@@ -107,6 +109,11 @@ class MainActivity : AppCompatActivity() {
             for ((k, v) in map) {
                 println("$k = $v")
                 if (v.ebidReady) {
+                    var publicSent: ByteArray? = null
+                    val secret: Secret = Secret(publicSent, privateKeyByteArray)
+                    val secretBytes: ByteArray = secret.doECDH()
+                    mText?.setText(secretBytes.toString())
+
                     sb.append(v.getEbidString())
                     sb.append('\n')
                 }
