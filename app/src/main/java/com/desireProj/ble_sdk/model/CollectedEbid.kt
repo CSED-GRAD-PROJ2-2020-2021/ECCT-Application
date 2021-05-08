@@ -1,10 +1,8 @@
 package com.desireProj.ble_sdk.model
 
-const val idSize = 5
+const val idSize = 6
 const val packetIndex = 6
-const val ebidIndex = 7
-const val index1: Byte = 0x01
-const val index2: Byte = 0x02
+const val packet2Index: Byte = 0x00
 
 class CollectedEbid {
     var receivedEbidMap: HashMap<String, EbidReceived> = hashMapOf()
@@ -14,7 +12,7 @@ class CollectedEbid {
         val id: String
         val index: Byte = dataReceived[packetIndex]
         val sb:StringBuilder = StringBuilder()
-        for (i in 0..idSize) {
+        for (i in 0 until idSize) {
             sb.append(dataReceived[i])
         }
         id = sb.toString()
@@ -32,16 +30,16 @@ class CollectedEbid {
     }
 
     private fun updateExistEbid(curEbid: EbidReceived, index: Byte, data: ByteArray) {
-        if (index.equals(index1) && !curEbid.msbReady)
+        if (index.equals(packet2Index) && !curEbid.msbReady)
             curEbid.setMsbEbid(data)
-        else if (index.equals(index2) && !curEbid.lsbReady)
+        else if (!curEbid.lsbReady)
             curEbid.setLsbEbid(data)
     }
 
     private fun createNewEbid(id: String, index: Byte, data: ByteArray) {
         val ebid = EbidReceived()
         ebid.packetId = id
-        if (index.equals(index1))
+        if (index.equals(packet2Index))
             ebid.setMsbEbid(data)
         else
             ebid.setLsbEbid(data)

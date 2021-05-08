@@ -100,18 +100,10 @@ class MainActivity : AppCompatActivity() {
     fun advertise(view: View) {
         //advertise public byte array
 //        bleAdvertiser?.startAdvertising("/A%D*G-KaPdSgVkYp3s6v9y\$B&E(H+Mb")
-        var byteArray: ByteArray = publicKeyByteArray!!.copyOfRange(1,33)
-        Log.e("ble.BleAdvertiser: ", getEbidString(byteArray))
-        bleAdvertiser?.startAdvertising(byteArray)
+        Log.e("ble.BleAdvertiser: ", getEbidString(publicKeyByteArray!!))
+        bleAdvertiser?.startAdvertising(publicKeyByteArray!!)
     }
-    fun getEbidString(ebid: ByteArray):String {
-        val sb = StringBuilder()
-        // Iterating through each byte in the array
-        for (i in ebid) {
-            sb.append(String.format("%02X", i))
-        }
-        return sb.toString()
-    }
+
     fun updateMapStatus(view: View) {
         val map = collectedEbid?.receivedEbidMap
         val sb = StringBuilder()
@@ -119,9 +111,7 @@ class MainActivity : AppCompatActivity() {
             for ((k, v) in map) {
                 println("$k = $v")
                 if (v.ebidReady) {
-                    var publicSent: ByteArray? = ByteArray(33)
-                    publicSent!![0] = 0x03
-                    v.ebid.copyInto(publicSent, 1, 0, 32)
+                    var publicSent: ByteArray? = v.ebid
                     val secret: Secret = Secret(publicSent, privateKeyByteArray)
                     val secretBytes: ByteArray = secret.doECDH()
                     //mText?.setText(secretBytes.toString())
@@ -134,5 +124,14 @@ class MainActivity : AppCompatActivity() {
         }
         sb.append("end line bla bla")
         ebitText?.setText(sb.toString())
+    }
+
+    fun getEbidString(ebid: ByteArray):String {
+        val sb = StringBuilder()
+        // Iterating through each byte in the array
+        for (i in ebid) {
+            sb.append(String.format("%02X", i))
+        }
+        return sb.toString()
     }
 }

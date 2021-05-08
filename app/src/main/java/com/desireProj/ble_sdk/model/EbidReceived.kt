@@ -1,5 +1,8 @@
 package com.desireProj.ble_sdk.model
 
+const val EBID_SIZE = 33
+const val PACKET_Size = 23
+
 class EbidReceived {
     var ebid: ByteArray
     var packetId: String
@@ -12,7 +15,7 @@ class EbidReceived {
     var msbReady: Boolean
 
     constructor() {
-        ebid = ByteArray(32)
+        ebid = ByteArray(EBID_SIZE)
         packetId = ""
         rssiList = emptyList()
         duration = 0
@@ -24,10 +27,10 @@ class EbidReceived {
     }
 
     fun setLsbEbid(lsb: ByteArray): Boolean {
-        if (lsb.size != 23) return false
+        if (lsb.size != PACKET_Size) return false
 
-        var j = 16
-        for (i in 7..lsb.size-1) {
+        var j = 0
+        for (i in 6 until PACKET_Size) {    // 17 bytes
             this.ebid[j++] = lsb[i]
         }
         lsbReady = true
@@ -35,12 +38,12 @@ class EbidReceived {
         return true
     }
 
-    fun setMsbEbid(lsb: ByteArray): Boolean {
-        if (lsb.size != 23) return false
+    fun setMsbEbid(msb: ByteArray): Boolean {
+        if (msb.size != PACKET_Size) return false
 
-        var j = 0
-        for (i in 7..lsb.size-1) {
-            this.ebid[j++] = lsb[i]
+        var j = 17
+        for (i in 7 until PACKET_Size) {
+            this.ebid[j++] = msb[i]
         }
         msbReady = true
         this.ebidReady = this.lsbReady
