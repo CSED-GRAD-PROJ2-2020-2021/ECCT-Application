@@ -5,9 +5,9 @@ const val packetIndex = 6
 const val packet2Index: Byte = 0x00
 
 class CollectedEbid {
-    var receivedEbidMap: HashMap<String, EbidReceived> = hashMapOf()
+    var receivedEbidMap: MutableMap<String, EbidReceived> = mutableMapOf()
 
-    fun receiveEbid(dataReceived: ByteArray) {
+    fun receiveEbid(dataReceived: ByteArray, rssi: Int) {
         if (dataReceived.size != 23) return
         val id: String
         val index: Byte = dataReceived[packetIndex]
@@ -19,13 +19,16 @@ class CollectedEbid {
 
         if (receivedEbidMap.containsKey(id)) {
             val curEbid: EbidReceived = receivedEbidMap[id]!!
-            if (curEbid.ebidReady) {    // ebid already received before
-                // TODO update duration, last received
-            } else {
+            if (!curEbid.ebidReady) {    // ebid part received before
                 updateExistEbid(curEbid, index, dataReceived)
             }
+            // update duration
+            curEbid.lastReceived = System.currentTimeMillis()
+            curEbid.updateDuration()
+            // add new rssi
+            curEbid.addRssi(rssi)
         } else {
-            createNewEbid(id, index, dataReceived)
+            createNewEbid(id, index, dataReceived, rssi)
         }
     }
 
@@ -36,14 +39,19 @@ class CollectedEbid {
             curEbid.setLsbEbid(data)
     }
 
-    private fun createNewEbid(id: String, index: Byte, data: ByteArray) {
+    private fun createNewEbid(id: String, index: Byte, data: ByteArray, rssi: Int) {
         val ebid = EbidReceived()
         ebid.packetId = id
         if (index.equals(packet2Index))
             ebid.setMsbEbid(data)
         else
             ebid.setLsbEbid(data)
+
         // TODO update first received
+        // ebid.setFirstReceived(System.currentTimeMillis())
+        ebid.firstReceived = System.currentTimeMillis()
+        // update rssi
+        ebid.addRssi(rssi)
         receivedEbidMap.put(id, ebid)
     }
 }

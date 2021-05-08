@@ -35,7 +35,7 @@ class BleScanner{
             val dataReceived: ByteArray? = result.scanRecord?.serviceData?.get(bleTools.pUuid)
 
             if (dataReceived != null) {
-                collectedEbid?.receiveEbid(dataReceived)
+                collectedEbid?.receiveEbid(dataReceived, result.rssi)
             }
 
             val p1Index:Byte = 0x01

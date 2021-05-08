@@ -10,10 +10,10 @@ const val MSB_EBID_INDEX = 7
 class EbidReceived {
     var ebid: ByteArray
     var packetId: String
-    var rssiList: List<Int>
-    var duration: Int
-    var firstReceived: Int
-    var lastReceived: Int
+    var rssiList: MutableList<Int>
+    var duration: Long
+    var firstReceived: Long
+    var lastReceived: Long
     var ebidReady: Boolean
     var lsbReady: Boolean
     var msbReady: Boolean
@@ -21,7 +21,7 @@ class EbidReceived {
     constructor() {
         ebid = ByteArray(EBID_SIZE)
         packetId = ""
-        rssiList = emptyList()
+        rssiList = mutableListOf()
         duration = 0
         firstReceived = 0
         lastReceived = 0
@@ -63,11 +63,16 @@ class EbidReceived {
         return sb.toString()
     }
 
-    // TODO check
     fun addRssi(rssi: Int) {
-        this.rssiList += rssi
+        this.rssiList.add(rssi)
+    }
+
+    fun updateDuration() {
+        this.duration = this.lastReceived - this.firstReceived
     }
 
     // TODO update duration
-
+//    fun setFirstReceived(time: Long) {
+//        this.firstReceived = time
+//    }
 }
