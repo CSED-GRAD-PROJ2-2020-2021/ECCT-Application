@@ -100,7 +100,7 @@ class MainActivity : AppCompatActivity() {
     fun advertise(view: View) {
         //advertise public byte array
 //        bleAdvertiser?.startAdvertising("/A%D*G-KaPdSgVkYp3s6v9y\$B&E(H+Mb")
-        Log.e("ble.BleAdvertiser: ", getEbidString(publicKeyByteArray!!))
+        Log.e("Main Activity: ", getEbidString(publicKeyByteArray!!))
         bleAdvertiser?.startAdvertising(publicKeyByteArray!!)
     }
 
