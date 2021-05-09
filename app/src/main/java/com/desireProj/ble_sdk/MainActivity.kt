@@ -114,7 +114,7 @@ class MainActivity : AppCompatActivity() {
                     var publicSent: ByteArray? = v.ebid
                     val secret: Secret = Secret(publicSent, privateKeyByteArray)
                     val secretBytes: ByteArray = secret.doECDH()
-                    //mText?.setText(secretBytes.toString())
+                    mText?.setText(secretBytes.toString())
 
                     sb.append(v.getEbidString())
                     sb.append('\n')

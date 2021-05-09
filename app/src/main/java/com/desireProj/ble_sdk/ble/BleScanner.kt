@@ -38,10 +38,10 @@ class BleScanner{
                 collectedEbid?.receiveEbid(dataReceived, result.rssi)
             }
 
-            val p1Index:Byte = 0x01
+            val p1Index:Byte = 0x00
             Log.e(
                 "ble.onScanResult: ",
-                if (dataReceived?.get(6)?.equals(p1Index)!!) "Packet 1 received" else "Packet 2 received"
+                if (dataReceived?.get(6)?.equals(p1Index)!!) "Packet 2 received" else "Packet 1 received"
             )
 
             val rssi = result.rssi
