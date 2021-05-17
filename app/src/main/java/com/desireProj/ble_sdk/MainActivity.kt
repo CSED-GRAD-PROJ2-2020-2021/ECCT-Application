@@ -99,9 +99,12 @@ class MainActivity : AppCompatActivity() {
 
     fun advertise(view: View) {
         //advertise public byte array
-//        bleAdvertiser?.startAdvertising("/A%D*G-KaPdSgVkYp3s6v9y\$B&E(H+Mb")
-        Log.e("Main Activity: ", getEbidString(publicKeyByteArray!!))
-        bleAdvertiser?.startAdvertising(publicKeyByteArray!!)
+        val sendByte: ByteArray = "aabb0980b9e4dfc63d79453418b3669932bf71c5b5b06c2945ad1488744826bb72".toByteArray(Charsets.UTF_8)
+        Log.e("Main Activity: ", getEbidString(sendByte))
+        bleAdvertiser?.startAdvertising(sendByte)
+        mText!!.setText("send: "+ sendByte)
+//        Log.e("Main Activity: ", getEbidString(publicKeyByteArray!!))
+//        bleAdvertiser?.startAdvertising(publicKeyByteArray!!)
     }
 
     fun updateMapStatus(view: View) {
@@ -111,10 +114,10 @@ class MainActivity : AppCompatActivity() {
             for ((k, v) in map) {
                 println("$k = $v")
                 if (v.ebidReady) {
-                    var publicSent: ByteArray? = v.ebid
-                    val secret: Secret = Secret(publicSent, privateKeyByteArray)
-                    val secretBytes: ByteArray = secret.doECDH()
-                    mText?.setText(secretBytes.toString())
+//                    var publicSent: ByteArray? = v.ebid
+//                    val secret: Secret = Secret(publicSent, privateKeyByteArray)
+//                    val secretBytes: ByteArray = secret.doECDH()
+//                    mText?.setText(secretBytes.toString())
 
                     sb.append(v.getEbidString())
                     sb.append('\n')
