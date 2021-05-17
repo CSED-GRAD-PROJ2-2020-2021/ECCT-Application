@@ -11,25 +11,22 @@ import java.security.PrivateKey
 import javax.crypto.KeyAgreement
 
 class Secret {
-    fun ByteArray.toHexString() = joinToString("") { "%02x".format(it) }
     var publicKey: ByteArray? = null
     var privateKey: ByteArray? = null
 
     constructor(publicKey: ByteArray?, privateKey: ByteArray?) {
         this.publicKey = publicKey
         this.privateKey = privateKey
-        println("constructor: " + publicKey?.toHexString())
-        println("constructor: " + privateKey?.toHexString())
     }
 
-    fun loadPublicKey(data : ByteArray?):PublicKey {
+    private fun loadPublicKey(data : ByteArray?):PublicKey {
         val params: ECParameterSpec = ECNamedCurveTable.getParameterSpec("secp256k1")
         val pubKey: ECPublicKeySpec =  ECPublicKeySpec(params.curve.decodePoint(data), params)
         val kf: KeyFactory = KeyFactory.getInstance("ECDH", "BC")
         return kf.generatePublic(pubKey)
     }
 
-    fun loadPrivateKey(data: ByteArray?):PrivateKey {
+    private fun loadPrivateKey(data: ByteArray?):PrivateKey {
         val params: ECParameterSpec = ECNamedCurveTable.getParameterSpec("secp256k1")
         val prvKey: ECPrivateKeySpec = ECPrivateKeySpec(BigInteger(data), params)
         val kf: KeyFactory = KeyFactory.getInstance("ECDH", "BC")
@@ -38,8 +35,6 @@ class Secret {
 
     fun doECDH() :ByteArray {
         val ka = KeyAgreement.getInstance("ECDH", "BC")
-        println("function: " + this.publicKey?.toHexString())
-        println("function: " + this.privateKey?.toHexString())
         ka.init(loadPrivateKey(this.privateKey))
         ka.doPhase(loadPublicKey(this.publicKey), true)
         val secret: ByteArray = ka.generateSecret()

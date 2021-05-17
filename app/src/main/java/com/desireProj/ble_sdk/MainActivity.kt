@@ -18,13 +18,9 @@ import com.desireProj.ble_sdk.ble.BleScanner
 import com.desireProj.ble_sdk.model.CollectedEbid
 import java.lang.StringBuilder
 import com.desireProj.ble_sdk.diffieHellman.Convertor
-import com.desireProj.ble_sdk.diffieHellman.DHTest
 import com.desireProj.ble_sdk.diffieHellman.KeyGenerator
 import com.desireProj.ble_sdk.diffieHellman.Secret
 import java.security.KeyPair
-import java.security.KeyPairGenerator
-import java.security.SecureRandom
-import java.security.spec.ECGenParameterSpec
 
 class MainActivity : AppCompatActivity() {
     private var mText: TextView? = null
@@ -91,14 +87,6 @@ class MainActivity : AppCompatActivity() {
 
     fun discover(view: View) {
         bleScanner?.startScanning()
-        /*var publicSent: ByteArray?
-        val secret: Secret = Secret(publicSent, privateKeyByteArray)
-        val secretBytes: ByteArray = secret.doECDH()
-        mText.setText(secretBytes)
-        */
-
-
-
     }
 
     fun advertise(view: View) {
@@ -115,7 +103,6 @@ class MainActivity : AppCompatActivity() {
     fun updateMapStatus(view: View) {
         val map = collectedEbid?.receivedEbidMap
         val sb = StringBuilder("received: ")
-        /*
         if (map != null) {
             for ((k, v) in map) {
                 println("$k = $v")
@@ -132,43 +119,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-         */
-
-
-        val kpgen = KeyPairGenerator.getInstance("ECDH", "BC")
-        kpgen.initialize(ECGenParameterSpec("secp256k1"), SecureRandom())
-        //genarate keys
-        val pairA = kpgen.generateKeyPair()
-        val pairB = kpgen.generateKeyPair()
-        //private and  public keys
-        val dataPrvA = convertor.savePrivateKey(pairA.private)
-        val dataPubA = convertor.savePublicKey(pairA.public)
-        val dataPrvB = convertor.savePrivateKey(pairB.private)
-        val dataPubB = convertor.savePublicKey(pairB.public)
-
-        println("Alice Prv: " + getEbidString(dataPrvA))
-        println("Alice Prv: " + getEbidString(dataPrvA).length/2)
-        println("Alice Pub: " + getEbidString(dataPubA))
-        println("Alice Pub: " + getEbidString(dataPubA).length/2)
-        println("Bob Prv:   " + getEbidString(dataPrvB))
-        println("Bob Prv:   " + getEbidString(dataPrvB).length/2)
-        println("Bob Pub:   " + getEbidString(dataPubB))
-        println("Bob Pub:   " + getEbidString(dataPubB).length/2)
-
-        val secretA: Secret =
-            Secret(dataPubB, dataPrvA)
-        val secretB: Secret =
-            Secret(dataPubA, dataPrvB)
-        val secretBytesA: ByteArray = secretA.doECDH()
-        val secretBytesB: ByteArray = secretB.doECDH()
-
-        println("Alice Secret: " + getEbidString(secretBytesA))
-        println("Bob Secret: " + getEbidString(secretBytesB))
-
-
-//        val test: DHTest = DHTest()
-//        test.start()
-
         sb.append("end line bla bla")
         ebitText?.setText(sb.toString())
     }
