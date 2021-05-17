@@ -1,7 +1,6 @@
 package com.desireProj.ble_sdk
 
 import android.Manifest
-import android.bluetooth.BluetoothAdapter
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -17,12 +16,15 @@ import androidx.core.content.ContextCompat
 import com.desireProj.ble_sdk.ble.BleAdvertiser
 import com.desireProj.ble_sdk.ble.BleScanner
 import com.desireProj.ble_sdk.model.CollectedEbid
-import com.desireProj.ble_sdk.model.EbidReceived
 import java.lang.StringBuilder
-import com.desireProj.ble_sdk.pet.Convertor
-import com.desireProj.ble_sdk.pet.KeyGenerator
-import com.desireProj.ble_sdk.pet.Secret
+import com.desireProj.ble_sdk.diffieHellman.Convertor
+import com.desireProj.ble_sdk.diffieHellman.DHTest
+import com.desireProj.ble_sdk.diffieHellman.KeyGenerator
+import com.desireProj.ble_sdk.diffieHellman.Secret
 import java.security.KeyPair
+import java.security.KeyPairGenerator
+import java.security.SecureRandom
+import java.security.spec.ECGenParameterSpec
 
 class MainActivity : AppCompatActivity() {
     private var mText: TextView? = null
@@ -31,10 +33,12 @@ class MainActivity : AppCompatActivity() {
     private var mDiscoverButton: Button? = null
     private var bleAdvertiser: BleAdvertiser? = null
     private var bleScanner: BleScanner? = null
-    private val keyGenerator: KeyGenerator = KeyGenerator()
+    private val keyGenerator: KeyGenerator =
+        KeyGenerator()
     private var privateKeyByteArray: ByteArray? = null
     private var publicKeyByteArray: ByteArray? = null
-    private val convertor: Convertor = Convertor()
+    private val convertor: Convertor =
+        Convertor()
 
     private var collectedEbid: CollectedEbid? = null
 
@@ -99,25 +103,28 @@ class MainActivity : AppCompatActivity() {
 
     fun advertise(view: View) {
         //advertise public byte array
-        val sendByte: ByteArray = "aabb0980b9e4dfc63d79453418b3669932bf71c5b5b06c2945ad1488744826bb72".toByteArray(Charsets.UTF_8)
-        Log.e("Main Activity: ", getEbidString(sendByte))
-        bleAdvertiser?.startAdvertising(sendByte)
-        mText!!.setText("send: "+ sendByte)
-//        Log.e("Main Activity: ", getEbidString(publicKeyByteArray!!))
-//        bleAdvertiser?.startAdvertising(publicKeyByteArray!!)
+//        val sendByte: ByteArray = "aabb0980b9e4dfc63d79453418b3669932bf71c5b5b06c2945ad1488744826bb72".toByteArray(Charsets.UTF_8)
+//        Log.e("Main Activity: ", getEbidString(sendByte))
+//        bleAdvertiser?.startAdvertising(sendByte)
+//        mText!!.setText("send: "+ sendByte)
+        Log.e("Main Activity: send: ", getEbidString(publicKeyByteArray!!))
+        mText!!.setText("send: "+ getEbidString(publicKeyByteArray!!))
+        bleAdvertiser?.startAdvertising(publicKeyByteArray!!)
     }
 
     fun updateMapStatus(view: View) {
         val map = collectedEbid?.receivedEbidMap
-        val sb = StringBuilder()
+        val sb = StringBuilder("received: ")
+        /*
         if (map != null) {
             for ((k, v) in map) {
                 println("$k = $v")
                 if (v.ebidReady) {
-//                    var publicSent: ByteArray? = v.ebid
-//                    val secret: Secret = Secret(publicSent, privateKeyByteArray)
-//                    val secretBytes: ByteArray = secret.doECDH()
-//                    mText?.setText(secretBytes.toString())
+                    var publicSent: ByteArray? = v.ebid
+                    val secret: Secret =
+                        Secret(publicSent, privateKeyByteArray)
+                    val secretBytes: ByteArray = secret.doECDH()
+                    mText?.setText("secret: " + getEbidString(secretBytes)+"\n")
 
                     sb.append(v.getEbidString())
                     sb.append('\n')
@@ -125,6 +132,43 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+         */
+
+
+        val kpgen = KeyPairGenerator.getInstance("ECDH", "BC")
+        kpgen.initialize(ECGenParameterSpec("secp256k1"), SecureRandom())
+        //genarate keys
+        val pairA = kpgen.generateKeyPair()
+        val pairB = kpgen.generateKeyPair()
+        //private and  public keys
+        val dataPrvA = convertor.savePrivateKey(pairA.private)
+        val dataPubA = convertor.savePublicKey(pairA.public)
+        val dataPrvB = convertor.savePrivateKey(pairB.private)
+        val dataPubB = convertor.savePublicKey(pairB.public)
+
+        println("Alice Prv: " + getEbidString(dataPrvA))
+        println("Alice Prv: " + getEbidString(dataPrvA).length/2)
+        println("Alice Pub: " + getEbidString(dataPubA))
+        println("Alice Pub: " + getEbidString(dataPubA).length/2)
+        println("Bob Prv:   " + getEbidString(dataPrvB))
+        println("Bob Prv:   " + getEbidString(dataPrvB).length/2)
+        println("Bob Pub:   " + getEbidString(dataPubB))
+        println("Bob Pub:   " + getEbidString(dataPubB).length/2)
+
+        val secretA: Secret =
+            Secret(dataPubB, dataPrvA)
+        val secretB: Secret =
+            Secret(dataPubA, dataPrvB)
+        val secretBytesA: ByteArray = secretA.doECDH()
+        val secretBytesB: ByteArray = secretB.doECDH()
+
+        println("Alice Secret: " + getEbidString(secretBytesA))
+        println("Bob Secret: " + getEbidString(secretBytesB))
+
+
+//        val test: DHTest = DHTest()
+//        test.start()
+
         sb.append("end line bla bla")
         ebitText?.setText(sb.toString())
     }
