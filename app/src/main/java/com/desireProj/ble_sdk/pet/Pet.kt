@@ -1,6 +1,6 @@
 package com.desireProj.ble_sdk.pet
 
-import java.security.MessageDigest
+import com.desireProj.ble_sdk.model.Utilities
 
 const val PET_SIZE = 32
 
@@ -22,13 +22,13 @@ class Pet {
     fun getHash1() :String {
         val byte1: Byte = 0x01
         val newArr: ByteArray = byteArrayOf(byte1, *petByteArray)
-        return(getHash(newArr))
+        return(Utilities.getHash(newArr))
     }
 
     fun getHash2() :String {
         val byte2: Byte = 0x02
         val newArr: ByteArray = byteArrayOf(byte2, *petByteArray)
-        return(getHash(newArr))
+        return(Utilities.getHash(newArr))
     }
 
     fun addRssi(rssi: Int) {
@@ -42,12 +42,6 @@ class Pet {
     fun updateDuration() {
         this.lastReceived = System.currentTimeMillis()
         this.duration = this.lastReceived - this.firstReceived
-    }
-
-    fun getHash(bytes: ByteArray) :String {
-        val md = MessageDigest.getInstance("SHA-256")
-        val digest = md.digest(bytes)
-        return digest.fold("", { str, it -> str + "%02x".format(it) })
     }
     
 }

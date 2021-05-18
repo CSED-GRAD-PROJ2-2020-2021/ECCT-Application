@@ -101,7 +101,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun updateMapStatus(view: View) {
-        val map = collectedEbid?.receivedEbidMap
+        val map = CollectedEbid.receivedEbidMap
         val sb = StringBuilder("received: ")
         if (map != null) {
             for ((k, v) in map) {

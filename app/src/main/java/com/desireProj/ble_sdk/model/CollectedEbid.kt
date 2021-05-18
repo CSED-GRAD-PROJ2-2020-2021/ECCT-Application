@@ -5,7 +5,11 @@ const val packetIndex = 6
 const val packet2Index: Byte = 0x00
 
 class CollectedEbid {
-    var receivedEbidMap: MutableMap<String, EbidReceived> = mutableMapOf()
+
+    // receivedEbidMap as static map
+    companion object {
+        var receivedEbidMap: MutableMap<String, EbidReceived> = mutableMapOf()
+    }
 
     fun receiveEbid(dataReceived: ByteArray, rssi: Int) {
         if (dataReceived.size != 23) return
