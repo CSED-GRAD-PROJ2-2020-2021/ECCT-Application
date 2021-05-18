@@ -36,8 +36,6 @@ class MainActivity : AppCompatActivity() {
     private val convertor: Convertor =
         Convertor()
 
-    private var collectedEbid: CollectedEbid? = null
-
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,11 +69,8 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        collectedEbid = CollectedEbid()
-
-
         bleAdvertiser = BleAdvertiser()
-        bleScanner = BleScanner(collectedEbid!!)
+        bleScanner = BleScanner()
 
 
         //genarate keys

@@ -1,19 +1,23 @@
 package com.desireProj.ble_sdk.pet
 
+import com.desireProj.ble_sdk.model.RssiUtility
 import com.desireProj.ble_sdk.model.Utilities
 
 const val PET_SIZE = 32
 
 class Pet {
-    var petByteArray: ByteArray
-    var rssiList: MutableList<Int>
+    var pet: String
+    var petByteArray: ByteArray // g^XY
+    var rssi: RssiUtility
     var duration: Long
     var firstReceived: Long
     var lastReceived: Long
 
-    constructor(petArr: ByteArray, rssiList: MutableList<Int>, firstRec: Long, lastRec: Long, duration: Long) {
+    constructor(pet: String, petArr: ByteArray, rssi: RssiUtility, firstRec: Long,
+                    lastRec: Long, duration: Long) {
+        this.pet = pet
         this.petByteArray = petArr
-        this.rssiList = rssiList
+        this.rssi = rssi
         this.duration = duration
         this.firstReceived = firstRec
         this.lastReceived = lastRec
@@ -32,15 +36,15 @@ class Pet {
     }
 
     fun addRssi(rssi: Int) {
-        rssiList.add(rssi)
+        this.rssi.addRssi(rssi)
     }
 
-    fun calculateRssi() :Int {
-        return rssiList.average().toInt()
+    // return the final value of the rssi
+    fun getRssi() :Int {
+        return rssi.getRssi()
     }
 
     fun updateDuration() {
-        this.lastReceived = System.currentTimeMillis()
         this.duration = this.lastReceived - this.firstReceived
     }
     
