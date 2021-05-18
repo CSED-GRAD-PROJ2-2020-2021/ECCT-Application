@@ -54,4 +54,6 @@ class CollectedEbid {
         ebid.addRssi(rssi)
         receivedEbidMap.put(id, ebid)
     }
+
+    // TODO need to periodically clean receivedEbidMap
 }
