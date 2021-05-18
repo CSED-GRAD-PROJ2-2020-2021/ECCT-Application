@@ -33,16 +33,16 @@ class CollectedEbid {
     }
 
     private fun updateExistEbid(curEbid: EbidReceived, index: Byte, data: ByteArray) {
-        if (index.equals(packet2Index) && !curEbid.msbReady)
+        if (index == packet2Index && !curEbid.msbReady)
             curEbid.setMsbEbid(data)
-        else if (!curEbid.lsbReady)
+        else if (index != packet2Index && !curEbid.lsbReady)
             curEbid.setLsbEbid(data)
     }
 
     private fun createNewEbid(id: String, index: Byte, data: ByteArray, rssi: Int) {
         val ebid = EbidReceived()
         ebid.packetId = id
-        if (index.equals(packet2Index))
+        if (index == packet2Index)
             ebid.setMsbEbid(data)
         else
             ebid.setLsbEbid(data)

@@ -1,4 +1,4 @@
-package com.desireProj.ble_sdk.pet
+package com.desireProj.ble_sdk.diffieHellman
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import java.security.KeyPair

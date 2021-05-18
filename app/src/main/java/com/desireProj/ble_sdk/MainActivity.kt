@@ -16,14 +16,15 @@ import androidx.core.content.ContextCompat
 import com.desireProj.ble_sdk.ble.BleAdvertiser
 import com.desireProj.ble_sdk.ble.BleScanner
 import com.desireProj.ble_sdk.model.CollectedEbid
+
 import com.desireProj.ble_sdk.model.StoredPET
 import com.desireProj.ble_sdk.model.StoredPETsModel
 import com.desireProj.ble_sdk.model.UploadedPetsModel
 import com.desireProj.ble_sdk.network.RestApiService
 import java.lang.StringBuilder
-import com.desireProj.ble_sdk.pet.Convertor
-import com.desireProj.ble_sdk.pet.KeyGenerator
-import com.desireProj.ble_sdk.pet.Secret
+import com.desireProj.ble_sdk.diffieHellman.Convertor
+import com.desireProj.ble_sdk.diffieHellman.KeyGenerator
+import com.desireProj.ble_sdk.diffieHellman.Secret
 import java.security.KeyPair
 import java.util.*
 import kotlin.collections.ArrayList
@@ -35,10 +36,12 @@ class MainActivity : AppCompatActivity() {
     private var mDiscoverButton: Button? = null
     private var bleAdvertiser: BleAdvertiser? = null
     private var bleScanner: BleScanner? = null
-    private val keyGenerator: KeyGenerator = KeyGenerator()
+    private val keyGenerator: KeyGenerator =
+        KeyGenerator()
     private var privateKeyByteArray: ByteArray? = null
     private var publicKeyByteArray: ByteArray? = null
-    private val convertor: Convertor = Convertor()
+    private val convertor: Convertor =
+        Convertor()
 
     private var collectedEbid: CollectedEbid? = null
 
@@ -91,34 +94,31 @@ class MainActivity : AppCompatActivity() {
 
     fun discover(view: View) {
         bleScanner?.startScanning()
-        /*var publicSent: ByteArray?
-        val secret: Secret = Secret(publicSent, privateKeyByteArray)
-        val secretBytes: ByteArray = secret.doECDH()
-        mText.setText(secretBytes)
-        */
-
-
-
     }
 
     fun advertise(view: View) {
         //advertise public byte array
-//        bleAdvertiser?.startAdvertising("/A%D*G-KaPdSgVkYp3s6v9y\$B&E(H+Mb")
-        Log.e("Main Activity: ", getEbidString(publicKeyByteArray!!))
+//        val sendByte: ByteArray = "aabb0980b9e4dfc63d79453418b3669932bf71c5b5b06c2945ad1488744826bb72".toByteArray(Charsets.UTF_8)
+//        Log.e("Main Activity: ", getEbidString(sendByte))
+//        bleAdvertiser?.startAdvertising(sendByte)
+//        mText!!.setText("send: "+ sendByte)
+        Log.e("Main Activity: send: ", getEbidString(publicKeyByteArray!!))
+        mText!!.setText("send: "+ getEbidString(publicKeyByteArray!!))
         bleAdvertiser?.startAdvertising(publicKeyByteArray!!)
     }
 
     fun updateMapStatus(view: View) {
         val map = collectedEbid?.receivedEbidMap
-        val sb = StringBuilder()
+        val sb = StringBuilder("received: ")
         if (map != null) {
             for ((k, v) in map) {
                 println("$k = $v")
                 if (v.ebidReady) {
                     var publicSent: ByteArray? = v.ebid
-                    val secret: Secret = Secret(publicSent, privateKeyByteArray)
+                    val secret: Secret =
+                        Secret(publicSent, privateKeyByteArray)
                     val secretBytes: ByteArray = secret.doECDH()
-                    mText?.setText(secretBytes.toString())
+                    mText?.setText("secret: " + getEbidString(secretBytes)+"\n")
 
                     sb.append(v.getEbidString())
                     sb.append('\n')
