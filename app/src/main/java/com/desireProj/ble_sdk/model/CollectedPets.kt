@@ -28,7 +28,7 @@ class CollectedPets {
             pet.lastReceived = received.lastReceived
             pet.updateDuration()
 
-            // TODO update rssi
+            pet.rssi.addRssi(received.rssi.getRssi())
         }
     }
 
