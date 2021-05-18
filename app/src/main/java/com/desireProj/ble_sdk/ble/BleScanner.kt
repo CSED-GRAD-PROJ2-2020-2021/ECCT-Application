@@ -43,7 +43,10 @@ class BleScanner{
                 "ble.onScanResult: ",
                 if (dataReceived?.get(6)?.equals(p1Index)!!) "Packet 2 received" else "Packet 1 received"
             )
-
+            var ss: String = ""
+            for(c : Byte in dataReceived)
+                ss+=c
+            Log.e("ble.ByteArray: ",ss )
             val rssi = result.rssi
             Log.e("ble.onScanResult: ", rssi.toString())
 

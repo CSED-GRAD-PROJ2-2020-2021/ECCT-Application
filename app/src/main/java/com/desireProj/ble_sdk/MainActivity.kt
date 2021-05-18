@@ -1,7 +1,6 @@
 package com.desireProj.ble_sdk
 
 import android.Manifest
-import android.bluetooth.BluetoothAdapter
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -17,12 +16,17 @@ import androidx.core.content.ContextCompat
 import com.desireProj.ble_sdk.ble.BleAdvertiser
 import com.desireProj.ble_sdk.ble.BleScanner
 import com.desireProj.ble_sdk.model.CollectedEbid
-import com.desireProj.ble_sdk.model.EbidReceived
+import com.desireProj.ble_sdk.model.StoredPET
+import com.desireProj.ble_sdk.model.StoredPETsModel
+import com.desireProj.ble_sdk.model.UploadedPetsModel
+import com.desireProj.ble_sdk.network.RestApiService
 import java.lang.StringBuilder
 import com.desireProj.ble_sdk.pet.Convertor
 import com.desireProj.ble_sdk.pet.KeyGenerator
 import com.desireProj.ble_sdk.pet.Secret
 import java.security.KeyPair
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
     private var mText: TextView? = null
@@ -134,4 +138,47 @@ class MainActivity : AppCompatActivity() {
         }
         return sb.toString()
     }
+    fun query(view: View) {
+        val apiService = RestApiService()
+        val list = ArrayList<StoredPET>()
+        val p =StoredPET(PETID = "253",
+            RSSI = -60,
+            duration = 12.53,
+            meetingDate = Date().time
+        )
+        list.add(p)
+        val pet = StoredPETsModel(  key ="2468688658",
+            id = "123",
+            pets = list
+            )
+
+        apiService.queryPets(pet) {
+            if (it?.status != null) {
+                // it = newly added user parsed as response
+                // it?.id = newly added user ID
+            } else {
+                Log.e("here","Error registering new user")
+            }
+        }
+    }
+    fun upload(view: View){
+        val apiService = RestApiService()
+        val list = ArrayList<String>()
+
+        list.add("15686a")
+        val pet = UploadedPetsModel(  key ="2468688658",
+            id = "123",
+            pets = list
+        )
+
+        apiService.uploadPets(pet) {
+            if (it?.status != null) {
+                // it = newly added user parsed as response
+                // it?.id = newly added user ID
+            } else {
+                Log.e("here","Error registering new user")
+            }
+        }
+    }
+
 }
