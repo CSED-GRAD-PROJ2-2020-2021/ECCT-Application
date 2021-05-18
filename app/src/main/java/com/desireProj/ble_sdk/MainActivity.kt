@@ -1,6 +1,7 @@
 package com.desireProj.ble_sdk
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -25,6 +26,7 @@ import java.lang.StringBuilder
 import com.desireProj.ble_sdk.diffieHellman.Convertor
 import com.desireProj.ble_sdk.diffieHellman.KeyGenerator
 import com.desireProj.ble_sdk.diffieHellman.Secret
+import com.desireProj.ble_sdk.tools.*
 import java.security.KeyPair
 import java.util.*
 import kotlin.collections.ArrayList
@@ -33,6 +35,8 @@ class MainActivity : AppCompatActivity() {
     private var mText: TextView? = null
     private var ebitText: TextView? = null
     private var mAdvertiseButton: Button? = null
+    private lateinit var startButton: Button
+    private lateinit var stopButton: Button
     private var mDiscoverButton: Button? = null
     private var bleAdvertiser: BleAdvertiser? = null
     private var bleScanner: BleScanner? = null
@@ -54,6 +58,18 @@ class MainActivity : AppCompatActivity() {
         ebitText = findViewById(R.id.ebid_tv)
         mDiscoverButton = findViewById(R.id.discover_btn)
         mAdvertiseButton = findViewById(R.id.advertise_btn)
+        startButton = findViewById(R.id.start_btn)
+        stopButton = findViewById(R.id.stop_btn)
+        startButton.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(v: View?) {
+                actionOnService(Actions.START)
+            }})
+        stopButton.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(v: View?) {
+                actionOnService(Actions.STOP)
+            }})
+
+
         val permissionCheck =
             ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
         val locationPermission =
@@ -178,6 +194,19 @@ class MainActivity : AppCompatActivity() {
             } else {
                 Log.e("here","Error registering new user")
             }
+        }
+    }
+    private fun actionOnService(action: Actions) {
+        if (getServiceState(this) == ServiceState.STOPPED && action == Actions.STOP) return
+        Intent(this, BleForgroundService::class.java).also {
+            it.action = action.name
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                log("Starting the service in >=26 Mode")
+                startForegroundService(it)
+                return
+            }
+            log("Starting the service in < 26 Mode")
+            startService(it)
         }
     }
 
