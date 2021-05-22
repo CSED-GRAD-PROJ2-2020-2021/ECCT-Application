@@ -29,11 +29,13 @@
         android:id="@+id/text_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="5dp"
         android:text="test"/>
 
     <TextView
         android:id="@+id/ebid_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="5dp"
         android:text="test"/>
 </LinearLayout>

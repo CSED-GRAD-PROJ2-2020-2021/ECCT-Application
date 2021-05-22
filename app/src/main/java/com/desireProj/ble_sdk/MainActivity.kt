@@ -81,6 +81,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun discover(view: View) {
+        CollectedEbid.receivedEbidMap.clear()
         bleScanner?.startScanning()
     }
 
@@ -97,7 +98,9 @@ class MainActivity : AppCompatActivity() {
 
     fun updateMapStatus(view: View) {
         val map = CollectedEbid.receivedEbidMap
-        val sb = StringBuilder("received: ")
+        val sb = StringBuilder()
+        sb.append("sent: " + getEbidString(publicKeyByteArray!!) +"\n\n")
+        sb.append("received: ")
         if (map != null) {
             for ((k, v) in map) {
                 println("$k = $v")
@@ -106,7 +109,7 @@ class MainActivity : AppCompatActivity() {
                     val secret: Secret =
                         Secret(publicSent, privateKeyByteArray)
                     val secretBytes: ByteArray = secret.doECDH()
-                    mText?.setText("secret: " + getEbidString(secretBytes)+"\n")
+                    mText?.setText("Shared Secret: " + getEbidString(secretBytes)+"\n")
 
                     sb.append(v.getEbidString())
                     sb.append('\n')
@@ -114,7 +117,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        sb.append("end line bla bla")
+        sb.append("end line")
         ebitText?.setText(sb.toString())
     }
 

@@ -28,7 +28,7 @@ class CollectedPets {
             pet.lastReceived = received.lastReceived
             pet.updateDuration()
 
-            pet.rssi.addRssi(received.rssi.getRssi())
+            pet.addRssi(received.rssi.getRssi())
         }
     }
 
