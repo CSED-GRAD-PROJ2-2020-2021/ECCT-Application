@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="S24sp">34sp</dimen>
+    <dimen name="S150dp">150dp</dimen>
+    <dimen name="S20dp">20dp</dimen>
+    <dimen name="S250dp">250dp</dimen>
+    <dimen name="S240dp">240dp</dimen>
+    <dimen name="S48dp">48dp</dimen>
+    <dimen name="S10dp">10dp</dimen>
+    <dimen name="S30dp">30dp</dimen>
+</resources>
