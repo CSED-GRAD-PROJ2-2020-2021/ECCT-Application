@@ -1,6 +1,7 @@
 package com.desireProj.ble_sdk
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -15,22 +16,27 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.desireProj.ble_sdk.ble.BleAdvertiser
 import com.desireProj.ble_sdk.ble.BleScanner
-import com.desireProj.ble_sdk.database.DataBaseHandler
-import com.desireProj.ble_sdk.database.PassKeyEncDec
-import com.desireProj.ble_sdk.database.RTLItem
 import com.desireProj.ble_sdk.model.CollectedEbid
+
+import com.desireProj.ble_sdk.model.StoredPET
+import com.desireProj.ble_sdk.model.StoredPETsModel
+import com.desireProj.ble_sdk.model.UploadedPetsModel
+import com.desireProj.ble_sdk.network.RestApiService
 import java.lang.StringBuilder
 import com.desireProj.ble_sdk.diffieHellman.Convertor
 import com.desireProj.ble_sdk.diffieHellman.KeyGenerator
 import com.desireProj.ble_sdk.diffieHellman.Secret
-import com.desireProj.ble_sdk.model.Utilities
+import com.desireProj.ble_sdk.tools.*
 import java.security.KeyPair
-import java.security.SecureRandom
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
     private var mText: TextView? = null
     private var ebitText: TextView? = null
     private var mAdvertiseButton: Button? = null
+    private lateinit var startButton: Button
+    private lateinit var stopButton: Button
     private var mDiscoverButton: Button? = null
     private var bleAdvertiser: BleAdvertiser? = null
     private var bleScanner: BleScanner? = null
@@ -41,6 +47,8 @@ class MainActivity : AppCompatActivity() {
     private val convertor: Convertor =
         Convertor()
 
+    private var collectedEbid: CollectedEbid? = null
+
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +58,18 @@ class MainActivity : AppCompatActivity() {
         ebitText = findViewById(R.id.ebid_tv)
         mDiscoverButton = findViewById(R.id.discover_btn)
         mAdvertiseButton = findViewById(R.id.advertise_btn)
+        startButton = findViewById(R.id.start_btn)
+        stopButton = findViewById(R.id.stop_btn)
+        startButton.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(v: View?) {
+                actionOnService(Actions.START)
+            }})
+        stopButton.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(v: View?) {
+                actionOnService(Actions.STOP)
+            }})
+
+
         val permissionCheck =
             ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
         val locationPermission =
@@ -74,6 +94,9 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+        collectedEbid = CollectedEbid()
+
+
         bleAdvertiser = BleAdvertiser()
         bleScanner = BleScanner()
 
@@ -83,11 +106,9 @@ class MainActivity : AppCompatActivity() {
         //private and  public keys
         privateKeyByteArray = convertor.savePrivateKey(keyPair.private)
         publicKeyByteArray = convertor.savePublicKey(keyPair.public)
-
     }
 
     fun discover(view: View) {
-        CollectedEbid.receivedEbidMap.clear()
         bleScanner?.startScanning()
     }
 
@@ -104,9 +125,7 @@ class MainActivity : AppCompatActivity() {
 
     fun updateMapStatus(view: View) {
         val map = CollectedEbid.receivedEbidMap
-        val sb = StringBuilder()
-        sb.append("sent: " + getEbidString(publicKeyByteArray!!) +"\n\n")
-        sb.append("received: ")
+        val sb = StringBuilder("received: ")
         if (map != null) {
             for ((k, v) in map) {
                 println("$k = $v")
@@ -115,7 +134,7 @@ class MainActivity : AppCompatActivity() {
                     val secret: Secret =
                         Secret(publicSent, privateKeyByteArray)
                     val secretBytes: ByteArray = secret.doECDH()
-                    mText?.setText("Shared Secret: " + getEbidString(secretBytes)+"\n")
+                    mText?.setText("secret: " + getEbidString(secretBytes)+"\n")
 
                     sb.append(v.getEbidString())
                     sb.append('\n')
@@ -123,7 +142,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        sb.append("end line")
+        sb.append("end line bla bla")
         ebitText?.setText(sb.toString())
     }
 
@@ -135,4 +154,60 @@ class MainActivity : AppCompatActivity() {
         }
         return sb.toString()
     }
+    fun query(view: View) {
+        val apiService = RestApiService()
+        val list = ArrayList<StoredPET>()
+        val p =StoredPET(PETID = "253",
+            RSSI = -60,
+            duration = 12.53,
+            meetingDate = Date().time
+        )
+        list.add(p)
+        val pet = StoredPETsModel(  key ="2468688658",
+            id = "123",
+            pets = list
+            )
+
+        apiService.queryPets(pet) {
+            if (it?.status != null) {
+                // it = newly added user parsed as response
+                // it?.id = newly added user ID
+            } else {
+                Log.e("here","Error registering new user")
+            }
+        }
+    }
+    fun upload(view: View){
+        val apiService = RestApiService()
+        val list = ArrayList<String>()
+
+        list.add("15686a")
+        val pet = UploadedPetsModel(  key ="2468688658",
+            id = "123",
+            pets = list
+        )
+
+        apiService.uploadPets(pet) {
+            if (it?.status != null) {
+                // it = newly added user parsed as response
+                // it?.id = newly added user ID
+            } else {
+                Log.e("here","Error registering new user")
+            }
+        }
+    }
+    private fun actionOnService(action: Actions) {
+        if (getServiceState(this) == ServiceState.STOPPED && action == Actions.STOP) return
+        Intent(this, BleForgroundService::class.java).also {
+            it.action = action.name
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                log("Starting the service in >=26 Mode")
+                startForegroundService(it)
+                return
+            }
+            log("Starting the service in < 26 Mode")
+            startService(it)
+        }
+    }
+
 }

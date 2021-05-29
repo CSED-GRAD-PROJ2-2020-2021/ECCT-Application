@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ble-sdk</string>
+    <string name="SignLabel">Sign Up</string>
+    <string name="mobileHintText">01xxxxxxxxx</string>
 </resources>

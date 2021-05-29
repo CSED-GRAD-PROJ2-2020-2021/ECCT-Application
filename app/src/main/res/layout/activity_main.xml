@@ -17,6 +17,19 @@
         android:layout_height="wrap_content"
         android:text="Discover"
         android:onClick="discover"/>
+    <Button
+        android:id="@+id/request_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="query"
+        android:onClick="query"/>
+    <Button
+        android:id="@+id/upload_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="upload"
+        android:onClick="upload"/>
+
 
     <Button
         android:id="@+id/print_btn"
@@ -24,6 +37,16 @@
         android:layout_height="wrap_content"
         android:text="Print EBID's"
         android:onClick="updateMapStatus"/>
+    <Button
+        android:id="@+id/start_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="start" />
+    <Button
+        android:id="@+id/stop_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="stop" />
 
     <TextView
         android:id="@+id/text_tv"

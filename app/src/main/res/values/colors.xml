@@ -7,4 +7,14 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="colorPrimary">#00afa8</color>
+    <color name="colorPrimaryDark">#00406c</color>
+    <color name="colorAccent">#ee498b</color>
+
+    <color name="link_color">#0000EE</color>
+    <color name="gray">#6f7378</color>
+    <color name="lightGray">#e6e9ed</color>
+    <color name="darkGrey">#363636</color>
+    <color name="mtrl_textinput_default_box_stroke_color">@color/colorPrimary</color>
+    <color name="shimmer_background">#DDDDDD</color>
 </resources>
