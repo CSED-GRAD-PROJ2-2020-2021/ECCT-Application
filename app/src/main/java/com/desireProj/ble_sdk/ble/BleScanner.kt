@@ -14,9 +14,8 @@ import no.nordicsemi.android.support.v18.scanner.ScanSettings
 
 
 class BleScanner{
-    private val bleTools: BleTools = BleTools()
     private var mBluetoothLeScanner: BluetoothLeScannerCompat = BluetoothLeScannerCompat.getScanner()
-
+    
     private var collectedEbid: CollectedEbid? = null
     private lateinit var engine: Engine
 
@@ -29,6 +28,7 @@ class BleScanner{
         this.collectedEbid = collectedEbid
     }
 
+
     private val mScanCallback = object : ScanCallback() {
 
         /*
@@ -39,10 +39,10 @@ class BleScanner{
         override fun onScanResult(callbackType: Int, result: ScanResult) {
             super.onScanResult(callbackType, result)
 
-            val dataReceived: ByteArray? = result.scanRecord?.serviceData?.get(bleTools.pUuid)
+            val dataReceived: ByteArray? = result.scanRecord?.serviceData?.get(BleTools.pUuid)
 
             if (dataReceived != null) {
-                collectedEbid?.receiveEbid(dataReceived, result.rssi)
+                CollectedEbid.receiveEbid(dataReceived, result.rssi)
             }
 
             val p2Index:Byte = 0x00
@@ -80,7 +80,7 @@ class BleScanner{
     public fun startScanning() {
         val filters = ArrayList<ScanFilter>()
         val filter = ScanFilter.Builder()
-            .setServiceUuid(bleTools.pUuid)
+            .setServiceUuid(BleTools.pUuid)
             .build()
         filters.add(filter)
 

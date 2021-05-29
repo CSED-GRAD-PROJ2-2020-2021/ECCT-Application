@@ -11,7 +11,6 @@ import com.desireProj.ble_sdk.model.EbidPacket
 class BleAdvertiser{
 
     private var bleAdvertiser: BluetoothLeAdvertiser = BluetoothAdapter.getDefaultAdapter().bluetoothLeAdvertiser
-    private val bleTools: BleTools = BleTools()
 
     private val advertisingCallback = object : AdvertiseCallback() {
         override fun onStartSuccess(settingsInEffect: AdvertiseSettings) {
@@ -42,8 +41,8 @@ class BleAdvertiser{
 
     private fun buildAdvertiseData(data: ByteArray): AdvertiseData {
         return AdvertiseData.Builder()
-            .addServiceUuid(bleTools.pUuid)
-            .addServiceData(bleTools.pUuid, data)
+            .addServiceUuid(BleTools.pUuid)
+            .addServiceData(BleTools.pUuid, data)
             .setIncludeDeviceName(false)
             .setIncludeTxPowerLevel(false)
             .build()

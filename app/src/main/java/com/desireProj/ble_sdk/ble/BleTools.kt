@@ -8,7 +8,10 @@ const val packetIndex = 6
 const val ebidIndex = 7
 
 class BleTools {
-    val pUuid = ParcelUuid(UUID.fromString("0000ccf2-0000-1000-8000-00805F9B34FB"))
+
+    companion object {
+        val pUuid = ParcelUuid(UUID.fromString("0000ccf2-0000-1000-8000-00805F9B34FB"))
+    }
 
     fun extractPetBytes(receivedData: ByteArray) {
         val id: String
