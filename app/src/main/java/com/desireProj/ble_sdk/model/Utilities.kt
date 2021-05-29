@@ -1,6 +1,8 @@
 package com.desireProj.ble_sdk.model
 
+import android.content.Context
 import java.lang.StringBuilder
+import java.nio.charset.Charset
 import java.security.MessageDigest
 
 class Utilities {
@@ -21,5 +23,15 @@ class Utilities {
             }
             return sb.toString()
         }
+
+        fun hexStringToByteArray(str: String): ByteArray? {
+            if (str.length % 2 != 0) return null
+//            require(length % 2 == 0) {}
+            return str.chunked(2)
+                .map { it.toInt(16).toByte() }
+                .toByteArray()
+        }
+
+        var context: Context? = null
     }
 }

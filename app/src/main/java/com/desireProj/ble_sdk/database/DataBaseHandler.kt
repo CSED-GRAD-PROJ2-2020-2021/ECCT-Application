@@ -1,8 +1,9 @@
 package com.desireProj.ble_sdk.database
 import android.content.Context
-import android.database.sqlite.SQLiteDatabase
-import android.database.sqlite.SQLiteOpenHelper
 import android.content.ContentValues
+import com.desireProj.ble_sdk.model.Utilities
+import net.sqlcipher.database.SQLiteDatabase
+import net.sqlcipher.database.SQLiteOpenHelper
 import java.security.*
 import javax.crypto.*
 
@@ -24,9 +25,10 @@ private const val CREATE_TABLE_ETL = "CREATE TABLE if not exists $TABLE_ETL ($CO
 private const val DELETE_TABLE_RTL = "DROP TABLE if exists $TABLE_RTL;"
 private const val DELETE_TABLE_ETL = "DROP TABLE if exists $TABLE_ETL;"
 
-// TODO class should be singleton
+// TODO pass context to Utilities class
 
-class DataBaseHandler(context: Context):SQLiteOpenHelper(context,DATABASE_NAME,null,DATABASE_VERSION) {
+object DataBaseHandler:
+    SQLiteOpenHelper(Utilities.context,DATABASE_NAME,null,DATABASE_VERSION) {
 
     var pubicPassKey: ByteArray? = generatePublicKey()
 
@@ -46,28 +48,33 @@ class DataBaseHandler(context: Context):SQLiteOpenHelper(context,DATABASE_NAME,n
     override fun onUpgrade(db: SQLiteDatabase?, p1: Int, p2: Int) {
         db?.execSQL(DELETE_TABLE_RTL)
         db?.execSQL(DELETE_TABLE_ETL)
+        onCreate(db)
     }
 
     /*
     * Creating a RTL item
     */
     fun insertRtlItem(rtl: RTLItem) {
-        val db = this.writableDatabase
+        SQLiteDatabase.loadLibs(Utilities.context)
+        val db = this.getWritableDatabase(DATABASE_PASSKEY)
 
         val values = ContentValues()
         values.put(COL_PET, rtl.pet)
 
         // insert row
-        db.insert(TABLE_ETL, null, values)
+        db.insert(TABLE_RTL, null, values)
+        db.close()
     }
 
     /*
     * get RTL list
     */
     fun getRtlItems() :ArrayList<RTLItem>{
+        SQLiteDatabase.loadLibs(Utilities.context)
+
         val rtlList = ArrayList<RTLItem>()
         val selectAllQuery = "SELECT * FROM $TABLE_RTL"
-        val db = this.readableDatabase
+        val db = this.getReadableDatabase(DATABASE_PASSKEY)
 
         val c = db.rawQuery(selectAllQuery, null)
 
@@ -81,6 +88,9 @@ class DataBaseHandler(context: Context):SQLiteOpenHelper(context,DATABASE_NAME,n
             } while (c.moveToNext())
         }
 
+        c.close()
+        db.close()
+
         return(rtlList)
     }
 
@@ -88,18 +98,22 @@ class DataBaseHandler(context: Context):SQLiteOpenHelper(context,DATABASE_NAME,n
     * empty RTL table without deleting it
     */
     fun emptyRtlTable() {
-        val db = this.writableDatabase
+        SQLiteDatabase.loadLibs(Utilities.context)
+
+        val db = this.getWritableDatabase(DATABASE_PASSKEY)
         val emptyTableQuery = "DELETE FROM $TABLE_RTL"
 
         // empty RTL table
         db.execSQL(emptyTableQuery)
+        db.close()
     }
 
     /*
     * Creating a ETL item
     */
     fun insertEtlItem(etl: ETLItem) {
-        val db = this.writableDatabase
+        SQLiteDatabase.loadLibs(Utilities.context)
+        val db = this.getWritableDatabase(DATABASE_PASSKEY)
 
         val values = ContentValues()
         values.put(COL_PET, etl.pet)
@@ -108,15 +122,18 @@ class DataBaseHandler(context: Context):SQLiteOpenHelper(context,DATABASE_NAME,n
 
         // insert row
         db.insert(TABLE_ETL, null, values)
+        db.close()
     }
 
     /*
     * get ETL list
     */
     fun getEtlItems() :ArrayList<ETLItem>{
+        SQLiteDatabase.loadLibs(Utilities.context)
+
         val etlList = ArrayList<ETLItem>()
         val selectAllQuery = "SELECT * FROM $TABLE_ETL"
-        val db = this.readableDatabase
+        val db = this.getReadableDatabase(DATABASE_PASSKEY)
 
         val c = db.rawQuery(selectAllQuery, null)
 
@@ -132,6 +149,9 @@ class DataBaseHandler(context: Context):SQLiteOpenHelper(context,DATABASE_NAME,n
             } while (c.moveToNext())
         }
 
+        c.close()
+        db.close()
+
         return(etlList)
     }
 
@@ -139,21 +159,27 @@ class DataBaseHandler(context: Context):SQLiteOpenHelper(context,DATABASE_NAME,n
     * empty ETL table without deleting it
     */
     fun emptyEtlTable() {
-        val db = this.writableDatabase
+        SQLiteDatabase.loadLibs(Utilities.context)
+        val db = this.getWritableDatabase(DATABASE_PASSKEY)
         val emptyTableQuery = "DELETE FROM $TABLE_ETL"
 
         // empty ETL table
         db.execSQL(emptyTableQuery)
+        db.close()
     }
 
     fun deleteExpiredEtlTable() {
+        SQLiteDatabase.loadLibs(Utilities.context)
         // TODO add day threshold to delete before it
 
-        val db = this.writableDatabase
+        val db = this.getWritableDatabase(DATABASE_PASSKEY)
         db.delete(
             TABLE_ETL, COL_DAY + " = ?",
             arrayOf("")
         )
+
+
+        db.close()
     }
 
 
