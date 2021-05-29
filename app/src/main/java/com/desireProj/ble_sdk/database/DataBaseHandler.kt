@@ -3,9 +3,12 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.content.ContentValues
+import java.security.*
+import javax.crypto.*
 
 
 private const val DATABASE_NAME = "DESIRE DATABASE"
+private const val DATABASE_PASSKEY = "PASS KEY"
 private const val DATABASE_VERSION = 1
 private const val TABLE_RTL = "RTL"
 private const val TABLE_ETL = "ETL"
@@ -13,18 +16,36 @@ private const val COL_PET = "pet"
 private const val COL_DAY = "day"
 private const val COL_TIME = "time"
 
+private const val CREATE_TABLE_RTL = "CREATE TABLE if not exists $TABLE_RTL ($COL_PET VARCHAR(64) PRIMARY KEY);"
+// INTEGER in sqlite save values of 8 bytes, same as Long in Kotlin/Java
+private const val CREATE_TABLE_ETL = "CREATE TABLE if not exists $TABLE_ETL ($COL_PET VARCHAR(64) PRIMARY KEY, " +
+        "$COL_DAY DATE, $COL_TIME INTEGER);"
+
+private const val DELETE_TABLE_RTL = "DROP TABLE if exists $TABLE_RTL;"
+private const val DELETE_TABLE_ETL = "DROP TABLE if exists $TABLE_ETL;"
+
+// TODO class should be singleton
+
 class DataBaseHandler(context: Context):SQLiteOpenHelper(context,DATABASE_NAME,null,DATABASE_VERSION) {
+
+    var pubicPassKey: ByteArray? = generatePublicKey()
+
+    private fun generatePublicKey() :ByteArray {
+        val keygen = KeyGenerator.getInstance("AES")
+        keygen.init(128, SecureRandom())
+        val originalKey = keygen.generateKey()
+        return(originalKey.encoded)
+    }
+
+
     override fun onCreate(db: SQLiteDatabase?) {
-        val CREATE_TABLE_RTL = "CREATE TABLE if not exists $TABLE_RTL ($COL_PET VARCHAR(64) PRIMARY KEY);"
-        // INTEGER in sqlite save values of 8 bytes, same as Long in Kotlin/Java
-        val CREATE_TABLE_ETL = "CREATE TABLE if not exists $TABLE_ETL ($COL_PET VARCHAR(64) PRIMARY KEY, " +
-                "$COL_DAY DATE, $COL_TIME INTEGER);"
-        db!!.execSQL(CREATE_TABLE_RTL)
-        db!!.execSQL(CREATE_TABLE_ETL)
+        db?.execSQL(CREATE_TABLE_RTL)
+        db?.execSQL(CREATE_TABLE_ETL)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, p1: Int, p2: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        db?.execSQL(DELETE_TABLE_RTL)
+        db?.execSQL(DELETE_TABLE_ETL)
     }
 
     /*
@@ -134,5 +155,8 @@ class DataBaseHandler(context: Context):SQLiteOpenHelper(context,DATABASE_NAME,n
             arrayOf("")
         )
     }
+
+
+
 
 }

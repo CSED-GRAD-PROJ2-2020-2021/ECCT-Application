@@ -15,12 +15,16 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.desireProj.ble_sdk.ble.BleAdvertiser
 import com.desireProj.ble_sdk.ble.BleScanner
+import com.desireProj.ble_sdk.database.DataBaseHandler
+import com.desireProj.ble_sdk.database.PassKeyEncDec
 import com.desireProj.ble_sdk.model.CollectedEbid
 import java.lang.StringBuilder
 import com.desireProj.ble_sdk.diffieHellman.Convertor
 import com.desireProj.ble_sdk.diffieHellman.KeyGenerator
 import com.desireProj.ble_sdk.diffieHellman.Secret
+import com.desireProj.ble_sdk.model.Utilities
 import java.security.KeyPair
+import java.security.SecureRandom
 
 class MainActivity : AppCompatActivity() {
     private var mText: TextView? = null
@@ -45,39 +49,52 @@ class MainActivity : AppCompatActivity() {
         ebitText = findViewById(R.id.ebid_tv)
         mDiscoverButton = findViewById(R.id.discover_btn)
         mAdvertiseButton = findViewById(R.id.advertise_btn)
-        val permissionCheck =
-            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-        val locationPermission =
-            if (Build.VERSION.SDK_INT >= 29) Manifest.permission.ACCESS_FINE_LOCATION else Manifest.permission.ACCESS_COARSE_LOCATION
-        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    this,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                )
-            ) {
-                Toast.makeText(
-                    this,
-                    "The permission to get BLE location data is required",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                Toast.makeText(this, "t3ala", Toast.LENGTH_SHORT).show()
-                requestPermissions(arrayOf(locationPermission), 1)
-            }
-        } else {
-            Toast.makeText(this, "Location permissions already granted", Toast.LENGTH_SHORT).show()
-        }
+//        val permissionCheck =
+//            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+//        val locationPermission =
+//            if (Build.VERSION.SDK_INT >= 29) Manifest.permission.ACCESS_FINE_LOCATION else Manifest.permission.ACCESS_COARSE_LOCATION
+//        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+//            if (ActivityCompat.shouldShowRequestPermissionRationale(
+//                    this,
+//                    Manifest.permission.ACCESS_FINE_LOCATION
+//                )
+//            ) {
+//                Toast.makeText(
+//                    this,
+//                    "The permission to get BLE location data is required",
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//            } else {
+//                Toast.makeText(this, "t3ala", Toast.LENGTH_SHORT).show()
+//                requestPermissions(arrayOf(locationPermission), 1)
+//            }
+//        } else {
+//            Toast.makeText(this, "Location permissions already granted", Toast.LENGTH_SHORT).show()
+//        }
+//
+//
+//        bleAdvertiser = BleAdvertiser()
+//        bleScanner = BleScanner()
+//
+//
+//        //genarate keys
+//        var keyPair: KeyPair = keyGenerator.generateKeyPair()
+//        //private and  public keys
+//        privateKeyByteArray = convertor.savePrivateKey(keyPair.private)
+//        publicKeyByteArray = convertor.savePublicKey(keyPair.public)
 
+        val passKeyEncDec = PassKeyEncDec
 
-        bleAdvertiser = BleAdvertiser()
-        bleScanner = BleScanner()
+        val keygen = javax.crypto.KeyGenerator.getInstance("AES")
+        keygen.init(128, SecureRandom())
+        val originalKey = keygen.generateKey()
 
-
-        //genarate keys
-        var keyPair: KeyPair = keyGenerator.generateKeyPair()
-        //private and  public keys
-        privateKeyByteArray = convertor.savePrivateKey(keyPair.private)
-        publicKeyByteArray = convertor.savePublicKey(keyPair.public)
+        val public = originalKey.encoded
+        val encrypted = passKeyEncDec.encryptPassKey(public)
+        val decrypted = passKeyEncDec.decrypt(encrypted)
+        println("public : ${Utilities.byteArrayToString(public)}")
+        println("encrypted : "+ Utilities.byteArrayToString(encrypted))
+        println("decrypted : $decrypted")
     }
 
     fun discover(view: View) {
