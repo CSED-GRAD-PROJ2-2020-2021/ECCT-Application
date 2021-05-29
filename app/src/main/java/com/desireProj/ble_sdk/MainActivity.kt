@@ -1,6 +1,7 @@
 package com.desireProj.ble_sdk
 
 import android.Manifest
+import android.app.AlarmManager
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -63,10 +64,12 @@ class MainActivity : AppCompatActivity() {
         startButton.setOnClickListener(object : View.OnClickListener{
             override fun onClick(v: View?) {
                 actionOnService(Actions.START)
+                setAlarm(v?.context)
             }})
         stopButton.setOnClickListener(object : View.OnClickListener{
             override fun onClick(v: View?) {
                 actionOnService(Actions.STOP)
+                cancelAlarm()
             }})
 
 
