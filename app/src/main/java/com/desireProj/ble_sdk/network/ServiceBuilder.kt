@@ -9,14 +9,14 @@ object ServiceBuilder {
     val interceptor = HttpLoggingInterceptor()
     init {
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
-        println("https://10.0.2.201:3000/registration")
+        //println("https://10.0.2.201:3000/registration")
 
     }
 
 
     private val client = OkHttpClient.Builder().addInterceptor(interceptor).build();
     private val retrofit = Retrofit.Builder()
-        .baseUrl("http://10.0.2.201:3000/")
+        .baseUrl("http://10.0.3.106:3000/")
         .addConverterFactory(GsonConverterFactory.create())
         .client(client)
         .build()

@@ -50,16 +50,26 @@ class BleForgroundService: Service() {
         GlobalScope.launch(Dispatchers.Main) {
             while (isServiceStarted) {
                 launch(Dispatchers.Main) {
-                    changeState()
+                    changeState("there")
                 }
                 delay(1 *20 * 1000)
             }
             log("End of the loop for the service")
         }
+        GlobalScope.launch(Dispatchers.Main) {
+            while (isServiceStarted) {
+                launch(Dispatchers.Main) {
+                    changeState("here")
+                }
+                delay(1 *10 * 1000)
+            }
+            log("End of the loop for the service")
+        }
+
     }
 
-    private fun changeState() {
-        Toast.makeText(this,"here",Toast.LENGTH_SHORT).show()
+    private fun changeState(state:String) {
+        Toast.makeText(this,state,Toast.LENGTH_SHORT).show()
     }
 
     override fun onCreate() {

@@ -15,7 +15,7 @@ interface RestApi {
     fun queryPets(@Body pets: StoredPETsModel): Call<StatusResponse>
 
     @Headers("Content-Type: application/json")
-    @POST("/registration")
+    @POST("/test")
     fun uploadPets(@Body pets: UploadedPetsModel): Call<StatusResponse>
 
 }
