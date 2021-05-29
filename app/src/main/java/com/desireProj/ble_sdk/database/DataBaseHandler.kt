@@ -1,5 +1,4 @@
 package com.desireProj.ble_sdk.database
-import android.content.Context
 import android.content.ContentValues
 import com.desireProj.ble_sdk.model.Utilities
 import net.sqlcipher.database.SQLiteDatabase
@@ -76,19 +75,19 @@ object DataBaseHandler:
         val selectAllQuery = "SELECT * FROM $TABLE_RTL"
         val db = this.getReadableDatabase(DATABASE_PASSKEY)
 
-        val c = db.rawQuery(selectAllQuery, null)
+        val cursor = db.rawQuery(selectAllQuery, null)
 
         // looping through all rows and adding to list
-        if (c.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             do {
-                val pet = c.getString(c.getColumnIndex(COL_PET))
+                val pet = cursor.getString(cursor.getColumnIndex(COL_PET))
                 var rtl = RTLItem(pet)
                 // adding to rtl list
                 rtlList.add(rtl)
-            } while (c.moveToNext())
+            } while (cursor.moveToNext())
         }
 
-        c.close()
+        cursor.close()
         db.close()
 
         return(rtlList)
@@ -135,21 +134,21 @@ object DataBaseHandler:
         val selectAllQuery = "SELECT * FROM $TABLE_ETL"
         val db = this.getReadableDatabase(DATABASE_PASSKEY)
 
-        val c = db.rawQuery(selectAllQuery, null)
+        val cursor = db.rawQuery(selectAllQuery, null)
 
         // looping through all rows and adding to list
-        if (c.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             do {
-                val pet = c.getString(c.getColumnIndex(COL_PET))
-                val day = c.getString(c.getColumnIndex(COL_DAY))
-                val time = c.getLong(c.getColumnIndex(COL_TIME)) // TODO check if working well
+                val pet = cursor.getString(cursor.getColumnIndex(COL_PET))
+                val day = cursor.getString(cursor.getColumnIndex(COL_DAY))
+                val time = cursor.getLong(cursor.getColumnIndex(COL_TIME)) // TODO check if working well
                 var etl = ETLItem(pet, day, time)
                 // adding to rtl list
                 etlList.add(etl)
-            } while (c.moveToNext())
+            } while (cursor.moveToNext())
         }
 
-        c.close()
+        cursor.close()
         db.close()
 
         return(etlList)
