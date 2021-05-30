@@ -101,7 +101,7 @@ class MainActivity : AppCompatActivity() {
 
 
         bleAdvertiser = BleAdvertiser()
-        bleScanner = BleScanner()
+        bleScanner = BleScanner(collectedEbid!!)
 
 
         //genarate keys
