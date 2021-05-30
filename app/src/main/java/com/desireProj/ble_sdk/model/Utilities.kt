@@ -2,7 +2,6 @@ package com.desireProj.ble_sdk.model
 
 import android.content.Context
 import java.lang.StringBuilder
-import java.nio.charset.Charset
 import java.security.MessageDigest
 
 class Utilities {

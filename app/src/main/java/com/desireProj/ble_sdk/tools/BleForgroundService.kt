@@ -58,7 +58,7 @@ class BleForgroundService: Service() {
                     engine.startScaning()
                 }
                 delay(1 *20 * 1000)
-                engine.stop()
+                engine.stopScanning()
             }
             log("End of the loop for the service")
         }

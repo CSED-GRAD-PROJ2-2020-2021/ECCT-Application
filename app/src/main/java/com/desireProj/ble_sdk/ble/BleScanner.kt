@@ -12,22 +12,17 @@ import no.nordicsemi.android.support.v18.scanner.ScanRecord
 import no.nordicsemi.android.support.v18.scanner.ScanResult
 import no.nordicsemi.android.support.v18.scanner.ScanSettings
 
+const val p2Index:Byte = 0x00
+const val PacketIndex:Int = 6
 
 class BleScanner{
     private var mBluetoothLeScanner: BluetoothLeScannerCompat = BluetoothLeScannerCompat.getScanner()
 
-    private var collectedEbid: CollectedEbid? = null
     private lateinit var engine: Engine
 
-    constructor(collectedEbid: CollectedEbid ,engine: Engine) {
-        this.collectedEbid = collectedEbid
+    constructor(engine: Engine) {
         this.engine = engine
     }
-    //temprory soon will be removed (dumpy constructor)
-    constructor(collectedEbid: CollectedEbid ) {
-        this.collectedEbid = collectedEbid
-    }
-
 
     private val mScanCallback = object : ScanCallback() {
 
@@ -42,13 +37,13 @@ class BleScanner{
             val dataReceived: ByteArray? = result.scanRecord?.serviceData?.get(BleTools.pUuid)
 
             if (dataReceived != null) {
-                CollectedEbid.receiveEbid(dataReceived, result.rssi)
+                engine.receiveEbid(dataReceived, result.rssi)
             }
 
-            val p2Index:Byte = 0x00
+
             Log.e(
                 "ble.onScanResult: ",
-                if (dataReceived?.get(6)?.equals(p2Index)!!) "Packet 2 received" else "Packet 1 received"
+                if (dataReceived?.get(PacketIndex)?.equals(p2Index)!!) "Packet 2 received" else "Packet 1 received"
             )
             var ss: String = ""
             for(c : Byte in dataReceived)
@@ -77,7 +72,7 @@ class BleScanner{
     }
 
 
-    public fun startScanning() {
+    fun startScanning() {
         val filters = ArrayList<ScanFilter>()
         val filter = ScanFilter.Builder()
             .setServiceUuid(BleTools.pUuid)
@@ -91,7 +86,7 @@ class BleScanner{
             mScanCallback)
     }
 
-    public fun stopScanning() {
+    fun stopScanning() {
         mBluetoothLeScanner.stopScan(mScanCallback)
     }
 
