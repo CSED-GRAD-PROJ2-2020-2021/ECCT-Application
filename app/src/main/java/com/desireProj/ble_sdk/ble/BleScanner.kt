@@ -15,7 +15,7 @@ import no.nordicsemi.android.support.v18.scanner.ScanSettings
 
 class BleScanner{
     private var mBluetoothLeScanner: BluetoothLeScannerCompat = BluetoothLeScannerCompat.getScanner()
-    
+
     private var collectedEbid: CollectedEbid? = null
     private lateinit var engine: Engine
 

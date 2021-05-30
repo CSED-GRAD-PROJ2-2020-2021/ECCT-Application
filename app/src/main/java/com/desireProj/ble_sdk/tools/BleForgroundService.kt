@@ -14,6 +14,10 @@ import kotlinx.coroutines.*
 
 class BleForgroundService: Service() {
     private var isServiceStarted = false
+    var engine: Engine
+    init {
+        engine = Engine()
+    }
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
@@ -50,26 +54,24 @@ class BleForgroundService: Service() {
         GlobalScope.launch(Dispatchers.Main) {
             while (isServiceStarted) {
                 launch(Dispatchers.Main) {
-                    changeState("there")
+                    engine.generateNewKey()
+                    engine.startScaning()
                 }
                 delay(1 *20 * 1000)
+                engine.stop()
             }
             log("End of the loop for the service")
         }
         GlobalScope.launch(Dispatchers.Main) {
             while (isServiceStarted) {
                 launch(Dispatchers.Main) {
-                    changeState("here")
+                    engine.startAdvertising()
                 }
-                delay(1 *10 * 1000)
+                delay(2 * 1000)
             }
-            log("End of the loop for the service")
+            log("End of the loop for the advirtising")
         }
 
-    }
-
-    private fun changeState(state:String) {
-        Toast.makeText(this,state,Toast.LENGTH_SHORT).show()
     }
 
     override fun onCreate() {
