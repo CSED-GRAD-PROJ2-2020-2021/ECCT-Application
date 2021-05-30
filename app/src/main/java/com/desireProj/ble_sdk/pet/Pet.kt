@@ -12,15 +12,17 @@ class Pet {
     var duration: Long
     var firstReceived: Long
     var lastReceived: Long
+    var greaterSecret: Boolean  // to indicate whether g^A is greater than g^B
 
     constructor(pet: String, petArr: ByteArray, rssi: RssiUtility, firstRec: Long,
-                    lastRec: Long, duration: Long) {
+                    lastRec: Long, duration: Long, greaterSecret: Boolean) {
         this.pet = pet
         this.petByteArray = petArr
         this.rssi = rssi
         this.duration = duration
         this.firstReceived = firstRec
         this.lastReceived = lastRec
+        this.greaterSecret = greaterSecret
     }
 
     fun getHash1() :String {

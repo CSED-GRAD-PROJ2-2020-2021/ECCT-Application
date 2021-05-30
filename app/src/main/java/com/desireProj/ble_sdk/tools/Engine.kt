@@ -22,10 +22,10 @@ class Engine {
         bleAdvertiser = BleAdvertiser()
     }
     fun generateNewKey(){
-        keyExchanger.generateNewKeys()
+        KeyExchanger.generateNewKeys()
     }
     fun startAdvertising(){
-        bleAdvertiser.startAdvertising(keyExchanger.publicKeyByteArray!!)
+        bleAdvertiser.startAdvertising(KeyExchanger.publicKeyByteArray!!)
     }
     fun startScaning(){
         bleScanner.startScanning()
@@ -34,6 +34,6 @@ class Engine {
         bleScanner.stopScanning()
     }
     fun generateSecert(recieved:ByteArray){
-        var secret = keyExchanger.generateSecret(recieved)
+        var secret = KeyExchanger.generateSecret(recieved)
     }
 }
