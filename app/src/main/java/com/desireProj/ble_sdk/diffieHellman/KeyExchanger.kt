@@ -27,8 +27,8 @@ class KeyExchanger {
         publicKeyByteArray = convertor.savePublicKey(keyPair.public)
 
     }
-    fun generateSecret(recived:ByteArray):ByteArray{
-        secret = Secret(recived, privateKeyByteArray)
+    fun generateSecret(received:ByteArray):ByteArray{
+        secret = Secret(received, privateKeyByteArray)
         return secret.doECDH()
     }
 

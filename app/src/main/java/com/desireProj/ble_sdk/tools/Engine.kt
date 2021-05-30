@@ -4,17 +4,22 @@ import com.desireProj.ble_sdk.ble.BleAdvertiser
 import com.desireProj.ble_sdk.ble.BleScanner
 import com.desireProj.ble_sdk.diffieHellman.KeyExchanger
 import com.desireProj.ble_sdk.model.CollectedEbid
+import com.desireProj.ble_sdk.model.CollectedPets
 
 class Engine {
     private lateinit var bleScanner: BleScanner
     private lateinit var bleAdvertiser: BleAdvertiser
     private lateinit var keyExchanger: KeyExchanger
     private lateinit var collectedEbid: CollectedEbid
+    private lateinit var collectedPets: CollectedPets
+
     init {
         collectedEbid = CollectedEbid()
+        collectedPets = CollectedPets()
+        keyExchanger = KeyExchanger()
+
         bleScanner = BleScanner(collectedEbid,this)
         bleAdvertiser = BleAdvertiser()
-        keyExchanger = KeyExchanger()
     }
     fun generateNewKey(){
         keyExchanger.generateNewKeys()

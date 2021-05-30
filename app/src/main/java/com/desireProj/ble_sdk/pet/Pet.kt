@@ -6,7 +6,7 @@ import com.desireProj.ble_sdk.model.Utilities
 const val PET_SIZE = 32
 
 class Pet {
-    var pet: String
+    var pet: String // H(g^XY) string, used as map key
     var petByteArray: ByteArray // g^XY
     var rssi: RssiUtility
     var duration: Long

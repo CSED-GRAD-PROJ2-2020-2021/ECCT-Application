@@ -39,6 +39,8 @@ class EbidReceived {
         }
         lsbReady = true
         this.ebidReady = this.msbReady
+
+        generatePetIfReady()
         return true
     }
 
@@ -51,6 +53,8 @@ class EbidReceived {
         }
         msbReady = true
         this.ebidReady = this.lsbReady
+
+        generatePetIfReady()
         return true
     }
 
@@ -73,6 +77,12 @@ class EbidReceived {
 
     fun updateDuration() {
         this.duration = this.lastReceived - this.firstReceived
+    }
+
+    private fun generatePetIfReady() {
+        if (this.ebidReady) {
+            CollectedPets.receivedPet(this)
+        }
     }
 
     // TODO update duration
