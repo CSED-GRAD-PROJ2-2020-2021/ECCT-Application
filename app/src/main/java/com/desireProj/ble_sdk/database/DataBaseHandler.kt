@@ -1,5 +1,7 @@
 package com.desireProj.ble_sdk.database
 import android.content.ContentValues
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.desireProj.ble_sdk.model.Utilities
 import net.sqlcipher.database.SQLiteDatabase
 import net.sqlcipher.database.SQLiteOpenHelper
@@ -29,21 +31,19 @@ private const val DELETE_TABLE_ETL = "DROP TABLE if exists $TABLE_ETL;"
 object DataBaseHandler:
     SQLiteOpenHelper(Utilities.context,DATABASE_NAME,null,DATABASE_VERSION) {
 
-    var pubicPassKey: ByteArray? = generatePublicKey()
-
-    private fun generatePublicKey() :ByteArray {
-        val keygen = KeyGenerator.getInstance("AES")
-        keygen.init(128, SecureRandom())
-        val originalKey = keygen.generateKey()
-        return(originalKey.encoded)
-    }
+    var passKey: PassKeyEncDec? = null
 
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL(CREATE_TABLE_RTL)
         db?.execSQL(CREATE_TABLE_ETL)
+
+        passKey = PassKeyEncDec
+        passKey!!.initiate()
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onUpgrade(db: SQLiteDatabase?, p1: Int, p2: Int) {
         db?.execSQL(DELETE_TABLE_RTL)
         db?.execSQL(DELETE_TABLE_ETL)
@@ -55,7 +55,7 @@ object DataBaseHandler:
     */
     fun insertRtlItem(rtl: RTLItem) {
         SQLiteDatabase.loadLibs(Utilities.context)
-        val db = this.getWritableDatabase(DATABASE_PASSKEY)
+        val db = this.getWritableDatabase(passKey!!.getPasswordString())
 
         val values = ContentValues()
         values.put(COL_PET, rtl.pet)
@@ -73,7 +73,7 @@ object DataBaseHandler:
 
         val rtlList = ArrayList<RTLItem>()
         val selectAllQuery = "SELECT * FROM $TABLE_RTL"
-        val db = this.getReadableDatabase(DATABASE_PASSKEY)
+        val db = this.getReadableDatabase(passKey!!.getPasswordString())
 
         val cursor = db.rawQuery(selectAllQuery, null)
 
@@ -99,7 +99,7 @@ object DataBaseHandler:
     fun emptyRtlTable() {
         SQLiteDatabase.loadLibs(Utilities.context)
 
-        val db = this.getWritableDatabase(DATABASE_PASSKEY)
+        val db = this.getWritableDatabase(passKey!!.getPasswordString())
         val emptyTableQuery = "DELETE FROM $TABLE_RTL"
 
         // empty RTL table
@@ -112,7 +112,7 @@ object DataBaseHandler:
     */
     fun insertEtlItem(etl: ETLItem) {
         SQLiteDatabase.loadLibs(Utilities.context)
-        val db = this.getWritableDatabase(DATABASE_PASSKEY)
+        val db = this.getWritableDatabase(passKey!!.getPasswordString())
 
         val values = ContentValues()
         values.put(COL_PET, etl.pet)
@@ -132,7 +132,7 @@ object DataBaseHandler:
 
         val etlList = ArrayList<ETLItem>()
         val selectAllQuery = "SELECT * FROM $TABLE_ETL"
-        val db = this.getReadableDatabase(DATABASE_PASSKEY)
+        val db = this.getReadableDatabase(passKey!!.getPasswordString())
 
         val cursor = db.rawQuery(selectAllQuery, null)
 
@@ -159,7 +159,7 @@ object DataBaseHandler:
     */
     fun emptyEtlTable() {
         SQLiteDatabase.loadLibs(Utilities.context)
-        val db = this.getWritableDatabase(DATABASE_PASSKEY)
+        val db = this.getWritableDatabase(passKey!!.getPasswordString())
         val emptyTableQuery = "DELETE FROM $TABLE_ETL"
 
         // empty ETL table
@@ -171,7 +171,7 @@ object DataBaseHandler:
         SQLiteDatabase.loadLibs(Utilities.context)
         // TODO add day threshold to delete before it
 
-        val db = this.getWritableDatabase(DATABASE_PASSKEY)
+        val db = this.getWritableDatabase(passKey!!.getPasswordString())
         db.delete(
             TABLE_ETL, COL_DAY + " = ?",
             arrayOf("")

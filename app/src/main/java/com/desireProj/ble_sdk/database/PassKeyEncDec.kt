@@ -17,25 +17,46 @@ private const val DATABASE_PASSKEY = "PASS KEY"
 
 object PassKeyEncDec {
 
-    fun generatePublicKey() :ByteArray {
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun initiate() {
+        // generate random 128 bit public key (not stored)
+        val public: ByteArray = generatePublicKey()
+        // generate and store secret key in android keyStore
+        generatePrivateKey()
+        // load generated secret key from keyStore (cannot be accessed directly)
+        val secretKeystore= getPrivateKey()
+
+        // generate and store encrypted password in android shared preferences
+        val encrypted = encrypt(secretKeystore, public)
+        storeEncryptedPassword(encrypted)
+    }
+
+    fun getPasswordString() :String {
+        val encrypted = loadEncryptedPassword()
+        val decrypted = decrypt(getPrivateKey(), encrypted)
+
+        return (Utilities.byteArrayToString(decrypted))
+    }
+
+    private fun generatePublicKey() :ByteArray {
         val keygen = KeyGenerator.getInstance("AES")
         keygen.init(128, SecureRandom())
         val originalKey = keygen.generateKey()
         return(originalKey.encoded)
     }
 
-    fun encrypt(key: SecretKey, plainText: ByteArray): ByteArray {
+    private fun encrypt(key: SecretKey, plainText: ByteArray): ByteArray {
         val cipher = Cipher.getInstance("AES/GCM/NoPadding")
         cipher.init(Cipher.ENCRYPT_MODE, key)
         val encryptionIv = cipher.iv
-        Utilities.storeBAInSharedPref("CIV", encryptionIv)
+        storeIV(encryptionIv)
         return cipher.doFinal(plainText)
     }
 
-    fun decrypt(secretKey: SecretKey, encrypted: ByteArray): ByteArray {
+    private fun decrypt(secretKey: SecretKey, encrypted: ByteArray): ByteArray {
         val cipher = Cipher.getInstance("AES/GCM/NoPadding")
 
-        val encryptionIv = Utilities.loadBAFromSharedPref("CIV")
+        val encryptionIv: ByteArray = loadIV()
         val spec = GCMParameterSpec(128, encryptionIv)
         cipher.init(Cipher.DECRYPT_MODE, secretKey, spec)
 
@@ -44,7 +65,7 @@ object PassKeyEncDec {
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    fun generatePrivateKey(): SecretKey {
+    private fun generatePrivateKey(): SecretKey {
         val keyGenerator = KeyGenerator
             .getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore")
 
@@ -61,7 +82,7 @@ object PassKeyEncDec {
         return (secretKey)
     }
 
-    fun getPrivateKey(): SecretKey {
+    private fun getPrivateKey(): SecretKey {
         val keyStore = KeyStore.getInstance("AndroidKeyStore")
         keyStore.load(null)
         val secretKeyEntry = keyStore
@@ -71,51 +92,20 @@ object PassKeyEncDec {
         return (secretKey)
     }
 
+    private fun storeIV(encryptionIv: ByteArray) {
+        Utilities.storeBAInSharedPref("CIV", encryptionIv)
+    }
 
-//    @RequiresApi(Build.VERSION_CODES.M)
-//    fun encryptPassKey(publicPassKey: ByteArray) :ByteArray {
-//        val keyGenerator = KeyGenerator
-//            .getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore")
-//
-//        val keyGenParameterSpec = KeyGenParameterSpec.Builder(
-//            DATABASE_PASSKEY,
-//            KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
-//        ).setBlockModes(KeyProperties.BLOCK_MODE_GCM)
-//            .setKeySize(128)
-//            .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
-//            .build()
-//
-//        keyGenerator.init(keyGenParameterSpec)
-//        val secretKey = keyGenerator.generateKey()
-//
-//        val cipher = Cipher.getInstance("AES/GCM/NoPadding")
-//        cipher.init(Cipher.ENCRYPT_MODE, secretKey)
-//
-//        encryptionIv = cipher.iv
-//
-//        val encryption: ByteArray = cipher.doFinal(publicPassKey)
-//
-//        return(encryption)
-//    }
+    private fun loadIV() :ByteArray {
+        return (Utilities.loadBAFromSharedPref("CIV")!!)
+    }
 
+    private fun storeEncryptedPassword(encrypted: ByteArray) {
+        Utilities.storeBAInSharedPref("Password", encrypted)
+    }
 
-
-//    fun decryptPassKey(encryptedKey: ByteArray) :String {
-//        val keyStore = KeyStore.getInstance("AndroidKeyStore")
-//        keyStore.load(null)
-//        val secretKeyEntry = keyStore
-//            .getEntry(DATABASE_PASSKEY, null) as KeyStore.SecretKeyEntry
-//
-//        val secretKey: SecretKey = secretKeyEntry.secretKey
-//
-//        val cipher = Cipher.getInstance("AES/GCM/NoPadding")
-//
-//        val spec = GCMParameterSpec(128, encryptionIv)
-//        cipher.init(Cipher.DECRYPT_MODE, secretKey, spec)
-//
-//        val decryption: ByteArray = cipher.doFinal(encryptedKey)
-//
-//        return(Utilities.byteArrayToString(decryption))
-//    }
+    private fun loadEncryptedPassword() :ByteArray {
+        return (Utilities.loadBAFromSharedPref("Password")!!)
+    }
 
 }

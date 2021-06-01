@@ -38,13 +38,14 @@ class Utilities {
         }
 
         fun storeBAInSharedPref(str: String, bytes: ByteArray) {
-            val settings = context!!.getSharedPreferences("prefs", 0)
+            val settings = context!!.getSharedPreferences("prefs", Context.MODE_PRIVATE)
             val editor = settings.edit()
             editor.putString(str, byteArrayToString(bytes))
+            editor.commit()
         }
 
         fun loadBAFromSharedPref(str: String) :ByteArray? {
-            val settings = context!!.getSharedPreferences("prefs", 0)
+            val settings = context!!.getSharedPreferences("prefs", Context.MODE_PRIVATE)
             val stringArray = settings.getString(str, null)
 
             if (stringArray != null) {
