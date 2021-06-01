@@ -1,12 +1,11 @@
 package com.desireProj.ble_sdk.database
 import android.content.ContentValues
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import com.desireProj.ble_sdk.model.Utilities
 import net.sqlcipher.database.SQLiteDatabase
 import net.sqlcipher.database.SQLiteOpenHelper
-import java.security.*
-import javax.crypto.*
 
 
 private const val DATABASE_NAME = "DESIRE DATABASE"
@@ -31,28 +30,38 @@ private const val DELETE_TABLE_ETL = "DROP TABLE if exists $TABLE_ETL;"
 object DataBaseHandler:
     SQLiteOpenHelper(Utilities.context,DATABASE_NAME,null,DATABASE_VERSION) {
 
-    var passKey: PassKeyEncDec? = null
+    private var passKey: PassKeyEncDec? = PassKeyEncDec
 
-
+    /*
+        used to create the database and set its password, as onCreate is not invoked
+        until the first read or write operation
+     */
     @RequiresApi(Build.VERSION_CODES.M)
+    fun initiate() {
+        if (passKey!!.loadEncryptedPassword() == null) {
+            SQLiteDatabase.loadLibs(Utilities.context)
+            passKey!!.initiate()
+            val db = this.getReadableDatabase(passKey!!.getPasswordString())
+            db.close()
+        }
+    }
+
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL(CREATE_TABLE_RTL)
         db?.execSQL(CREATE_TABLE_ETL)
-
-        passKey = PassKeyEncDec
-        passKey!!.initiate()
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     override fun onUpgrade(db: SQLiteDatabase?, p1: Int, p2: Int) {
         db?.execSQL(DELETE_TABLE_RTL)
         db?.execSQL(DELETE_TABLE_ETL)
         onCreate(db)
     }
 
+
+
     /*
-    * Creating a RTL item
-    */
+        * Creating a RTL item
+        */
     fun insertRtlItem(rtl: RTLItem) {
         SQLiteDatabase.loadLibs(Utilities.context)
         val db = this.getWritableDatabase(passKey!!.getPasswordString())
@@ -181,7 +190,9 @@ object DataBaseHandler:
         db.close()
     }
 
+    fun updatePassword() {
 
+    }
 
 
 }

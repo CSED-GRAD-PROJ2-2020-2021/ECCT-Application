@@ -12,7 +12,9 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import com.desireProj.ble_sdk.ble.BleAdvertiser
 import com.desireProj.ble_sdk.ble.BleScanner
+import com.desireProj.ble_sdk.database.DataBaseHandler
 import com.desireProj.ble_sdk.database.PassKeyEncDec
+import com.desireProj.ble_sdk.database.RTLItem
 
 import com.desireProj.ble_sdk.network.RestApiService
 import java.lang.StringBuilder
@@ -102,35 +104,20 @@ class MainActivity : AppCompatActivity() {
 //        publicKeyByteArray = convertor.savePublicKey(keyPair.public)
         */
 
-        val passKeyEncDec: PassKeyEncDec = PassKeyEncDec
         Utilities.context = this
+        val database: DataBaseHandler = DataBaseHandler
+        database.initiate()
 
-//        passKeyEncDec.initiate()
+//        database.insertRtlItem(RTLItem("532FACBE8BEC1186276ABA76FC0A9DA9"))
+//        database.insertRtlItem(RTLItem("532FACBE8BEC2257276ABA76FC0A9DF9"))
+//        database.insertRtlItem(RTLItem("532FACBE8BEC3386276ABA76FC0A9DB9"))
+//        database.insertRtlItem(RTLItem("532FACBE8BEC4486276ABA76FC0A9DC9"))
 
-        Log.d("Main activity","password : " + passKeyEncDec.getPasswordString())
-        Log.d("Main activity","password : " + passKeyEncDec.getPasswordString())
-        Log.d("Main activity","password : " + passKeyEncDec.getPasswordString())
-        Log.d("Main activity","password : " + passKeyEncDec.getPasswordString())
-        Log.d("Main activity","password : " + passKeyEncDec.getPasswordString())
-        Log.d("Main activity","password : " + passKeyEncDec.getPasswordString())
+        val list = database.getRtlItems()
+        for (rtl in list) {
+            Log.d("Main Activity", "rtl item : " + rtl.pet)
+        }
 
-
-////        val public = passKeyEncDec.generatePublicKey()
-//        val public = Utilities.hexStringToByteArray("B22A35E0B80508A57C8A2D7C2E3DB715")
-//
-////        val secretKey = passKeyEncDec.generatePrivateKey()
-//        val secretKeystore= passKeyEncDec.getPrivateKey()
-//
-////        val encrypted = passKeyEncDec.encrypt(secretKeystore, public!!)
-//        val encrypted = Utilities.hexStringToByteArray("B7AC30FFDFB90D4417374FCB80DAEAAE7C49E2094B584BE00874BC7CC462D7B0")
-//        Log.d("Main activity", "public generated : " + Utilities.byteArrayToString(public!!))
-//        Log.d("Main activity","encrypted : " + Utilities.byteArrayToString(encrypted!!))
-//
-//
-//
-//        val decrypted = passKeyEncDec.decrypt(secretKeystore, encrypted)
-//
-//        Log.d("Main activity","decrypted : " + Utilities.byteArrayToString(decrypted))
     }
 
     fun discover(view: View) {

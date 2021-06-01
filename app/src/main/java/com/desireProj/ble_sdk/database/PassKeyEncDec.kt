@@ -33,7 +33,7 @@ object PassKeyEncDec {
 
     fun getPasswordString() :String {
         val encrypted = loadEncryptedPassword()
-        val decrypted = decrypt(getPrivateKey(), encrypted)
+        val decrypted = decrypt(getPrivateKey(), encrypted!!)
 
         return (Utilities.byteArrayToString(decrypted))
     }
@@ -104,8 +104,8 @@ object PassKeyEncDec {
         Utilities.storeBAInSharedPref("Password", encrypted)
     }
 
-    private fun loadEncryptedPassword() :ByteArray {
-        return (Utilities.loadBAFromSharedPref("Password")!!)
+    fun loadEncryptedPassword() :ByteArray? {
+        return (Utilities.loadBAFromSharedPref("Password"))
     }
 
 }
