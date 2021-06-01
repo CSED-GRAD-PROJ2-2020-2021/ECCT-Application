@@ -3,10 +3,16 @@ package com.desireProj.ble_sdk.model
 import android.content.Context
 import java.lang.StringBuilder
 import java.security.MessageDigest
+import android.R.id.edit
+import android.content.SharedPreferences
+
+
 
 class Utilities {
 
     companion object {
+        var context: Context? = null
+
         // return hash value string for the given byte array
         fun getHash(bytes: ByteArray) :String {
             val md = MessageDigest.getInstance("SHA-256")
@@ -31,6 +37,21 @@ class Utilities {
                 .toByteArray()
         }
 
-        var context: Context? = null
+        fun storeBAInSharedPref(str: String, bytes: ByteArray) {
+            val settings = context!!.getSharedPreferences("prefs", 0)
+            val editor = settings.edit()
+            editor.putString(str, byteArrayToString(bytes))
+        }
+
+        fun loadBAFromSharedPref(str: String) :ByteArray? {
+            val settings = context!!.getSharedPreferences("prefs", 0)
+            val stringArray = settings.getString(str, null)
+
+            if (stringArray != null) {
+                return (hexStringToByteArray(stringArray)!!)
+            }
+            return (null)
+        }
+
     }
 }

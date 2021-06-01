@@ -17,16 +17,14 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.desireProj.ble_sdk.ble.BleAdvertiser
 import com.desireProj.ble_sdk.ble.BleScanner
-import com.desireProj.ble_sdk.model.CollectedEbid
+import com.desireProj.ble_sdk.database.PassKeyEncDec
 
-import com.desireProj.ble_sdk.model.StoredPET
-import com.desireProj.ble_sdk.model.StoredPETsModel
-import com.desireProj.ble_sdk.model.UploadedPetsModel
 import com.desireProj.ble_sdk.network.RestApiService
 import java.lang.StringBuilder
 import com.desireProj.ble_sdk.diffieHellman.Convertor
 import com.desireProj.ble_sdk.diffieHellman.KeyGenerator
 import com.desireProj.ble_sdk.diffieHellman.Secret
+import com.desireProj.ble_sdk.model.*
 import com.desireProj.ble_sdk.tools.*
 import java.security.KeyPair
 import java.util.*
@@ -54,61 +52,80 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+/*
+//        mText = findViewById(R.id.text_tv)
+//        ebitText = findViewById(R.id.ebid_tv)
+//        mDiscoverButton = findViewById(R.id.discover_btn)
+//        mAdvertiseButton = findViewById(R.id.advertise_btn)
+//        startButton = findViewById(R.id.start_btn)
+//        stopButton = findViewById(R.id.stop_btn)
+//        startButton.setOnClickListener(object : View.OnClickListener{
+//            override fun onClick(v: View?) {
+//                actionOnService(Actions.START)
+//                setAlarm(v?.context)
+//            }})
+//        stopButton.setOnClickListener(object : View.OnClickListener{
+//            override fun onClick(v: View?) {
+//                actionOnService(Actions.STOP)
+//                cancelAlarm()
+//            }})
+//
+//
+//        val permissionCheck =
+//            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+//        val locationPermission =
+//            if (Build.VERSION.SDK_INT >= 29) Manifest.permission.ACCESS_FINE_LOCATION else Manifest.permission.ACCESS_COARSE_LOCATION
+//        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+//            if (ActivityCompat.shouldShowRequestPermissionRationale(
+//                    this,
+//                    Manifest.permission.ACCESS_FINE_LOCATION
+//                )
+//            ) {
+//                Toast.makeText(
+//                    this,
+//                    "The permission to get BLE location data is required",
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//            } else {
+//                Toast.makeText(this, "t3ala", Toast.LENGTH_SHORT).show()
+//                requestPermissions(arrayOf(locationPermission), 1)
+//            }
+//        } else {
+//            Toast.makeText(this, "Location permissions already granted", Toast.LENGTH_SHORT).show()
+//        }
+//
+//
+//        collectedEbid = CollectedEbid()
+//
+//
+//        bleAdvertiser = BleAdvertiser()
+//        bleScanner = BleScanner(collectedEbid!!)
+//
+//
+//        //genarate keys
+//        var keyPair: KeyPair = keyGenerator.generateKeyPair()
+//        //private and  public keys
+//        privateKeyByteArray = convertor.savePrivateKey(keyPair.private)
+//        publicKeyByteArray = convertor.savePublicKey(keyPair.public)
+        */
 
-        mText = findViewById(R.id.text_tv)
-        ebitText = findViewById(R.id.ebid_tv)
-        mDiscoverButton = findViewById(R.id.discover_btn)
-        mAdvertiseButton = findViewById(R.id.advertise_btn)
-        startButton = findViewById(R.id.start_btn)
-        stopButton = findViewById(R.id.stop_btn)
-        startButton.setOnClickListener(object : View.OnClickListener{
-            override fun onClick(v: View?) {
-                actionOnService(Actions.START)
-                setAlarm(v?.context)
-            }})
-        stopButton.setOnClickListener(object : View.OnClickListener{
-            override fun onClick(v: View?) {
-                actionOnService(Actions.STOP)
-                cancelAlarm()
-            }})
+        val passKeyEncDec: PassKeyEncDec = PassKeyEncDec
+
+        val public = Utilities.hexStringToByteArray("B22A35E0B80508A57C8A2D7C2E3DB715")
+
+//        val secretKey = passKeyEncDec.generatePrivateKey()
+        val secretKeystore= passKeyEncDec.getPrivateKey()
+
+//        val encrypted = passKeyEncDec.encrypt(secretKeystore, public!!)
+        val encrypted = Utilities.hexStringToByteArray("432B1BAEB199305E7FBA82C6582F2F24C84B8784231DDB9D9E1076C50CB9545F")
+        println("public generated : " + Utilities.byteArrayToString(public!!))
+        println("encrypted : " + Utilities.byteArrayToString(encrypted!!))
 
 
-        val permissionCheck =
-            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-        val locationPermission =
-            if (Build.VERSION.SDK_INT >= 29) Manifest.permission.ACCESS_FINE_LOCATION else Manifest.permission.ACCESS_COARSE_LOCATION
-        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    this,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                )
-            ) {
-                Toast.makeText(
-                    this,
-                    "The permission to get BLE location data is required",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                Toast.makeText(this, "t3ala", Toast.LENGTH_SHORT).show()
-                requestPermissions(arrayOf(locationPermission), 1)
-            }
-        } else {
-            Toast.makeText(this, "Location permissions already granted", Toast.LENGTH_SHORT).show()
-        }
 
+        val decrypted = passKeyEncDec.decrypt(secretKeystore, encrypted)
 
-        collectedEbid = CollectedEbid()
-
-
-        bleAdvertiser = BleAdvertiser()
-        bleScanner = BleScanner(collectedEbid!!)
-
-
-        //genarate keys
-        var keyPair: KeyPair = keyGenerator.generateKeyPair()
-        //private and  public keys
-        privateKeyByteArray = convertor.savePrivateKey(keyPair.private)
-        publicKeyByteArray = convertor.savePublicKey(keyPair.public)
+        println("decrypted : " + Utilities.byteArrayToString(decrypted))
     }
 
     fun discover(view: View) {
@@ -127,26 +144,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun updateMapStatus(view: View) {
-        val map = CollectedEbid.receivedEbidMap
-        val sb = StringBuilder("received: ")
-        if (map != null) {
-            for ((k, v) in map) {
-                println("$k = $v")
-                if (v.ebidReady) {
-                    var publicSent: ByteArray? = v.ebid
-                    val secret: Secret =
-                        Secret(publicSent, privateKeyByteArray)
-                    val secretBytes: ByteArray = secret.doECDH()
-                    mText?.setText("secret: " + getEbidString(secretBytes)+"\n")
-
-                    sb.append(v.getEbidString())
-                    sb.append('\n')
-                    sb.append('\n')
-                }
-            }
-        }
-        sb.append("end line bla bla")
-        ebitText?.setText(sb.toString())
+//        val map = CollectedEbid.receivedEbidMap
+//        val sb = StringBuilder("received: ")
+//        if (map != null) {
+//            for ((k, v) in map) {
+//                println("$k = $v")
+//                if (v.ebidReady) {
+//                    var publicSent: ByteArray? = v.ebid
+//                    val secret: Secret =
+//                        Secret(publicSent, privateKeyByteArray)
+//                    val secretBytes: ByteArray = secret.doECDH()
+//                    mText?.setText("secret: " + getEbidString(secretBytes)+"\n")
+//
+//                    sb.append(v.getEbidString())
+//                    sb.append('\n')
+//                    sb.append('\n')
+//                }
+//            }
+//        }
+//        sb.append("end line bla bla")
+//        ebitText?.setText(sb.toString())
     }
 
     fun getEbidString(ebid: ByteArray):String {
