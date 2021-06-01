@@ -106,7 +106,6 @@ class MainActivity : AppCompatActivity() {
 
         Utilities.context = this
         val database: DataBaseHandler = DataBaseHandler
-        database.initiate()
 
 //        database.insertRtlItem(RTLItem("532FACBE8BEC1186276ABA76FC0A9DA9"))
 //        database.insertRtlItem(RTLItem("532FACBE8BEC2257276ABA76FC0A9DF9"))

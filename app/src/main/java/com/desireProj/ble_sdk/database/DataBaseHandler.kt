@@ -1,7 +1,6 @@
 package com.desireProj.ble_sdk.database
 import android.content.ContentValues
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import com.desireProj.ble_sdk.model.Utilities
 import net.sqlcipher.database.SQLiteDatabase
@@ -27,17 +26,22 @@ private const val DELETE_TABLE_ETL = "DROP TABLE if exists $TABLE_ETL;"
 
 // TODO pass context to Utilities class
 
+@RequiresApi(Build.VERSION_CODES.M)
 object DataBaseHandler:
     SQLiteOpenHelper(Utilities.context,DATABASE_NAME,null,DATABASE_VERSION) {
 
-    private var passKey: PassKeyEncDec? = PassKeyEncDec
+    private var passKey: PassKeyEncDec? = null
+
+    init {
+        passKey = PassKeyEncDec
+        initiate()
+    }
 
     /*
         used to create the database and set its password, as onCreate is not invoked
         until the first read or write operation
      */
-    @RequiresApi(Build.VERSION_CODES.M)
-    fun initiate() {
+    private fun initiate() {
         if (passKey!!.loadEncryptedPassword() == null) {
             SQLiteDatabase.loadLibs(Utilities.context)
             passKey!!.initiate()
