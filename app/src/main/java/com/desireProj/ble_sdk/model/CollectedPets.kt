@@ -1,6 +1,11 @@
 package com.desireProj.ble_sdk.model
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
+import com.desireProj.ble_sdk.database.DataBaseHandler
+import com.desireProj.ble_sdk.database.ETLItem
+import com.desireProj.ble_sdk.database.RTLItem
 import com.desireProj.ble_sdk.pet.Pet
 import com.desireProj.ble_sdk.tools.Engine
 
@@ -49,7 +54,38 @@ class CollectedPets(engine: Engine) {
         this.receivedPetMap.clear()
     }
 
-    fun sendPetsToDatabase() {
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun sendPetsToDatabase(db: DataBaseHandler) {
+        for ((key, pet) in this.receivedPetMap) {
+            if (pet.greaterSecret) {
+                addToRTL(pet, db)
+            } else {
+                addToETL(pet, db)
+            }
+        }
 
+        clearMap()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun addToRTL(pet: Pet, db: DataBaseHandler) {
+        var rtl: RTLItem? = null
+        if (pet.greaterSecret) {
+            rtl = RTLItem(pet.getHash1())
+        } else {
+            rtl = RTLItem(pet.getHash2())
+        }
+        db.insertRtlItem(rtl)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun addToETL(pet: Pet, db: DataBaseHandler) {
+        var etl: ETLItem? = null
+        if (pet.greaterSecret) {    //
+            etl = ETLItem(pet.getHash1(), "", pet.duration, pet.getRssi())
+        } else {
+            etl = ETLItem(pet.getHash2(), "", pet.duration, pet.getRssi())
+        }
+        db.insertEtlItem(etl)
     }
 }

@@ -2,6 +2,7 @@ package com.desireProj.ble_sdk
 import android.content.Context
 import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.desireProj.ble_sdk.ble.BleAdvertiser
 import com.desireProj.ble_sdk.ble.BleScanner
@@ -47,54 +49,47 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-/*
-//        mText = findViewById(R.id.text_tv)
-//        ebitText = findViewById(R.id.ebid_tv)
-//        mDiscoverButton = findViewById(R.id.discover_btn)
-//        mAdvertiseButton = findViewById(R.id.advertise_btn)
-//        startButton = findViewById(R.id.start_btn)
-//        stopButton = findViewById(R.id.stop_btn)
-//        startButton.setOnClickListener(object : View.OnClickListener{
-//            override fun onClick(v: View?) {
-//                actionOnService(Actions.START)
-//                setAlarm(v?.context)
-//            }})
-//        stopButton.setOnClickListener(object : View.OnClickListener{
-//            override fun onClick(v: View?) {
-//                actionOnService(Actions.STOP)
-//                cancelAlarm()
-//            }})
-//
-//
-//        val permissionCheck =
-//            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-//        val locationPermission =
-//            if (Build.VERSION.SDK_INT >= 29) Manifest.permission.ACCESS_FINE_LOCATION else Manifest.permission.ACCESS_COARSE_LOCATION
-//        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-//            if (ActivityCompat.shouldShowRequestPermissionRationale(
-//                    this,
-//                    Manifest.permission.ACCESS_FINE_LOCATION
-//                )
-//            ) {
-//                Toast.makeText(
-//                    this,
-//                    "The permission to get BLE location data is required",
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//            } else {
-//                Toast.makeText(this, "t3ala", Toast.LENGTH_SHORT).show()
-//                requestPermissions(arrayOf(locationPermission), 1)
-//            }
-//        } else {
-//            Toast.makeText(this, "Location permissions already granted", Toast.LENGTH_SHORT).show()
-//        }
-//
-//
-//        collectedEbid = CollectedEbid()
-//
-//
-//        bleAdvertiser = BleAdvertiser()
-//        bleScanner = BleScanner(collectedEbid!!)
+
+        mText = findViewById(R.id.text_tv)
+        ebitText = findViewById(R.id.ebid_tv)
+        mDiscoverButton = findViewById(R.id.discover_btn)
+        mAdvertiseButton = findViewById(R.id.advertise_btn)
+        startButton = findViewById(R.id.start_btn)
+        stopButton = findViewById(R.id.stop_btn)
+        startButton.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(v: View?) {
+                actionOnService(Actions.START)
+                setAlarm(v?.context)
+            }})
+        stopButton.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(v: View?) {
+                actionOnService(Actions.STOP)
+                cancelAlarm()
+            }})
+
+
+        val permissionCheck =
+            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        val locationPermission =
+            if (+Build.VERSION.SDK_INT >= 29) Manifest.permission.ACCESS_FINE_LOCATION else Manifest.permission.ACCESS_COARSE_LOCATION
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            ) {
+                Toast.makeText(
+                    this,
+                    "The permission to get BLE location data is required",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                Toast.makeText(this, "t3ala", Toast.LENGTH_SHORT).show()
+                requestPermissions(arrayOf(locationPermission), 1)
+            }
+        } else {
+            Toast.makeText(this, "Location permissions already granted", Toast.LENGTH_SHORT).show()
+        }
 //
 //
 //        //genarate keys
@@ -102,20 +97,19 @@ class MainActivity : AppCompatActivity() {
 //        //private and  public keys
 //        privateKeyByteArray = convertor.savePrivateKey(keyPair.private)
 //        publicKeyByteArray = convertor.savePublicKey(keyPair.public)
-        */
 
         Utilities.context = this
-        val database: DataBaseHandler = DataBaseHandler
+//        val database: DataBaseHandler = DataBaseHandler
 
 //        database.insertRtlItem(RTLItem("532FACBE8BEC1186276ABA76FC0A9DA9"))
 //        database.insertRtlItem(RTLItem("532FACBE8BEC2257276ABA76FC0A9DF9"))
 //        database.insertRtlItem(RTLItem("532FACBE8BEC3386276ABA76FC0A9DB9"))
 //        database.insertRtlItem(RTLItem("532FACBE8BEC4486276ABA76FC0A9DC9"))
 
-        val list = database.getRtlItems()
-        for (rtl in list) {
-            Log.d("Main Activity", "rtl item : " + rtl.pet)
-        }
+//        val list = database.getRtlItems()
+//        for (rtl in list) {
+//            Log.d("Main Activity", "rtl item : " + rtl.pet)
+//        }
 
         engine = Engine()
         engine!!.generateNewKey()
