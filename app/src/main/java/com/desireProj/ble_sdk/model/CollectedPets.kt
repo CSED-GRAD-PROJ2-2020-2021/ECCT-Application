@@ -1,5 +1,6 @@
 package com.desireProj.ble_sdk.model
 
+import android.util.Log
 import com.desireProj.ble_sdk.pet.Pet
 import com.desireProj.ble_sdk.tools.Engine
 
@@ -11,7 +12,8 @@ class CollectedPets(engine: Engine) {
         this.engine = engine
     }
 
-    private var receivedPetMap: MutableMap<String, Pet> = mutableMapOf()
+    // TODO to be private
+    var receivedPetMap: MutableMap<String, Pet> = mutableMapOf()
 
     fun receivedPet(received: EbidReceived) {
         if (!received.ebidReady) return
@@ -23,6 +25,8 @@ class CollectedPets(engine: Engine) {
             byteArrayToString(engine.getPrivateKey()!!) > Utilities.
             byteArrayToString(received.ebid)
 
+        Log.e("CollectedPets: ", "received pet: $petVal")
+
         if (receivedPetMap.containsKey(petVal)) {   // update existing pet
             updateExistingPet(receivedPetMap.get(petVal)!!, received)
         } else {    // create new pet
@@ -31,7 +35,7 @@ class CollectedPets(engine: Engine) {
 
             receivedPetMap.put(petVal, pet)
         }
-
+        this.engine.addToLogger(petVal)
     }
 
     private fun updateExistingPet(pet: Pet, received: EbidReceived) {

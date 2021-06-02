@@ -2,7 +2,6 @@ package com.desireProj.ble_sdk.tools
 
 import com.desireProj.ble_sdk.ble.BleAdvertiser
 import com.desireProj.ble_sdk.ble.BleScanner
-import com.desireProj.ble_sdk.database.DataBaseHandler
 import com.desireProj.ble_sdk.diffieHellman.KeyExchanger
 import com.desireProj.ble_sdk.model.CollectedEbid
 import com.desireProj.ble_sdk.model.CollectedPets
@@ -14,7 +13,6 @@ class Engine {
     private lateinit var keyExchanger: KeyExchanger
     private lateinit var collectedEbid: CollectedEbid
     private lateinit var collectedPets: CollectedPets
-    private lateinit var databaseHandler: DataBaseHandler
 
     init {
         collectedEbid = CollectedEbid(this)
@@ -23,8 +21,6 @@ class Engine {
 
         bleScanner = BleScanner(this)
         bleAdvertiser = BleAdvertiser()
-
-        databaseHandler = DataBaseHandler
     }
     fun generateNewKey(){
         keyExchanger.generateNewKeys()
@@ -54,10 +50,4 @@ class Engine {
     fun generatePet(ebid: EbidReceived) {
         collectedPets.receivedPet(ebid)
     }
-
-    fun clearEbidMap() {
-        collectedEbid.clearMap()
-    }
-
-
 }
