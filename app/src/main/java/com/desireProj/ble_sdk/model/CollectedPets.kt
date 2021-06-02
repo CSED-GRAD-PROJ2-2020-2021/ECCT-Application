@@ -41,5 +41,11 @@ class CollectedPets(engine: Engine) {
         pet.addRssi(received.rssi.getRssi())
     }
 
+    private fun clearMap() {
+        this.receivedPetMap.clear()
+    }
 
+    fun sendPetsToDatabase() {
+
+    }
 }
