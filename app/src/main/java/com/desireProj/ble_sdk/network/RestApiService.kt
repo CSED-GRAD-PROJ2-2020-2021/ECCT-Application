@@ -1,5 +1,6 @@
 package com.desireProj.ble_sdk.network
 
+import android.content.Context
 import com.desireProj.ble_sdk.model.StatusResponse
 import com.desireProj.ble_sdk.model.StoredPET
 import com.desireProj.ble_sdk.model.StoredPETsModel
@@ -9,9 +10,16 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class RestApiService {
+    constructor(context: Context){
+        this.context = context
+    }
+    private lateinit var context: Context
+    lateinit var apiClient: ApiClient
+    init {
+        apiClient = ApiClient()
+    }
     fun queryPets(pets: StoredPETsModel, onResult: (StatusResponse?) -> Unit){
-        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
-        retrofit.queryPets(pets).enqueue(
+        apiClient.getApiService(context).queryPets(pets).enqueue(
             object : Callback<StatusResponse>{
                 override fun onFailure(call: Call<StatusResponse>, t: Throwable) {
                     onResult(null)
@@ -24,9 +32,8 @@ class RestApiService {
             }
         )
     }
-    fun uploadPets(pets: UploadedPetsModel, onResult: (StatusResponse?) -> Unit){
-        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
-        retrofit.uploadPets(pets).enqueue(
+    fun uploadPets(pets: UploadedPetsModel, onResult: (StatusResponse?) -> Unit ){
+        apiClient.getApiService(context).uploadPets(pets).enqueue(
             object : Callback<StatusResponse>{
                 override fun onFailure(call: Call<StatusResponse>, t: Throwable) {
                     onResult(null)
