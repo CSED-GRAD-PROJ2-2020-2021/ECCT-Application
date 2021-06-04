@@ -20,7 +20,8 @@ private const val COL_DAY = "day"
 private const val COL_TIME = "time"
 private const val COL_RSSI = "rssi"
 
-private const val CREATE_TABLE_RTL = "CREATE TABLE if not exists $TABLE_RTL ($COL_PET VARCHAR(64) PRIMARY KEY);"
+private const val CREATE_TABLE_RTL = "CREATE TABLE if not exists $TABLE_RTL ($COL_PET VARCHAR(64) PRIMARY KEY, " +
+        "$COL_DAY DATE);"
 // INTEGER in sqlite save values of 8 bytes, same as Long in Kotlin/Java
 private const val CREATE_TABLE_ETL = "CREATE TABLE if not exists $TABLE_ETL ($COL_PET VARCHAR(64) PRIMARY KEY, " +
         "$COL_DAY DATE, $COL_TIME INTEGER, $COL_RSSI INTEGER);"
@@ -76,6 +77,7 @@ object DataBaseHandler:
 
         val values = ContentValues()
         values.put(COL_PET, rtl.pet)
+        values.put(COL_DAY, rtl.day)
 
         // insert row
         db.insert(TABLE_RTL, null, values)
@@ -97,8 +99,9 @@ object DataBaseHandler:
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                val pet = cursor.getString(cursor.getColumnIndex(COL_PET))
-                var rtl = RTLItem(pet)
+                val pet: String = cursor.getString(cursor.getColumnIndex(COL_PET))
+                val day: String = cursor.getString(cursor.getColumnIndex(COL_PET))
+                val rtl = RTLItem(pet, day)
                 // adding to rtl list
                 rtlList.add(rtl)
             } while (cursor.moveToNext())
@@ -186,21 +189,28 @@ object DataBaseHandler:
         db.close()
     }
 
-    fun deleteExpiredEtlTable() {
+    /*
+        delete pets with date before 14 days from the given table
+     */
+    fun deleteExpiredPets(table: String) {
         SQLiteDatabase.loadLibs(Utilities.context)
-        // TODO add day threshold to delete before it
+
+        val threshold: String = getExpirationDate()
 
         val db = this.getWritableDatabase(passKey!!.getPasswordString())
         db.delete(
-            TABLE_ETL, COL_DAY + " = ?",
-            arrayOf("")
+            table, "$COL_DAY < ?",
+            arrayOf(threshold)
         )
 
         db.close()
     }
 
+    /*
+        return expiration date of the pets
+     */
     private fun getExpirationDate() :String {
-        val sdf = SimpleDateFormat("MM/dd/yyyy")
+        val sdf = SimpleDateFormat("yyyy/MM/dd")
         val cal = Calendar.getInstance()
         cal.add(Calendar.DATE, -14)
         val date = sdf.format(cal.time)
@@ -208,12 +218,8 @@ object DataBaseHandler:
         return (date)
     }
 
-    fun checkIfExpired(etl: ETLItem) {
-
-    }
-
     fun updatePassword() {
-
+        // TODO check if needed
     }
 
     fun clearDatabase() {
