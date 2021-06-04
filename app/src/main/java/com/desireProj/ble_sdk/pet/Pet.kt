@@ -55,7 +55,7 @@ class Pet {
     }
 
     private fun getCurrentDate() :String {
-        val sdf = SimpleDateFormat("MM/dd/yyyy")
+        val sdf = SimpleDateFormat("yyyy/MM/dd")
         val date: String = sdf.format(Date())
 
         return (date)

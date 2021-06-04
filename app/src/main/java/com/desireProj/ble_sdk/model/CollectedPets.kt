@@ -35,7 +35,7 @@ class CollectedPets(engine: Engine) {
         if (receivedPetMap.containsKey(petVal)) {   // update existing pet
             updateExistingPet(receivedPetMap.get(petVal)!!, received)
         } else {    // create new pet
-            var pet: Pet = Pet(petVal, secret, received.rssi, received.firstReceived,
+            val pet = Pet(petVal, secret, received.rssi, received.firstReceived,
                 received.lastReceived, received.duration, greaterSecret)
 
             receivedPetMap.put(petVal, pet)
@@ -71,9 +71,9 @@ class CollectedPets(engine: Engine) {
     private fun addToRTL(pet: Pet, db: DataBaseHandler) {
         val rtl: RTLItem?
         if (pet.greaterSecret) {
-            rtl = RTLItem(pet.getHash1())
+            rtl = RTLItem(pet.getHash1(), pet.date)
         } else {
-            rtl = RTLItem(pet.getHash2())
+            rtl = RTLItem(pet.getHash2(), pet.date)
         }
         db.insertRtlItem(rtl)
     }
