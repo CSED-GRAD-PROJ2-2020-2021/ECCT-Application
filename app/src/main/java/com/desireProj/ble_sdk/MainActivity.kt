@@ -1,6 +1,6 @@
 package com.desireProj.ble_sdk
-import android.content.Context
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -12,29 +12,24 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import com.desireProj.ble_sdk.ble.BleAdvertiser
-import com.desireProj.ble_sdk.ble.BleScanner
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.desireProj.ble_sdk.database.DataBaseHandler
-import com.desireProj.ble_sdk.database.PassKeyEncDec
-import com.desireProj.ble_sdk.database.RTLItem
-import com.desireProj.ble_sdk.diffieHellman.Convertor
-import com.desireProj.ble_sdk.diffieHellman.KeyGenerator
 import com.desireProj.ble_sdk.model.*
 import com.desireProj.ble_sdk.tools.*
 
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.desireProj.ble_sdk.Contracts.LoggerContract
+import com.desireProj.ble_sdk.Presenters.LoggerPresenter
+import com.desireProj.ble_sdk.database.RTLItem
 import com.desireProj.ble_sdk.network.RestApiService
 import java.lang.StringBuilder
-import com.desireProj.ble_sdk.model.*
-import com.desireProj.ble_sdk.tools.*
 import com.desireProj.demo.Adapters.LoggerAdapter
 import java.util.*
 import kotlin.collections.ArrayList
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() , LoggerContract.LoggerView{
     private var mText: TextView? = null
     private var ebitText: TextView? = null
     private var mAdvertiseButton: Button? = null
@@ -42,54 +37,56 @@ class MainActivity : AppCompatActivity() {
     private lateinit var stopButton: Button
     private var mDiscoverButton: Button? = null
     private var logger_recycle_view : RecyclerView? = null
+    private lateinit var loggerDataListModel :LoggerDataList
 
     private var engine: Engine? = null
+    private var loggerPresenter: LoggerContract.LoggerPresenter? = null
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        mText = findViewById(R.id.text_tv)
-//        ebitText = findViewById(R.id.ebid_tv)
-//        mDiscoverButton = findViewById(R.id.discover_btn)
-//        mAdvertiseButton = findViewById(R.id.advertise_btn)
-//        startButton = findViewById(R.id.start_btn)
-//        stopButton = findViewById(R.id.stop_btn)
-//        startButton.setOnClickListener(object : View.OnClickListener{
-//            override fun onClick(v: View?) {
-//                actionOnService(Actions.START)
-//                setAlarm(v?.context)
-//            }})
-//        stopButton.setOnClickListener(object : View.OnClickListener{
-//            override fun onClick(v: View?) {
-//                actionOnService(Actions.STOP)
-//                cancelAlarm()
-//            }})
-//
-//
-//        val permissionCheck =
-//            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-//        val locationPermission =
-//            if (+Build.VERSION.SDK_INT >= 29) Manifest.permission.ACCESS_FINE_LOCATION else Manifest.permission.ACCESS_COARSE_LOCATION
-//        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-//            if (ActivityCompat.shouldShowRequestPermissionRationale(
-//                    this,
-//                    Manifest.permission.ACCESS_FINE_LOCATION
-//                )
-//            ) {
-//                Toast.makeText(
-//                    this,
-//                    "The permission to get BLE location data is required",
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//            } else {
-//                Toast.makeText(this, "t3ala", Toast.LENGTH_SHORT).show()
-//                requestPermissions(arrayOf(locationPermission), 1)
-//            }
-//        } else {
-//            Toast.makeText(this, "Location permissions already granted", Toast.LENGTH_SHORT).show()
-//        }
+        mText = findViewById(R.id.text_tv)
+        ebitText = findViewById(R.id.ebid_tv)
+        mDiscoverButton = findViewById(R.id.discover_btn)
+        mAdvertiseButton = findViewById(R.id.advertise_btn)
+        startButton = findViewById(R.id.start_btn)
+        stopButton = findViewById(R.id.stop_btn)
+        startButton.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(v: View?) {
+                actionOnService(Actions.START)
+                setAlarm(v?.context)
+            }})
+        stopButton.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(v: View?) {
+                actionOnService(Actions.STOP)
+                cancelAlarm()
+            }})
+
+
+        val permissionCheck =
+            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        val locationPermission =
+            if (+Build.VERSION.SDK_INT >= 29) Manifest.permission.ACCESS_FINE_LOCATION else Manifest.permission.ACCESS_COARSE_LOCATION
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            ) {
+                Toast.makeText(
+                    this,
+                    "The permission to get BLE location data is required",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                Toast.makeText(this, "t3ala", Toast.LENGTH_SHORT).show()
+                requestPermissions(arrayOf(locationPermission), 1)
+            }
+        } else {
+            Toast.makeText(this, "Location permissions already granted", Toast.LENGTH_SHORT).show()
+        }
 //
 //
 //        //genarate keys
@@ -98,41 +95,40 @@ class MainActivity : AppCompatActivity() {
 //        privateKeyByteArray = convertor.savePrivateKey(keyPair.private)
 //        publicKeyByteArray = convertor.savePublicKey(keyPair.public)
 
-        Utilities.context = this
-        val database: DataBaseHandler = DataBaseHandler
-
-        database.insertRtlItem(RTLItem("532FACBE8BEC1186276ABA76FC0A9DA9", "2021-05-01"))
-        database.insertRtlItem(RTLItem("532FACBE8BEC2257276ABA76FC0A9DF9", "2021-05-02"))
-        database.insertRtlItem(RTLItem("532FACBE8BEC3386276ABA76FC0A9DB9", "2021-06-01"))
-        database.insertRtlItem(RTLItem("532FACBE8BEC4486276ABA76FC0A9DC9", "2021-06-01"))
-
-        var list = database.getRtlItems()
-        Log.d("Main Activity", "rtl table size: " + list.size)
-        for (rtl in list) {
-            Log.d("Main Activity", "rtl item : " + rtl.pet + " date: " + rtl.day)
-        }
-
-        database.deleteExpiredPets("RTL")
-
-        Log.d("Main Activity", "after removing expired")
-
-
-        list = database.getRtlItems()
-        Log.d("Main Activity", "rtl table size: " + list.size)
-        for (rtl in list) {
-            Log.d("Main Activity", "rtl item : " + rtl.pet + " date: " + rtl.day)
-        }
-
-//        engine = Engine()
-//        engine!!.generateNewKey()
+//        Utilities.context = this
+//        val database: DataBaseHandler = DataBaseHandler
 //
-//        engine!!.collectedPets.receivedPetMap
+//        database.insertRtlItem(RTLItem("532FACBE8BEC1186276ABA76FC0A9DA9", "2021-05-01"))
+//        database.insertRtlItem(RTLItem("532FACBE8BEC2257276ABA76FC0A9DF9", "2021-05-02"))
+//        database.insertRtlItem(RTLItem("532FACBE8BEC3386276ABA76FC0A9DB9", "2021-06-01"))
+//        database.insertRtlItem(RTLItem("532FACBE8BEC4486276ABA76FC0A9DC9", "2021-06-01"))
 //
-//        var loggerDataList = LoggerDataList(engine!!).loggerDataList
-//        logger_recycle_view = findViewById(R.id.logger_recycle_view)
-//        logger_recycle_view!!.adapter = LoggerAdapter(loggerDataList)
-//        logger_recycle_view!!.layoutManager = LinearLayoutManager(this)
-//        logger_recycle_view!!.setHasFixedSize(true)
+//        var list = database.getRtlItems()
+//        Log.d("Main Activity", "rtl table size: " + list.size)
+//        for (rtl in list) {
+//            Log.d("Main Activity", "rtl item : " + rtl.pet + " date: " + rtl.day)
+//        }
+//
+//        database.deleteExpiredPets("RTL")
+//
+//        Log.d("Main Activity", "after removing expired")
+//
+//
+//        list = database.getRtlItems()
+//        Log.d("Main Activity", "rtl table size: " + list.size)
+//        for (rtl in list) {
+//            Log.d("Main Activity", "rtl item : " + rtl.pet + " date: " + rtl.day)
+//        }
+
+        var context:Context
+        context = this
+        loggerPresenter = LoggerPresenter(context)
+        engine = Engine(loggerPresenter as LoggerPresenter)
+        engine!!.generateNewKey()
+        logger_recycle_view = findViewById(R.id.logger_recycle_view)
+        loggerDataListModel = LoggerDataList(engine!!)
+        loggerDataListModel.loggerDataList = loggerDataListModel.loggerDataList
+        logger_recycle_view!!.layoutManager = LinearLayoutManager(this)
 
 
     }
@@ -237,6 +233,13 @@ class MainActivity : AppCompatActivity() {
             log("Starting the service in < 26 Mode")
             startService(it)
         }
+    }
+
+    override fun onPetsRecieved(loggerData: LoggerData) {
+
+        loggerDataListModel?.loggerDataList?.add(loggerData)
+        logger_recycle_view!!.adapter = LoggerAdapter(loggerDataListModel.loggerDataList)
+        logger_recycle_view!!.adapter!!.notifyDataSetChanged()
     }
 
 }
