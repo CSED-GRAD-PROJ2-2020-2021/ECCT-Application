@@ -69,7 +69,7 @@ class CollectedPets(engine: Engine) {
 
     @RequiresApi(Build.VERSION_CODES.M)
     private fun addToRTL(pet: Pet, db: DataBaseHandler) {
-        var rtl: RTLItem? = null
+        val rtl: RTLItem?
         if (pet.greaterSecret) {
             rtl = RTLItem(pet.getHash1())
         } else {
@@ -80,11 +80,11 @@ class CollectedPets(engine: Engine) {
 
     @RequiresApi(Build.VERSION_CODES.M)
     private fun addToETL(pet: Pet, db: DataBaseHandler) {
-        var etl: ETLItem? = null
+        val etl: ETLItem?
         if (pet.greaterSecret) {    //
-            etl = ETLItem(pet.getHash1(), "", pet.duration, pet.getRssi())
+            etl = ETLItem(pet.getHash1(), pet.date, pet.duration, pet.getRssi())
         } else {
-            etl = ETLItem(pet.getHash2(), "", pet.duration, pet.getRssi())
+            etl = ETLItem(pet.getHash2(), pet.date, pet.duration, pet.getRssi())
         }
         db.insertEtlItem(etl)
     }

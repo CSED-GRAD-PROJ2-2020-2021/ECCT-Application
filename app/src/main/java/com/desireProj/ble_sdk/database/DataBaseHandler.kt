@@ -5,6 +5,9 @@ import androidx.annotation.RequiresApi
 import com.desireProj.ble_sdk.model.Utilities
 import net.sqlcipher.database.SQLiteDatabase
 import net.sqlcipher.database.SQLiteOpenHelper
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 private const val DATABASE_NAME = "DESIRE DATABASE"
@@ -193,8 +196,20 @@ object DataBaseHandler:
             arrayOf("")
         )
 
-
         db.close()
+    }
+
+    private fun getExpirationDate() :String {
+        val sdf = SimpleDateFormat("MM/dd/yyyy")
+        val cal = Calendar.getInstance()
+        cal.add(Calendar.DATE, -14)
+        val date = sdf.format(cal.time)
+
+        return (date)
+    }
+
+    fun checkIfExpired(etl: ETLItem) {
+
     }
 
     fun updatePassword() {
