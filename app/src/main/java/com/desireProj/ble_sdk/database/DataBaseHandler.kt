@@ -100,7 +100,7 @@ object DataBaseHandler:
         if (cursor.moveToFirst()) {
             do {
                 val pet: String = cursor.getString(cursor.getColumnIndex(COL_PET))
-                val day: String = cursor.getString(cursor.getColumnIndex(COL_DAY))
+                val day: String = cursor.getString(cursor.getColumnIndex(COL_PET))
                 val rtl = RTLItem(pet, day)
                 // adding to rtl list
                 rtlList.add(rtl)
@@ -210,7 +210,7 @@ object DataBaseHandler:
         return expiration date of the pets
      */
     private fun getExpirationDate() :String {
-        val sdf = SimpleDateFormat("yyyy-MM-dd")
+        val sdf = SimpleDateFormat("yyyy/MM/dd")
         val cal = Calendar.getInstance()
         cal.add(Calendar.DATE, -14)
         val date = sdf.format(cal.time)
