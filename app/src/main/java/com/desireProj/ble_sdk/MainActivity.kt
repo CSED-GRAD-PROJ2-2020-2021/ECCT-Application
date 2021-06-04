@@ -107,17 +107,20 @@ class MainActivity : AppCompatActivity() {
         database.insertRtlItem(RTLItem("532FACBE8BEC4486276ABA76FC0A9DC9", "2021-06-01"))
 
         var list = database.getRtlItems()
+        Log.d("Main Activity", "rtl table size: " + list.size)
         for (rtl in list) {
-            Log.d("Main Activity", "rtl item : " + rtl.pet)
+            Log.d("Main Activity", "rtl item : " + rtl.pet + " date: " + rtl.day)
         }
 
         database.deleteExpiredPets("RTL")
 
         Log.d("Main Activity", "after removing expired")
 
+
         list = database.getRtlItems()
+        Log.d("Main Activity", "rtl table size: " + list.size)
         for (rtl in list) {
-            Log.d("Main Activity", "rtl item : " + rtl.pet)
+            Log.d("Main Activity", "rtl item : " + rtl.pet + " date: " + rtl.day)
         }
 
 //        engine = Engine()
