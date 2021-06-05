@@ -27,40 +27,42 @@ class SignUpPresenter(signUpView: SignUpContract.SignUpView, context:Context) : 
 
 
 
-    override fun sendPhoneNumber(phoneNumber: PhoneNumber, onResult: (AuthenticationToken?) -> Unit) {
+    override fun sendPhoneNumber(phoneNumber: PhoneNumber, onResult: (String?) -> Unit) {
         apiClient.getApiService(context).sendPhoneNumber(phoneNumber).enqueue(
-            object : Callback<AuthenticationToken> {
-                override fun onResponse(call: Call<AuthenticationToken>, response: Response<AuthenticationToken>) {
-                    val score = response.body()
-                    Log.e("phone1", response.body()?.authenticationToken.toString())
-                    if(response.code()==200){
-                        Log.e("phone2", "sa7 el sa7")
-                        val authenticationToken = response.body()?.authenticationToken
-                        signUpView.onSuccess(authenticationToken)
+            object : Callback<String>{
+                override fun onResponse(call: Call<String>, response: Response<String>) {
+                    if(response.headers().get("Authorization")!=null){
+                        val headerString : String = response.headers().get("Authorization") as String
+                        val authenticationToken = headerString.replace("Bearer ","")
+                        sessionManager.saveAuthToken(authenticationToken)
+                        if(response.code()==200){
+                            Log.e("phone2", "sa7 el sa7")
+                            signUpView.onSuccess(authenticationToken)
 
+                        }
+                        else if (response.code()==403){
+                            Log.e("phone2", "403 error")
+                            signUpView.onFail()
+                        }
                     }
-                    else if (response.code()==403){
-                        Log.e("phone2", "403 error")
-                        signUpView.onFail()
-                    }
-
-                    onResult(score)
+                    onResult(null)
                 }
 
-                override fun onFailure(call: Call<AuthenticationToken>, t: Throwable) {
+                override fun onFailure(call: Call<String>, t: Throwable) {
                     signUpView.onFail()
                     onResult(null)
                 }
 
             }
         )
+
     }
 
     override fun restApiSendPhoneNumber(phoneNumber: PhoneNumber) {
         val apiService = RestApiService(context,this)
 
         apiService.sendPhoneNumber(phoneNumber){
-            it?.let { it1 -> sessionManager.saveAuthToken(it1.authenticationToken+"sas") }
+            it?.let { it1 -> sessionManager.saveAuthToken(it1) }
         }
     }
 

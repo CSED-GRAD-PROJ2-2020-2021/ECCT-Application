@@ -8,6 +8,8 @@ import com.desireProj.ble_sdk.model.StoredPETsModel
 import com.desireProj.ble_sdk.model.UploadedPetsModel
 import android.util.Log
 import android.widget.Toast
+import com.desireProj.ble_sdk.Contracts.PinCodeContract
+import com.desireProj.ble_sdk.Contracts.SignUpContract
 import com.desireProj.ble_sdk.model.*
 import com.desireProj.ble_sdk.tools.SessionManager
 import retrofit2.Call
@@ -15,15 +17,26 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class RestApiService {
-    constructor(context: Context){
+    constructor(context: Context):super(){
         this.context = context
-        this.sessionManager = SessionManager(context)
+
+    }
+    constructor(context: Context, signUpPresenter: SignUpContract.SignUpPresenter):super(){
+        this.signUpPresenter = signUpPresenter
+        this.context = context
+    }
+    constructor(context: Context, pinCodePresenter: PinCodeContract.PinCodePresenter):super(){
+        this.context = context
+        this.pinCodePresenter = pinCodePresenter
     }
     private lateinit var context: Context
     lateinit var apiClient: ApiClient
-    lateinit var sessionManager:SessionManager
+    private lateinit var signUpPresenter: SignUpContract.SignUpPresenter
+    private lateinit var pinCodePresenter:PinCodeContract.PinCodePresenter
+    private lateinit var sessionManager: SessionManager
     init {
         apiClient = ApiClient()
+        this.sessionManager = sessionManager
     }
     fun queryPets(pets: StoredPETsModel, onResult: (StatusResponse?) -> Unit){
         apiClient.getApiService(context).queryPets(pets).enqueue(
@@ -34,6 +47,11 @@ class RestApiService {
 
                 override fun onResponse(call: Call<StatusResponse>, response: Response<StatusResponse>) {
                     val score = response.body()
+                    if(response.headers().get("Authorization") != null){
+                        val headerString:String = response.headers().get("Authorization") as String
+                        val authenticationToken = headerString.replace("Bearer","")
+                        sessionManager.saveAuthToken(authenticationToken)
+                    }
                     onResult(score)
                 }
             }
@@ -48,60 +66,21 @@ class RestApiService {
 
                 override fun onResponse(call: Call<StatusResponse>, response: Response<StatusResponse>) {
                     val score = response.body()
+                    if(response.headers().get("Authorization") != null){
+                        val headerString:String = response.headers().get("Authorization") as String
+                        val authenticationToken = headerString.replace("Bearer","")
+                        sessionManager.saveAuthToken(authenticationToken)
+                    }
                     onResult(score)
                 }
             }
         )
     }
     fun sendPhoneNumber(phoneNumber:PhoneNumber, onResult: (String?) -> Unit){
-        apiClient.getApiService(context).sendPhoneNumber(phoneNumber).enqueue(
-            object : Callback<String>{
-                override fun onResponse(call: Call<String>, response: Response<String>) {
-                    if(response.headers().get("Authorization")!=null){
-                        val headerString : String = response.headers().get("Authorization") as String
-                        sessionManager.saveAuthToken(headerString.replace("Bearer ",""))
-                    }
-                    onResult(null)
-                }
-
-                override fun onFailure(call: Call<String>, t: Throwable) {
-                    onResult(null)
-                }
-
-            }
-        )
+        signUpPresenter.sendPhoneNumber(phoneNumber,onResult)
     }
 
     fun sendAuthenticationToken(pinCode: PinCode, onResult: (AuthenticationTokenResponse?) -> Unit) {
-        apiClient.getApiService(context).sendAuthenticationToken(pinCode).enqueue(
-            object : Callback<AuthenticationTokenResponse>{
-                override fun onResponse(call: Call<AuthenticationTokenResponse>, response: Response<AuthenticationTokenResponse>) {
-                    if(response.headers().get("Authorization")!=null){
-                        val headerString : String = response.headers().get("Authorization") as String
-                        sessionManager.saveAuthToken(headerString.replace("Bearer ",""))
-                    }
-                    if(response.code()==401){
-                        onResult(null)
-                    }
-                    else if(response.code()==201){
-                        val score = response.body()
-                        onResult(score)
-                    }
-
-
-                    Log.e("phone1", response.body()?.id.toString())
-                    Log.e("phone2", response.body()?.key.toString())
-                    Log.e("phone3", response.body()?.iv.toString())
-
-                }
-
-                override fun onFailure(call: Call<AuthenticationTokenResponse>, t: Throwable) {
-
-                    onResult(null)
-                }
-
-            }
-        )
+        pinCodePresenter.sendAuthenticationToken(pinCode,onResult)
     }
-
 }
