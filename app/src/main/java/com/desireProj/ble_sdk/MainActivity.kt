@@ -21,6 +21,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.desireProj.ble_sdk.Contracts.LoggerContract
 import com.desireProj.ble_sdk.Presenters.LoggerPresenter
+import com.desireProj.ble_sdk.database.DataBaseHandler
+import com.desireProj.ble_sdk.database.RTLItem
 import com.desireProj.ble_sdk.network.RestApiService
 import java.lang.StringBuilder
 import com.desireProj.demo.Adapters.LoggerAdapter
@@ -118,16 +120,41 @@ class MainActivity : AppCompatActivity() , LoggerContract.LoggerView{
 //            Log.d("Main Activity", "rtl item : " + rtl.pet + " date: " + rtl.day)
 //        }
 
+//        Utilities.context = this
+//        var context:Context
+//        context = this
+//        loggerPresenter = LoggerPresenter(context)
+//        engine = Engine(loggerPresenter as LoggerPresenter)
+//        engine!!.generateNewKey()
+//        logger_recycle_view = findViewById(R.id.logger_recycle_view)
+//        loggerDataListModel = LoggerDataList(engine!!)
+//        loggerDataListModel.loggerDataList = loggerDataListModel.loggerDataList
+//        logger_recycle_view!!.layoutManager = LinearLayoutManager(this)
+
         Utilities.context = this
-        var context:Context
-        context = this
-        loggerPresenter = LoggerPresenter(context)
-        engine = Engine(loggerPresenter as LoggerPresenter)
-        engine!!.generateNewKey()
-        logger_recycle_view = findViewById(R.id.logger_recycle_view)
-        loggerDataListModel = LoggerDataList(engine!!)
-        loggerDataListModel.loggerDataList = loggerDataListModel.loggerDataList
-        logger_recycle_view!!.layoutManager = LinearLayoutManager(this)
+        val database: DataBaseHandler = DataBaseHandler
+
+        database.insertRtlItem(RTLItem("532FECBE8BEC1186276ABA76FC0A9DA9", "2021-05-01"))
+        database.insertRtlItem(RTLItem("532FFCBE8BEC2257276ABA76FC0A9DF9", "2021-05-02"))
+        database.insertRtlItem(RTLItem("532FFCBE8BEC3386276ABA76FC0A9DB9", "2021-06-01"))
+        database.insertRtlItem(RTLItem("532FFCBE8BEC4486276ABA76FC0A9DC9", "2021-06-01"))
+
+        var list = database.getRtlItems()
+        Log.d("Main Activity", "rtl table size: " + list.size)
+        for (rtl in list) {
+            Log.d("Main Activity", "rtl item : " + rtl.pet + " date: " + rtl.day)
+        }
+
+        database.updatePassword()
+
+        Log.d("Main Activity", "after changing password")
+
+
+        list = database.getRtlItems()
+        Log.d("Main Activity", "rtl table size: " + list.size)
+        for (rtl in list) {
+            Log.d("Main Activity", "rtl item : " + rtl.pet + " date: " + rtl.day)
+        }
 
 
     }

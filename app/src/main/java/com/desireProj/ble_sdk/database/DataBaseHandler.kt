@@ -100,7 +100,7 @@ object DataBaseHandler:
         if (cursor.moveToFirst()) {
             do {
                 val pet: String = cursor.getString(cursor.getColumnIndex(COL_PET))
-                val day: String = cursor.getString(cursor.getColumnIndex(COL_PET))
+                val day: String = cursor.getString(cursor.getColumnIndex(COL_DAY))
                 val rtl = RTLItem(pet, day)
                 // adding to rtl list
                 rtlList.add(rtl)
@@ -206,6 +206,14 @@ object DataBaseHandler:
         db.close()
     }
 
+    fun deleteExpiredRTL() {
+        deleteExpiredPets(TABLE_RTL)
+    }
+
+    fun deleteExpiredETL() {
+        deleteExpiredPets(TABLE_ETL)
+    }
+
     /*
         return expiration date of the pets
      */
@@ -220,6 +228,13 @@ object DataBaseHandler:
 
     fun updatePassword() {
         // TODO check if needed
+        SQLiteDatabase.loadLibs(Utilities.context)
+        val db = this.getReadableDatabase(passKey!!.getPasswordString())
+
+        // create a new public, and private keys, and store the encrypted password
+        passKey!!.initiate()
+        db.changePassword(passKey!!.getPasswordString())
+        db.close()
     }
 
     fun clearDatabase() {
