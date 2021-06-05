@@ -9,7 +9,7 @@ interface SignUpContract {
         fun onFail()
     }
     interface SignUpPresenter{
-        fun sendPhoneNumber(phoneNumber: PhoneNumber, onResult: (String?) -> Unit)
+        fun sendPhoneNumber(phoneNumber: PhoneNumber, onResult: (AuthenticationToken?) -> Unit)
         fun restApiSendPhoneNumber(phoneNumber:PhoneNumber)
     }
 }

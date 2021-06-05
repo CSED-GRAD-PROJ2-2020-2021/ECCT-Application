@@ -27,10 +27,10 @@ class SignUpPresenter(signUpView: SignUpContract.SignUpView, context:Context) : 
 
 
 
-    override fun sendPhoneNumber(phoneNumber: PhoneNumber, onResult: (String?) -> Unit) {
+    override fun sendPhoneNumber(phoneNumber: PhoneNumber, onResult: (AuthenticationToken?) -> Unit) {
         apiClient.getApiService(context).sendPhoneNumber(phoneNumber).enqueue(
-            object : Callback<String>{
-                override fun onResponse(call: Call<String>, response: Response<String>) {
+            object : Callback<AuthenticationToken>{
+                override fun onResponse(call: Call<AuthenticationToken>, response: Response<AuthenticationToken>) {
                     if(response.headers().get("Authorization")!=null){
                         val headerString : String = response.headers().get("Authorization") as String
                         val authenticationToken = headerString.replace("Bearer ","")
@@ -45,10 +45,14 @@ class SignUpPresenter(signUpView: SignUpContract.SignUpView, context:Context) : 
                             signUpView.onFail()
                         }
                     }
+                    else{
+                        Log.e("phone2", "5ara 5ara")
+                    }
                     onResult(null)
                 }
 
-                override fun onFailure(call: Call<String>, t: Throwable) {
+                override fun onFailure(call: Call<AuthenticationToken>, t: Throwable) {
+                    Log.e("phone2", "5ara 5ara")
                     signUpView.onFail()
                     onResult(null)
                 }
@@ -62,7 +66,7 @@ class SignUpPresenter(signUpView: SignUpContract.SignUpView, context:Context) : 
         val apiService = RestApiService(context,this)
 
         apiService.sendPhoneNumber(phoneNumber){
-            it?.let { it1 -> sessionManager.saveAuthToken(it1) }
+            it?.let { it1 -> sessionManager.saveAuthToken(it1.message) }
         }
     }
 

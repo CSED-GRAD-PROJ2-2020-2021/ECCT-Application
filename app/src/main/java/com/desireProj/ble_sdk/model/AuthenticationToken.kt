@@ -4,6 +4,6 @@ import com.google.gson.annotations.SerializedName
 
 data class AuthenticationToken(
 
-    @SerializedName("authenticationToken")
-    var authenticationToken:String
+    @SerializedName("message")
+    var message:String
 )

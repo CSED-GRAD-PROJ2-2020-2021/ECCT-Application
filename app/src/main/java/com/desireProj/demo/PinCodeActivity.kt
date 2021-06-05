@@ -6,10 +6,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
+import com.desireProj.ble_sdk.Contracts.PinCodeContract
+import com.desireProj.ble_sdk.MainActivity
+import com.desireProj.ble_sdk.Presenters.PinCodePresenter
 import com.desireProj.ble_sdk.R
 import com.desireProj.ble_sdk.model.AuthenticationToken
 import com.desireProj.ble_sdk.model.AuthenticationTokenResponse
@@ -19,7 +23,7 @@ import com.desireProj.ble_sdk.network.RestApiService
 import com.google.android.material.textfield.TextInputEditText
 import java.lang.StringBuilder
 
-class PinCodeActivity : AppCompatActivity() {
+class PinCodeActivity : AppCompatActivity() ,PinCodeContract.PinCodeView{
     private var otp1: TextInputEditText? = null
     private var otp2: TextInputEditText? = null
     private var otp3: TextInputEditText? = null
@@ -29,6 +33,7 @@ class PinCodeActivity : AppCompatActivity() {
     private lateinit var confirmButton : Button
     private var pinCode : String? = null
     private val context : Context = this
+    private lateinit var pinCodePresenter: PinCodePresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +41,7 @@ class PinCodeActivity : AppCompatActivity() {
 
         val authenticationToken:String = intent.getStringExtra("authenticationToken").toString()
 
-
+        pinCodePresenter = PinCodePresenter(this, context)
         val pinCode = PinCode(pinCode="1234")
 
         confirmButton = findViewById(R.id.buConfirm)
@@ -91,13 +96,16 @@ class PinCodeActivity : AppCompatActivity() {
     }
 
     fun sendAuthenticationToken(pinCode: PinCode){
-        val apiService = RestApiService(context)
+       pinCodePresenter?.restApiSendAuthenticationToken(pinCode)
+    }
 
-        apiService.sendAuthenticationToken(pinCode){
-            Toast.makeText(context, it?.id, Toast.LENGTH_SHORT).show()
-            Toast.makeText(context, it?.key, Toast.LENGTH_SHORT).show()
-            Toast.makeText(context, it?.iv, Toast.LENGTH_SHORT).show()
-        }
+    override fun onSuccess() {
+        Log.e("this","PinCode start intent")
+        startActivity(Intent(this,MainActivity::class.java))
+    }
+
+    override fun onFail() {
+        Toast.makeText(this,"PinError", Toast.LENGTH_SHORT).show()
     }
 
 }

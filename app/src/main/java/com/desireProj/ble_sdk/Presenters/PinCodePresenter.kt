@@ -38,12 +38,12 @@ class PinCodePresenter : PinCodeContract.PinCodePresenter {
                     Log.e("phone2", response.body()?.key.toString())
                     Log.e("phone3", response.body()?.iv.toString())
 
-                    if (response.code() == 200){
-                        TODO()
-                        //pinCodeView.onSuccess()
-                    }else if (response.code() == 403){
-                        TODO()
-                        //pinCodeView.onFail()
+                    if (response.code() == 201){
+
+                        pinCodeView.onSuccess()
+                    }else if (response.code() == 400){
+
+                        pinCodeView.onFail()
                     }
                     onResult(score)
                 }
@@ -58,7 +58,7 @@ class PinCodePresenter : PinCodeContract.PinCodePresenter {
     }
 
     override fun restApiSendAuthenticationToken(pinCode: PinCode) {
-        val apiService = RestApiService(context)
+        val apiService = RestApiService(context,this)
 
         apiService.sendAuthenticationToken(pinCode){
 

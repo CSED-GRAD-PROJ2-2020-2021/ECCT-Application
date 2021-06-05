@@ -119,7 +119,7 @@ class MainActivity : AppCompatActivity() , LoggerContract.LoggerView{
 //        for (rtl in list) {
 //            Log.d("Main Activity", "rtl item : " + rtl.pet + " date: " + rtl.day)
 //        }
-
+        Utilities.context = this
         var context:Context
         context = this
         loggerPresenter = LoggerPresenter(context)

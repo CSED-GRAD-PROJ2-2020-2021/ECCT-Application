@@ -19,7 +19,7 @@ interface RestApi {
 
     @Headers("Content-Type: application/json")
     @POST("/registration")
-    fun sendPhoneNumber(@Body phoneNumber: PhoneNumber): Call<String>
+    fun sendPhoneNumber(@Body phoneNumber: PhoneNumber): Call<AuthenticationToken>
     @Headers("Content-Type: application/json")
     @POST("/regAndAuth")
     fun sendAuthenticationToken(@Body pinCode: PinCode): Call<AuthenticationTokenResponse>
