@@ -29,6 +29,8 @@ private const val CREATE_TABLE_ETL = "CREATE TABLE if not exists $TABLE_ETL ($CO
 private const val DELETE_TABLE_RTL = "DROP TABLE if exists $TABLE_RTL;"
 private const val DELETE_TABLE_ETL = "DROP TABLE if exists $TABLE_ETL;"
 
+private const val DAY_REMOVED_KEY = "ExpRemDay"
+
 // TODO pass context to Utilities class
 
 @RequiresApi(Build.VERSION_CODES.M)
@@ -192,7 +194,7 @@ object DataBaseHandler:
     /*
         delete pets with date before 14 days from the given table
      */
-    fun deleteExpiredPets(table: String) {
+    private fun deleteExpiredPets(table: String) {
         SQLiteDatabase.loadLibs(Utilities.context)
 
         val threshold: String = getExpirationDate()
@@ -206,11 +208,11 @@ object DataBaseHandler:
         db.close()
     }
 
-    fun deleteExpiredRTL() {
+    private fun deleteExpiredRTL() {
         deleteExpiredPets(TABLE_RTL)
     }
 
-    fun deleteExpiredETL() {
+    private fun deleteExpiredETL() {
         deleteExpiredPets(TABLE_ETL)
     }
 
@@ -226,8 +228,49 @@ object DataBaseHandler:
         return (date)
     }
 
+    /*
+        return string of last day removeExpiredPets invoked
+        or null if never invoked yet
+     */
+    private fun getLastRemovedDay(): String? {
+        return (Utilities.loadStringFromSharedPref(DAY_REMOVED_KEY))
+    }
+
+    /*
+        set last day removeExpiredPets invoked in shared preferences
+     */
+    private fun setLastRemovedDay(day: String) {
+        Utilities.storeStringInSharedPref(DAY_REMOVED_KEY, day)
+    }
+
+    /*
+
+     */
+    private fun getCurrentDateDay(): String {
+        val sdf = SimpleDateFormat("dd")
+        val cal: Calendar = Calendar.getInstance()
+        val date: String = sdf.format(cal.time)
+        return(date)
+    }
+
+    /*
+        remove expired pets from both tables if not removed in this day
+        and update last day clean date in shared preferences
+     */
+    fun removeExpiredPets() {
+        val lastCleaned: String? = getLastRemovedDay()
+        val today: String = getCurrentDateDay()
+
+        if (lastCleaned == null || lastCleaned != today) {
+            deleteExpiredRTL()
+            deleteExpiredETL()
+
+            setLastRemovedDay(today)
+        }
+
+    }
+
     fun updatePassword() {
-        // TODO check if needed
         SQLiteDatabase.loadLibs(Utilities.context)
         val db = this.getReadableDatabase(passKey!!.getPasswordString())
 

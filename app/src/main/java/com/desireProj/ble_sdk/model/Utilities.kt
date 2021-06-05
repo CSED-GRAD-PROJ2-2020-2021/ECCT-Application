@@ -37,16 +37,29 @@ class Utilities {
                 .toByteArray()
         }
 
-        fun storeBAInSharedPref(str: String, bytes: ByteArray) {
+        fun storeBAInSharedPref(key: String, bytes: ByteArray) {
             val settings = context!!.getSharedPreferences("prefs", Context.MODE_PRIVATE)
             val editor = settings.edit()
-            editor.putString(str, byteArrayToString(bytes))
+            editor.putString(key, byteArrayToString(bytes))
             editor.commit()
         }
 
-        fun loadBAFromSharedPref(str: String) :ByteArray? {
+        fun storeStringInSharedPref(key: String, input: String) {
             val settings = context!!.getSharedPreferences("prefs", Context.MODE_PRIVATE)
-            val stringArray = settings.getString(str, null)
+            val editor = settings.edit()
+            editor.putString(key, input)
+            editor.commit()
+        }
+
+        fun loadStringFromSharedPref(key: String) :String? {
+            val settings = context!!.getSharedPreferences("prefs", Context.MODE_PRIVATE)
+            val result: String? = settings.getString(key, null)
+            return (result)
+        }
+
+        fun loadBAFromSharedPref(key: String) :ByteArray? {
+            val settings = context!!.getSharedPreferences("prefs", Context.MODE_PRIVATE)
+            val stringArray = settings.getString(key, null)
 
             if (stringArray != null) {
                 return (hexStringToByteArray(stringArray)!!)
