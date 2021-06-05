@@ -3,21 +3,23 @@ package com.desireProj.ble_sdk.tools
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import com.desireProj.ble_sdk.Contracts.LoggerContract
 import com.desireProj.ble_sdk.ble.BleAdvertiser
 import com.desireProj.ble_sdk.ble.BleScanner
 import com.desireProj.ble_sdk.database.DataBaseHandler
 import com.desireProj.ble_sdk.diffieHellman.KeyExchanger
 import com.desireProj.ble_sdk.model.*
 
-class Engine {
+class Engine(loggerPresenter:LoggerContract.LoggerPresenter? = null) {
     private lateinit var bleScanner: BleScanner
     private lateinit var bleAdvertiser: BleAdvertiser
     private lateinit var keyExchanger: KeyExchanger
     private lateinit var collectedEbid: CollectedEbid
-    private lateinit var dataBaseHandler: DataBaseHandler
     private lateinit var loggerDataList: LoggerDataList
+    private lateinit var loggerPresenter: LoggerContract.LoggerPresenter
     // TODO to be private
     lateinit var collectedPets: CollectedPets
+    private lateinit var dataBaseHandler: DataBaseHandler
 
     
     init {
@@ -27,6 +29,7 @@ class Engine {
         dataBaseHandler = DataBaseHandler
 
         loggerDataList = LoggerDataList(this)
+        this.loggerPresenter = loggerPresenter!!
 
         bleScanner = BleScanner(this)
         bleAdvertiser = BleAdvertiser()
@@ -62,8 +65,7 @@ class Engine {
 
     fun addToLogger(petVal: String) {
         Log.e("Engine: addToLogger: ", "petVal = $petVal")
-        val loggerData = LoggerData(petVal)
-        loggerDataList.loggerDataList!!.add(loggerData)
+        loggerPresenter.onPetsValueRecieved(petVal)
     }
 
     fun clearEbidMap() {
