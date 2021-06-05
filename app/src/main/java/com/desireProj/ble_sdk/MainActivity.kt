@@ -1,6 +1,5 @@
 package com.desireProj.ble_sdk
 import android.content.Context
-import android.Manifest
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -10,29 +9,21 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import com.desireProj.ble_sdk.ble.BleAdvertiser
-import com.desireProj.ble_sdk.ble.BleScanner
 import com.desireProj.ble_sdk.database.DataBaseHandler
-import com.desireProj.ble_sdk.database.PassKeyEncDec
-import com.desireProj.ble_sdk.database.RTLItem
-import com.desireProj.ble_sdk.diffieHellman.Convertor
-import com.desireProj.ble_sdk.diffieHellman.KeyGenerator
 import com.desireProj.ble_sdk.model.*
 import com.desireProj.ble_sdk.tools.*
 
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.desireProj.ble_sdk.Contracts.LoggerContract
+import com.desireProj.ble_sdk.Presenters.LoggerPresenter
 import com.desireProj.ble_sdk.network.RestApiService
 import java.lang.StringBuilder
-import com.desireProj.ble_sdk.model.*
-import com.desireProj.ble_sdk.tools.*
 import com.desireProj.demo.Adapters.LoggerAdapter
 import java.util.*
 import kotlin.collections.ArrayList
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() , LoggerContract.LoggerView{
     private var mText: TextView? = null
     private var ebitText: TextView? = null
     private var mAdvertiseButton: Button? = null
@@ -40,8 +31,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var stopButton: Button
     private var mDiscoverButton: Button? = null
     private var logger_recycle_view : RecyclerView? = null
+    private lateinit var loggerDataListModel :LoggerDataList
 
     private var engine: Engine? = null
+    private var loggerPresenter: LoggerContract.LoggerPresenter? = null
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -117,16 +110,16 @@ class MainActivity : AppCompatActivity() {
             Log.d("Main Activity", "rtl item : " + rtl.pet)
         }
 
-        engine = Engine()
+        var context:Context
+        context = this
+        loggerPresenter = LoggerPresenter(context)
+        engine = Engine(loggerPresenter as LoggerPresenter)
         engine!!.generateNewKey()
-
-        engine!!.collectedPets.receivedPetMap
-
-        var loggerDataList = LoggerDataList(engine!!).loggerDataList
         logger_recycle_view = findViewById(R.id.logger_recycle_view)
-        logger_recycle_view!!.adapter = LoggerAdapter(loggerDataList)
+        loggerDataListModel = LoggerDataList(engine!!)
+        loggerDataListModel.loggerDataList = loggerDataListModel.loggerDataList
         logger_recycle_view!!.layoutManager = LinearLayoutManager(this)
-        logger_recycle_view!!.setHasFixedSize(true)
+
 
 
     }
@@ -180,7 +173,7 @@ class MainActivity : AppCompatActivity() {
     fun query(view: View) {
         val apiService = RestApiService(this)
         val list = ArrayList<StoredPET>()
-        val p =StoredPET(PETID = "253",
+       /* val p =StoredPET(PETID = "253",
             RSSI = -60,
             duration = 12.53,
             meetingDate = Date().time
@@ -189,16 +182,16 @@ class MainActivity : AppCompatActivity() {
         val pet = StoredPETsModel(  key ="2468688658",
             id = "123",
             pets = list
-        )
+        )*/
 
-        apiService.queryPets(pet) {
+       /* apiService.queryPets(pet) {
             if (it?.status != null) {
                 // it = newly added user parsed as response
                 // it?.id = newly added user ID
             } else {
                 Log.e("here","Error registering new user")
             }
-        }
+        }*/
     }
     fun upload(view: View){
         val apiService = RestApiService(this)
@@ -231,6 +224,13 @@ class MainActivity : AppCompatActivity() {
             log("Starting the service in < 26 Mode")
             startService(it)
         }
+    }
+
+    override fun onPetsRecieved(loggerData: LoggerData) {
+
+        loggerDataListModel?.loggerDataList?.add(loggerData)
+        logger_recycle_view!!.adapter = LoggerAdapter(loggerDataListModel.loggerDataList)
+        logger_recycle_view!!.adapter!!.notifyDataSetChanged()
     }
 
 }

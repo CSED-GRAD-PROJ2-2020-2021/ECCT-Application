@@ -94,7 +94,7 @@ class PinCodeActivity : AppCompatActivity() {
         val apiService = RestApiService(context)
 
         apiService.sendAuthenticationToken(pinCode){
-            Toast.makeText(context, it?.authenticationToken, Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, it?.id, Toast.LENGTH_SHORT).show()
             Toast.makeText(context, it?.key, Toast.LENGTH_SHORT).show()
             Toast.makeText(context, it?.iv, Toast.LENGTH_SHORT).show()
         }
