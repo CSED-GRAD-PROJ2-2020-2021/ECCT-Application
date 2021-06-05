@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.os.Build
 import android.os.IBinder
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import com.desireProj.ble_sdk.MainActivity
 import com.desireProj.ble_sdk.R
 import kotlinx.coroutines.*
@@ -26,6 +27,7 @@ class BleForegroundService(): Service() {
         super.onStart(intent, startId)
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         log("onStartCommand executed with startId: $startId")
         if (intent != null) {
@@ -45,16 +47,22 @@ class BleForegroundService(): Service() {
         return START_STICKY
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun startService() {
         if (isServiceStarted) return
         log("Starting the foreground service task")
         Toast.makeText(this, "Service starting its task", Toast.LENGTH_SHORT).show()
         isServiceStarted = true
         setServiceState(this, ServiceState.STARTED)
+
+        // thread to update the status per epoch
         GlobalScope.launch(Dispatchers.Default) {
             while (isServiceStarted) {
                 launch(Dispatchers.Default) {
                     engine.generateNewKey()
+                    engine.clearEbidMap()
+                    engine.sendPetsToDatabase()
+                    engine.updateDatabasePassword()
                     engine.startScanning()
                 }
                 delay(1 *20 * 1000)
@@ -62,6 +70,7 @@ class BleForegroundService(): Service() {
             }
             log("End of the loop for the service")
         }
+
         GlobalScope.launch(Dispatchers.Default) {
             while (isServiceStarted) {
                 launch(Dispatchers.Default) {
@@ -70,6 +79,14 @@ class BleForegroundService(): Service() {
                 delay(2 * 1000)
             }
             log("End of the loop for the advertising")
+        }
+
+        // delete expired pets from database
+        GlobalScope.launch(Dispatchers.IO) {
+            if (isServiceStarted) {
+                engine.removeExpiredPetsFromDatabase()
+            }
+            log("Database cleaned")
         }
 
     }

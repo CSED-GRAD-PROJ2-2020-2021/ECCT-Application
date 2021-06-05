@@ -79,4 +79,14 @@ class Engine {
     fun sendPetsToDatabase() {
         this.collectedPets.sendPetsToDatabase(dataBaseHandler)
     }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun removeExpiredPetsFromDatabase() {
+        this.dataBaseHandler.removeExpiredPets()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun updateDatabasePassword() {
+        this.dataBaseHandler.updatePassword()
+    }
 }
