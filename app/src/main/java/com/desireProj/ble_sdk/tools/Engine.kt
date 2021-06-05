@@ -10,7 +10,11 @@ import com.desireProj.ble_sdk.database.DataBaseHandler
 import com.desireProj.ble_sdk.diffieHellman.KeyExchanger
 import com.desireProj.ble_sdk.model.*
 
-class Engine(loggerPresenter:LoggerContract.LoggerPresenter? = null) {
+class Engine {
+    constructor(loggerPresenter:LoggerContract.LoggerPresenter? = null) : super() {
+        this.loggerPresenter = loggerPresenter!!
+    }
+    constructor():super(){}
     private lateinit var bleScanner: BleScanner
     private lateinit var bleAdvertiser: BleAdvertiser
     private lateinit var keyExchanger: KeyExchanger
@@ -29,7 +33,6 @@ class Engine(loggerPresenter:LoggerContract.LoggerPresenter? = null) {
         dataBaseHandler = DataBaseHandler
 
         loggerDataList = LoggerDataList(this)
-        this.loggerPresenter = loggerPresenter!!
 
         bleScanner = BleScanner(this)
         bleAdvertiser = BleAdvertiser()

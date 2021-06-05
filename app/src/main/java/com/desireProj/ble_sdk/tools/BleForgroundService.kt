@@ -7,12 +7,13 @@ import android.graphics.Color
 import android.os.Build
 import android.os.IBinder
 import android.widget.Toast
+import com.desireProj.ble_sdk.Contracts.LoggerContract
 import com.desireProj.ble_sdk.MainActivity
 import com.desireProj.ble_sdk.R
 import kotlinx.coroutines.*
 
 
-class BleForgroundService: Service() {
+class BleForgroundService(): Service() {
     private var isServiceStarted = false
     var engine: Engine
     init {
