@@ -220,7 +220,7 @@ object DataBaseHandler:
         return expiration date of the pets
      */
     private fun getExpirationDate() :String {
-        val sdf = SimpleDateFormat("yyyy/MM/dd")
+        val sdf = SimpleDateFormat("yyyy-MM-dd")
         val cal = Calendar.getInstance()
         cal.add(Calendar.DATE, -14)
         val date = sdf.format(cal.time)

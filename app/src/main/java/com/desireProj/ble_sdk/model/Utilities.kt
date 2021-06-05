@@ -5,7 +5,7 @@ import java.lang.StringBuilder
 import java.security.MessageDigest
 import android.R.id.edit
 import android.content.SharedPreferences
-
+import android.util.Log
 
 
 class Utilities {
@@ -58,6 +58,7 @@ class Utilities {
         }
 
         fun loadBAFromSharedPref(key: String) :ByteArray? {
+            Log.d("Utilities: loadBAShPr: ", "utilities context : " + context)
             val settings = context!!.getSharedPreferences("prefs", Context.MODE_PRIVATE)
             val stringArray = settings.getString(key, null)
 

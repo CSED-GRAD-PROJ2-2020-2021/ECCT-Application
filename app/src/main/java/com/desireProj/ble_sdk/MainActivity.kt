@@ -132,29 +132,29 @@ class MainActivity : AppCompatActivity() , LoggerContract.LoggerView{
 //        logger_recycle_view!!.layoutManager = LinearLayoutManager(this)
 
         Utilities.context = this
-        val database: DataBaseHandler = DataBaseHandler
-
-        database.insertRtlItem(RTLItem("532FECBE8BEC1186276ABA76FC0A9DA9", "2021-05-01"))
-        database.insertRtlItem(RTLItem("532FFCBE8BEC2257276ABA76FC0A9DF9", "2021-05-02"))
-        database.insertRtlItem(RTLItem("532FFCBE8BEC3386276ABA76FC0A9DB9", "2021-06-01"))
-        database.insertRtlItem(RTLItem("532FFCBE8BEC4486276ABA76FC0A9DC9", "2021-06-01"))
-
-        var list = database.getRtlItems()
-        Log.d("Main Activity", "rtl table size: " + list.size)
-        for (rtl in list) {
-            Log.d("Main Activity", "rtl item : " + rtl.pet + " date: " + rtl.day)
-        }
-
-        database.updatePassword()
-
-        Log.d("Main Activity", "after changing password")
-
-
-        list = database.getRtlItems()
-        Log.d("Main Activity", "rtl table size: " + list.size)
-        for (rtl in list) {
-            Log.d("Main Activity", "rtl item : " + rtl.pet + " date: " + rtl.day)
-        }
+//        val database: DataBaseHandler = DataBaseHandler
+//
+//        database.insertRtlItem(RTLItem("532FECBE8BEC1186276ABA76FC0A9DA9", "2021-05-01"))
+//        database.insertRtlItem(RTLItem("532FFCBE8BEC2257276ABA76FC0A9DF9", "2021-05-02"))
+//        database.insertRtlItem(RTLItem("532FFCBE8BEC3386276ABA76FC0A9DB9", "2021-06-01"))
+//        database.insertRtlItem(RTLItem("532FFCBE8BEC4486276ABA76FC0A9DC9", "2021-06-01"))
+//
+//        var list = database.getRtlItems()
+//        Log.d("Main Activity", "rtl table size: " + list.size)
+//        for (rtl in list) {
+//            Log.d("Main Activity", "rtl item : " + rtl.pet + " date: " + rtl.day)
+//        }
+//
+//        database.updatePassword()
+//
+//        Log.d("Main Activity", "after changing password")
+//
+//
+//        list = database.getRtlItems()
+//        Log.d("Main Activity", "rtl table size: " + list.size)
+//        for (rtl in list) {
+//            Log.d("Main Activity", "rtl item : " + rtl.pet + " date: " + rtl.day)
+//        }
 
 
     }
@@ -248,6 +248,7 @@ class MainActivity : AppCompatActivity() , LoggerContract.LoggerView{
         }
     }
     private fun actionOnService(action: Actions) {
+        Utilities.context = this
         if (getServiceState(this) == ServiceState.STOPPED && action == Actions.STOP) return
         Intent(this, BleForegroundService::class.java).also {
             it.action = action.name

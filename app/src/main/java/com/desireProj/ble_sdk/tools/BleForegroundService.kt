@@ -6,10 +6,12 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.IBinder
+import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.desireProj.ble_sdk.MainActivity
 import com.desireProj.ble_sdk.R
+import com.desireProj.ble_sdk.model.Utilities
 import kotlinx.coroutines.*
 
 
@@ -59,6 +61,7 @@ class BleForegroundService(): Service() {
         GlobalScope.launch(Dispatchers.Default) {
             while (isServiceStarted) {
                 launch(Dispatchers.Default) {
+                    Log.d("Foreground Service", "utilities context : " + Utilities.context)
                     engine.generateNewKey()
                     engine.clearEbidMap()
                     engine.sendPetsToDatabase()
@@ -84,9 +87,10 @@ class BleForegroundService(): Service() {
         // delete expired pets from database
         GlobalScope.launch(Dispatchers.IO) {
             if (isServiceStarted) {
+                Log.d("Foreground Service", "utilities context : " + Utilities.context)
                 engine.removeExpiredPetsFromDatabase()
+                log("Database cleaned")
             }
-            log("Database cleaned")
         }
 
     }
