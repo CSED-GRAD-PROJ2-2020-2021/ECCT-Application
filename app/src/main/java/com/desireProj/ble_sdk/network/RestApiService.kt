@@ -80,4 +80,11 @@ class RestApiService {
             }
         )
     }
+    fun sendPhoneNumber(phoneNumber:PhoneNumber, onResult: (String?) -> Unit){
+        signUpPresenter.sendPhoneNumber(phoneNumber,onResult)
+    }
+
+    fun sendAuthenticationToken(pinCode: PinCode, onResult: (AuthenticationTokenResponse?) -> Unit) {
+        pinCodePresenter.sendAuthenticationToken(pinCode,onResult)
+    }
 }
