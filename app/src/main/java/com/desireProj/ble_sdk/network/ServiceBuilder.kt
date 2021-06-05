@@ -18,6 +18,7 @@ object ServiceBuilder{
 
     private val client = OkHttpClient.Builder().addInterceptor(interceptor).build();
     private val retrofit = Retrofit.Builder()
+
         .baseUrl("http://10.0.3.106:3000/")
         .addConverterFactory(GsonConverterFactory.create())
         .client(client)

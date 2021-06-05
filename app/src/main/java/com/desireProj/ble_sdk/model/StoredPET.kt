@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName
 data class StoredPET(
     @SerializedName("PET")
     val PETID:String,
+    @SerializedName("uploadData")
+    val uploadData:Long,
     @SerializedName("rssi")
     val RSSI: Int,
     @SerializedName("duration")

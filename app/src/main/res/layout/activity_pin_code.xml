@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.desireProj.demo.PinCodeActivity">
+
+
+
+    <LinearLayout
+        android:id="@+id/linea1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/S48dp"
+        android:background="@drawable/round_background_primary_color"
+        android:orientation="horizontal"
+        android:padding="@dimen/S10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pin_code"
+            android:textColor="@color/black"
+            android:textSize="@dimen/S24sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/relative"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/S5dp"
+        android:layout_marginTop="@dimen/S100dp"
+        android:layout_below="@id/linea1"
+        android:layout_centerHorizontal="true">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/otp1layout"
+            style="@style/TextInputLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/S1dp"
+            android:layout_marginTop="@dimen/S10dp"
+            android:focusableInTouchMode="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/otp1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="3"
+                android:inputType="number"
+                android:maxLines="1"
+                android:maxLength="1"
+                android:textAlignment="center"
+                android:textSize="@dimen/S16sp"
+                android:textStyle="bold"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/otp2Layout"
+            style="@style/TextInputLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/S1dp"
+            android:layout_marginTop="@dimen/S10dp"
+            android:layout_toRightOf="@id/otp1layout"
+            android:focusableInTouchMode="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/otp2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="3"
+                android:inputType="number"
+                android:maxLines="1"
+                android:maxLength="1"
+                android:textAlignment="center"
+                android:textSize="@dimen/S16sp"
+                android:textStyle="bold"/>
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/otp3layout"
+            style="@style/TextInputLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/S1dp"
+            android:layout_marginTop="@dimen/S10dp"
+            android:layout_toRightOf="@id/otp2Layout"
+            android:focusableInTouchMode="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/otp3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="3"
+                android:inputType="number"
+                android:maxLines="1"
+                android:maxLength="1"
+                android:textAlignment="center"
+                android:textSize="@dimen/S16sp"
+                android:textStyle="bold"/>
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/otp4layout"
+            style="@style/TextInputLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/S1dp"
+            android:layout_marginTop="@dimen/S10dp"
+            android:layout_toRightOf="@id/otp3layout"
+            android:focusableInTouchMode="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/otp4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="3"
+                android:inputType="number"
+                android:maxLines="1"
+                android:maxLength="1"
+                android:textAlignment="center"
+                android:textSize="@dimen/S16sp"
+                android:textStyle="bold"/>
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/otp5layout"
+            style="@style/TextInputLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/S1dp"
+            android:layout_marginTop="@dimen/S10dp"
+            android:layout_toRightOf="@id/otp4layout"
+            android:focusableInTouchMode="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/otp5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="3"
+                android:inputType="number"
+                android:maxLines="1"
+                android:maxLength="1"
+                android:textAlignment="center"
+                android:textSize="@dimen/S16sp"
+                android:textStyle="bold"/>
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/otp6layout"
+            style="@style/TextInputLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/S1dp"
+            android:layout_marginTop="@dimen/S10dp"
+            android:layout_toRightOf="@id/otp5layout"
+            android:focusableInTouchMode="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/otp6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="3"
+                android:inputType="number"
+                android:maxLines="1"
+                android:maxLength="1"
+                android:textAlignment="center"
+                android:textSize="@dimen/S16sp"
+                android:textStyle="bold"/>
+        </com.google.android.material.textfield.TextInputLayout>
+    </RelativeLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buConfirm"
+        android:background="@drawable/round_background_primary_color"
+        android:text="@string/confirm"
+        android:textColor="@color/white"
+        android:textSize="@dimen/S24sp"
+        android:padding="@dimen/S20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/S30dp"/>
+</RelativeLayout>

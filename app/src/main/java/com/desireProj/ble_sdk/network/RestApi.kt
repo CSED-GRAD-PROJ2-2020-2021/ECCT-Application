@@ -1,8 +1,6 @@
 package com.desireProj.ble_sdk.network
 
-import com.desireProj.ble_sdk.model.StatusResponse
-import com.desireProj.ble_sdk.model.StoredPETsModel
-import com.desireProj.ble_sdk.model.UploadedPetsModel
+import com.desireProj.ble_sdk.model.*
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Headers
@@ -17,5 +15,13 @@ interface RestApi {
     @Headers("Content-Type: application/json")
     @POST("/test")
     fun uploadPets(@Body pets: UploadedPetsModel): Call<StatusResponse>
+
+    @Headers("Content-Type: application/json")
+    @POST("/registration")
+    fun sendPhoneNumber(@Body phoneNumber: PhoneNumber): Call<AuthenticationToken>
+
+    @Headers("Content-Type: application/json")
+    @POST("/regAndAuth")
+    fun sendAuthenticationToken(@Body pinCode: PinCode): Call<AuthenticationTokenResponse>
 
 }

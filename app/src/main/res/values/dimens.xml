@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="S24sp">34sp</dimen>
+    <dimen name="S24sp">24sp</dimen>
     <dimen name="S150dp">150dp</dimen>
     <dimen name="S20dp">20dp</dimen>
     <dimen name="S250dp">250dp</dimen>
@@ -8,4 +8,11 @@
     <dimen name="S48dp">48dp</dimen>
     <dimen name="S10dp">10dp</dimen>
     <dimen name="S30dp">30dp</dimen>
+    <dimen name="S40dp">40dp</dimen>
+    <dimen name="S5dp">5dp</dimen>
+    <dimen name="S100dp">100dp</dimen>
+    <dimen name="S1dp">1dp</dimen>
+    <dimen name="S16sp">16dp</dimen>
+    <dimen name="S24dp">24dp</dimen>
+    <dimen name="S8dp">8dp</dimen>
 </resources>

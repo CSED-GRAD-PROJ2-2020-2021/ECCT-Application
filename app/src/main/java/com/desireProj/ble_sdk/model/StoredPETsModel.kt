@@ -8,6 +8,8 @@ data class StoredPETsModel (
     val key:String,
     @SerializedName("id")
     val id:String,
+    @SerializedName("iv")
+    val iv:String,
     @Expose
     @SerializedName("pets")
     val pets: List<StoredPET>?
