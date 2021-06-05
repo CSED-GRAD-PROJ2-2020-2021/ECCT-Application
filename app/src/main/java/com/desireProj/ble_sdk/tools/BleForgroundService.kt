@@ -69,7 +69,7 @@ class BleForgroundService: Service() {
                 }
                 delay(2 * 1000)
             }
-            log("End of the loop for the advirtising")
+            log("End of the loop for the advertising")
         }
 
     }

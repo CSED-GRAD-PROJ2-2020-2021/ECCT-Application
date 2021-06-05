@@ -5,6 +5,9 @@ import androidx.annotation.RequiresApi
 import com.desireProj.ble_sdk.model.Utilities
 import net.sqlcipher.database.SQLiteDatabase
 import net.sqlcipher.database.SQLiteOpenHelper
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 private const val DATABASE_NAME = "DESIRE DATABASE"
@@ -15,11 +18,13 @@ private const val TABLE_ETL = "ETL"
 private const val COL_PET = "pet"
 private const val COL_DAY = "day"
 private const val COL_TIME = "time"
+private const val COL_RSSI = "rssi"
 
-private const val CREATE_TABLE_RTL = "CREATE TABLE if not exists $TABLE_RTL ($COL_PET VARCHAR(64) PRIMARY KEY);"
+private const val CREATE_TABLE_RTL = "CREATE TABLE if not exists $TABLE_RTL ($COL_PET VARCHAR(64) PRIMARY KEY, " +
+        "$COL_DAY DATE);"
 // INTEGER in sqlite save values of 8 bytes, same as Long in Kotlin/Java
 private const val CREATE_TABLE_ETL = "CREATE TABLE if not exists $TABLE_ETL ($COL_PET VARCHAR(64) PRIMARY KEY, " +
-        "$COL_DAY DATE, $COL_TIME INTEGER);"
+        "$COL_DAY DATE, $COL_TIME INTEGER, $COL_RSSI INTEGER);"
 
 private const val DELETE_TABLE_RTL = "DROP TABLE if exists $TABLE_RTL;"
 private const val DELETE_TABLE_ETL = "DROP TABLE if exists $TABLE_ETL;"
@@ -72,6 +77,7 @@ object DataBaseHandler:
 
         val values = ContentValues()
         values.put(COL_PET, rtl.pet)
+        values.put(COL_DAY, rtl.day)
 
         // insert row
         db.insert(TABLE_RTL, null, values)
@@ -93,8 +99,9 @@ object DataBaseHandler:
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                val pet = cursor.getString(cursor.getColumnIndex(COL_PET))
-                var rtl = RTLItem(pet)
+                val pet: String = cursor.getString(cursor.getColumnIndex(COL_PET))
+                val day: String = cursor.getString(cursor.getColumnIndex(COL_PET))
+                val rtl = RTLItem(pet, day)
                 // adding to rtl list
                 rtlList.add(rtl)
             } while (cursor.moveToNext())
@@ -131,6 +138,7 @@ object DataBaseHandler:
         values.put(COL_PET, etl.pet)
         values.put(COL_DAY, etl.day)
         values.put(COL_TIME, etl.time)
+        values.put(COL_RSSI, etl.rssi)
 
         // insert row
         db.insert(TABLE_ETL, null, values)
@@ -155,7 +163,8 @@ object DataBaseHandler:
                 val pet = cursor.getString(cursor.getColumnIndex(COL_PET))
                 val day = cursor.getString(cursor.getColumnIndex(COL_DAY))
                 val time = cursor.getLong(cursor.getColumnIndex(COL_TIME)) // TODO check if working well
-                var etl = ETLItem(pet, day, time)
+                val rssi = cursor.getLong(cursor.getColumnIndex(COL_RSSI))
+                var etl = ETLItem(pet, day, time, rssi.toInt())
                 // adding to rtl list
                 etlList.add(etl)
             } while (cursor.moveToNext())
@@ -180,23 +189,42 @@ object DataBaseHandler:
         db.close()
     }
 
-    fun deleteExpiredEtlTable() {
+    /*
+        delete pets with date before 14 days from the given table
+     */
+    fun deleteExpiredPets(table: String) {
         SQLiteDatabase.loadLibs(Utilities.context)
-        // TODO add day threshold to delete before it
+
+        val threshold: String = getExpirationDate()
 
         val db = this.getWritableDatabase(passKey!!.getPasswordString())
         db.delete(
-            TABLE_ETL, COL_DAY + " = ?",
-            arrayOf("")
+            table, "$COL_DAY < ?",
+            arrayOf(threshold)
         )
-
 
         db.close()
     }
 
-    fun updatePassword() {
+    /*
+        return expiration date of the pets
+     */
+    private fun getExpirationDate() :String {
+        val sdf = SimpleDateFormat("yyyy/MM/dd")
+        val cal = Calendar.getInstance()
+        cal.add(Calendar.DATE, -14)
+        val date = sdf.format(cal.time)
 
+        return (date)
     }
 
+    fun updatePassword() {
+        // TODO check if needed
+    }
+
+    fun clearDatabase() {
+        emptyRtlTable()
+        emptyEtlTable()
+    }
 
 }

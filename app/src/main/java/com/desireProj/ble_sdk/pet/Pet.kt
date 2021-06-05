@@ -2,6 +2,8 @@ package com.desireProj.ble_sdk.pet
 
 import com.desireProj.ble_sdk.model.RssiUtility
 import com.desireProj.ble_sdk.model.Utilities
+import java.text.SimpleDateFormat
+import java.util.*
 
 const val PET_SIZE = 32
 
@@ -10,6 +12,7 @@ class Pet {
     var petByteArray: ByteArray // g^XY
     var rssi: RssiUtility
     var duration: Long
+    var date: String
     var firstReceived: Long
     var lastReceived: Long
     var greaterSecret: Boolean  // to indicate whether g^A is greater than g^B
@@ -20,6 +23,7 @@ class Pet {
         this.petByteArray = petArr
         this.rssi = rssi
         this.duration = duration
+        this.date = getCurrentDate()
         this.firstReceived = firstRec
         this.lastReceived = lastRec
         this.greaterSecret = greaterSecret
@@ -48,6 +52,13 @@ class Pet {
 
     fun updateDuration() {
         this.duration = this.lastReceived - this.firstReceived
+    }
+
+    private fun getCurrentDate() :String {
+        val sdf = SimpleDateFormat("yyyy/MM/dd")
+        val date: String = sdf.format(Date())
+
+        return (date)
     }
     
 }

@@ -72,6 +72,10 @@ class CollectedEbid(engine: Engine) {
         }
     }
 
+    fun clearMap() {
+        this.receivedEbidMap.clear()
+    }
+
 
     // TODO need to periodically clean receivedEbidMap
 }
