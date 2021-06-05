@@ -14,7 +14,6 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.desireProj.ble_sdk.database.DataBaseHandler
 import com.desireProj.ble_sdk.model.*
 import com.desireProj.ble_sdk.tools.*
 
@@ -22,7 +21,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.desireProj.ble_sdk.Contracts.LoggerContract
 import com.desireProj.ble_sdk.Presenters.LoggerPresenter
-import com.desireProj.ble_sdk.database.RTLItem
 import com.desireProj.ble_sdk.network.RestApiService
 import java.lang.StringBuilder
 import com.desireProj.demo.Adapters.LoggerAdapter
@@ -135,7 +133,7 @@ class MainActivity : AppCompatActivity() , LoggerContract.LoggerView{
     }
 
     fun discover(view: View) {
-        engine!!.startScaning()
+        engine!!.startScanning()
     }
 
     fun advertise(view: View) {
@@ -224,7 +222,7 @@ class MainActivity : AppCompatActivity() , LoggerContract.LoggerView{
     }
     private fun actionOnService(action: Actions) {
         if (getServiceState(this) == ServiceState.STOPPED && action == Actions.STOP) return
-        Intent(this, BleForgroundService::class.java).also {
+        Intent(this, BleForegroundService::class.java).also {
             it.action = action.name
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 log("Starting the service in >=26 Mode")
