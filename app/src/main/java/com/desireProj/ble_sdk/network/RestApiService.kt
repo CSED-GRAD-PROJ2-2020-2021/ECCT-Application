@@ -17,9 +17,11 @@ import retrofit2.Response
 class RestApiService {
     constructor(context: Context){
         this.context = context
+        this.sessionManager = SessionManager(context)
     }
     private lateinit var context: Context
     lateinit var apiClient: ApiClient
+    lateinit var sessionManager:SessionManager
     init {
         apiClient = ApiClient()
     }
@@ -51,27 +53,18 @@ class RestApiService {
             }
         )
     }
-    fun sendPhoneNumber(phoneNumber:PhoneNumber, onResult: (AuthenticationToken?) -> Unit){
+    fun sendPhoneNumber(phoneNumber:PhoneNumber, onResult: (String?) -> Unit){
         apiClient.getApiService(context).sendPhoneNumber(phoneNumber).enqueue(
-            object : Callback<AuthenticationToken>{
-                override fun onResponse(call: Call<AuthenticationToken>, response: Response<AuthenticationToken>) {
-                    val score = response.body()
-                    Log.e("phone1", response.body()?.authenticationToken.toString())
-                    if(response.code()==200){
-                        Log.e("phone2", "sa7 el sa7")
-
-
+            object : Callback<String>{
+                override fun onResponse(call: Call<String>, response: Response<String>) {
+                    if(response.headers().get("Authorization")!=null){
+                        val headerString : String = response.headers().get("Authorization") as String
+                        sessionManager.saveAuthToken(headerString.replace("Bearer ",""))
                     }
-                    else if (response.code()==403){
-                        Log.e("phone2", "403 error")
-
-                    }
-
-                    onResult(score)
+                    onResult(null)
                 }
 
-                override fun onFailure(call: Call<AuthenticationToken>, t: Throwable) {
-
+                override fun onFailure(call: Call<String>, t: Throwable) {
                     onResult(null)
                 }
 
@@ -83,11 +76,23 @@ class RestApiService {
         apiClient.getApiService(context).sendAuthenticationToken(pinCode).enqueue(
             object : Callback<AuthenticationTokenResponse>{
                 override fun onResponse(call: Call<AuthenticationTokenResponse>, response: Response<AuthenticationTokenResponse>) {
-                    val score = response.body()
+                    if(response.headers().get("Authorization")!=null){
+                        val headerString : String = response.headers().get("Authorization") as String
+                        sessionManager.saveAuthToken(headerString.replace("Bearer ",""))
+                    }
+                    if(response.code()==401){
+                        onResult(null)
+                    }
+                    else if(response.code()==201){
+                        val score = response.body()
+                        onResult(score)
+                    }
+
+
                     Log.e("phone1", response.body()?.id.toString())
                     Log.e("phone2", response.body()?.key.toString())
                     Log.e("phone3", response.body()?.iv.toString())
-                    onResult(score)
+
                 }
 
                 override fun onFailure(call: Call<AuthenticationTokenResponse>, t: Throwable) {
@@ -98,4 +103,5 @@ class RestApiService {
             }
         )
     }
+
 }

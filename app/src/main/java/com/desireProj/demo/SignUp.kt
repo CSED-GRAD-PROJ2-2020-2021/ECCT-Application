@@ -44,15 +44,7 @@ class SignUp : AppCompatActivity() {
         val apiService = RestApiService(context)
 
         apiService.sendPhoneNumber(phoneNumber){
-            it?.let { it1 -> sessionManager.saveAuthToken(it1.authenticationToken+"sas") }
-            if(it?.authenticationToken != null ){
-                val intent = Intent(context, PinCodeActivity::class.java)
-                intent.putExtra("authenticationToken",it.authenticationToken)
-                intent.putExtra("pinCode", 1234)
-                startActivity(intent)
-            }else{
-            Toast.makeText(context, "error", Toast.LENGTH_SHORT).show()
-        }
+
 
         }
     }
