@@ -19,6 +19,7 @@ class Engine (loggerPresenter:LoggerContract.LoggerPresenter? = null){
     // TODO to be private
     lateinit var collectedPets: CollectedPets
 
+    
     init {
         collectedEbid = CollectedEbid(this)
         collectedPets = CollectedPets(this)
