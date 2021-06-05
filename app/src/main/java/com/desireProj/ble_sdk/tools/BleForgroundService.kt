@@ -52,9 +52,9 @@ class BleForgroundService(): Service() {
         Toast.makeText(this, "Service starting its task", Toast.LENGTH_SHORT).show()
         isServiceStarted = true
         setServiceState(this, ServiceState.STARTED)
-        GlobalScope.launch(Dispatchers.Main) {
+        GlobalScope.launch(Dispatchers.Default) {
             while (isServiceStarted) {
-                launch(Dispatchers.Main) {
+                launch(Dispatchers.Default) {
                     engine.generateNewKey()
                     engine.startScaning()
                 }
@@ -63,9 +63,9 @@ class BleForgroundService(): Service() {
             }
             log("End of the loop for the service")
         }
-        GlobalScope.launch(Dispatchers.Main) {
+        GlobalScope.launch(Dispatchers.Default) {
             while (isServiceStarted) {
-                launch(Dispatchers.Main) {
+                launch(Dispatchers.Default) {
                     engine.startAdvertising()
                 }
                 delay(2 * 1000)
