@@ -49,7 +49,7 @@ object DataBaseHandler:
         until the first read or write operation
      */
     private fun initiate() {
-        if (passKey!!.loadEncryptedPassword() == null) {
+        if (passKey!!.loadEncryptedPassword() == null) {    // to set password for first time only
             SQLiteDatabase.loadLibs(Utilities.context)
             passKey!!.initiate()
             val db = this.getReadableDatabase(passKey!!.getPasswordString())

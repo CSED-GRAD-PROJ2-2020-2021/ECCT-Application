@@ -61,14 +61,13 @@ class BleForegroundService(): Service() {
         GlobalScope.launch(Dispatchers.Default) {
             while (isServiceStarted) {
                 launch(Dispatchers.Default) {
-                    Log.d("Foreground Service", "utilities context : " + Utilities.context)
+//                    Utilities.context = MyApplication.applicationContext()
+                    Log.e("Foreground Default", "utilities context : " + Utilities.context)
                     engine.generateNewKey()
                     engine.clearEbidMap()
-                    engine.sendPetsToDatabase()
-                    engine.updateDatabasePassword()
                     engine.startScanning()
                 }
-                delay(1 *20 * 1000)
+                delay(1 *3 * 1000)
                 engine.stopScanning()
             }
             log("End of the loop for the service")
@@ -86,10 +85,18 @@ class BleForegroundService(): Service() {
 
         // delete expired pets from database
         GlobalScope.launch(Dispatchers.IO) {
-            if (isServiceStarted) {
-                Log.d("Foreground Service", "utilities context : " + Utilities.context)
+            while (isServiceStarted) {
+//                Utilities.context = MyApplication.applicationContext()
+                Log.e("Foreground IO", "utilities context : " + Utilities.context)
                 engine.removeExpiredPetsFromDatabase()
-                log("Database cleaned")
+                engine.sendPetsToDatabase()
+                engine.updateDatabasePassword()
+//                var list = engine.dataBaseHandler.getRtlItems()
+//                Log.e("Main Activity", "rtl table size: " + list.size)
+//                for (rtl in list) {
+//                    Log.e("Main Activity", "rtl item : " + rtl.pet + " date: " + rtl.day)
+//                }
+//                log("Database cleaned")
             }
         }
 
