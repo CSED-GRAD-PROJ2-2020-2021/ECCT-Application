@@ -38,10 +38,13 @@ class PinCodePresenter : PinCodeContract.PinCodePresenter {
                     Log.e("phone2", response.body()?.key.toString())
                     Log.e("phone3", response.body()?.iv.toString())
 
+                    sessionManager.saveKeyIdIv(response.body()!!.key, response.body()!!.id,
+                        response.body()!!.iv)
+
                     if (response.code() == 201){
 
                         pinCodeView.onSuccess()
-                    }else if (response.code() == 400){
+                    }else if (response.code() == 403){
 
                         pinCodeView.onFail()
                     }

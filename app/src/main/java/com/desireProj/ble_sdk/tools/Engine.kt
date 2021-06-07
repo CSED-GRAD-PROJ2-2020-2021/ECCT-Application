@@ -6,17 +6,12 @@ import androidx.annotation.RequiresApi
 import com.desireProj.ble_sdk.Contracts.LoggerContract
 import com.desireProj.ble_sdk.ble.BleAdvertiser
 import com.desireProj.ble_sdk.ble.BleScanner
-import com.desireProj.ble_sdk.database.DataBaseHandler
-import com.desireProj.ble_sdk.database.ETLItem
-import com.desireProj.ble_sdk.database.RTLItem
+import com.desireProj.ble_sdk.database.*
 import com.desireProj.ble_sdk.diffieHellman.KeyExchanger
 import com.desireProj.ble_sdk.model.*
 
-class Engine {
-    constructor(loggerPresenter:LoggerContract.LoggerPresenter? = null) : super() {
-        this.loggerPresenter = loggerPresenter!!
-    }
-    constructor():super(){}
+
+object Engine {
     private lateinit var bleScanner: BleScanner
     private lateinit var bleAdvertiser: BleAdvertiser
     private lateinit var keyExchanger: KeyExchanger
@@ -93,12 +88,27 @@ class Engine {
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    fun getRTLList(): List<RTLItem> {
-        return(this.dataBaseHandler.getRtlItems())
+    fun getRTLList(): List<UploadRTL> {
+        val rtlList:MutableList<UploadRTL> = mutableListOf()
+        for(rtlItem in this.dataBaseHandler.getEtlItems()){
+            val uploadedRTL:UploadRTL = UploadRTL(rtlItem.pet)
+            rtlList.add(uploadedRTL)
+        }
+        return rtlList
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    fun getETLList(): List<ETLItem>{
-        return(this.dataBaseHandler.getEtlItems())
+    fun getETLList(uploadDate:String): List<UploadETL> {
+        val etlList:MutableList<UploadETL> = mutableListOf()
+        for(etlItem in this.dataBaseHandler.getEtlItems()){
+            val uploadedETL:UploadETL = UploadETL(etlItem.pet,etlItem.day,etlItem.duration
+            ,etlItem.rssi,uploadDate)
+            etlList.add(uploadedETL)
+        }
+        return etlList
+    }
+
+    fun setLoggerPresenter(loggerPresenter:LoggerContract.LoggerPresenter? ){
+        this.loggerPresenter = loggerPresenter!!
     }
 }

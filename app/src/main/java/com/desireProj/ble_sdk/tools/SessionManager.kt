@@ -11,6 +11,9 @@ class SessionManager (context: Context) {
 
     companion object {
         const val USER_TOKEN = "user_token"
+        const val KEY = "key"
+        const val ID = "id"
+        const val IV = "iv"
     }
 
     /**
@@ -21,11 +24,39 @@ class SessionManager (context: Context) {
         editor.putString(USER_TOKEN, token)
         editor.apply()
     }
+    /**
+     * Function to save key , id ,iv
+     */
+    fun saveKeyIdIv(key: String?, id: String?, iv:String?) {
+        val editor = prefs.edit()
+        editor.putString(KEY,key)
+        editor.putString(ID,id)
+        editor.putString(IV,iv)
+        editor.apply()
+    }
 
     /**
      * Function to fetch auth token
      */
     fun fetchAuthToken(): String? {
         return prefs.getString(USER_TOKEN, null)
+    }
+    /**
+     * Function to fetch key
+     */
+    fun fetchKey():String?{
+        return prefs.getString(KEY,null)
+    }
+    /**
+     * Function to fetch id
+     */
+    fun fetchID():String?{
+        return prefs.getString(ID,null)
+    }
+    /**
+     * Function to fetch key
+     */
+    fun fetchIv():String?{
+        return prefs.getString(IV,null)
     }
 }

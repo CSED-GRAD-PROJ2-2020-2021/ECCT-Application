@@ -11,11 +11,11 @@ interface RestApi {
 
     @Headers("Content-Type: application/json")
     @POST("/registration")
-    fun queryPets(@Body pets: StoredPETsModel): Call<StatusResponse>
+    fun queryPets(@Body pets: QueryPetsModel): Call<StatusResponse>
 
     @Headers("Content-Type: application/json")
     @POST("/test")
-    fun uploadPets(@Body pets: UploadedPetsModel): Call<StatusResponse>
+    fun uploadPets(@Body pets: UploadPetsModel): Call<StatusResponse>
 
     @Headers("Content-Type: application/json")
     @POST("/registration")

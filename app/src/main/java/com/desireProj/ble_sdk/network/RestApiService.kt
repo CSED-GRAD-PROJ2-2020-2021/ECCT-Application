@@ -5,7 +5,6 @@ import android.content.Context
 import com.desireProj.ble_sdk.model.StatusResponse
 import com.desireProj.ble_sdk.model.StoredPET
 import com.desireProj.ble_sdk.model.StoredPETsModel
-import com.desireProj.ble_sdk.model.UploadedPetsModel
 import android.util.Log
 import android.widget.Toast
 import com.desireProj.ble_sdk.Contracts.PinCodeContract
@@ -34,6 +33,7 @@ class RestApiService {
         this.pinCodePresenter = pinCodePresenter
         this.sessionManager = SessionManager(context)
     }
+
     private lateinit var context: Context
     lateinit var apiClient: ApiClient
     private lateinit var signUpPresenter: SignUpContract.SignUpPresenter
@@ -42,7 +42,7 @@ class RestApiService {
     init {
         apiClient = ApiClient()
     }
-    fun queryPets(pets: StoredPETsModel, onResult: (StatusResponse?) -> Unit){
+    fun queryPets(pets: QueryPetsModel, onResult: (StatusResponse?) -> Unit){
         apiClient.getApiService(context).queryPets(pets).enqueue(
             object : Callback<StatusResponse>{
                 override fun onFailure(call: Call<StatusResponse>, t: Throwable) {
@@ -61,28 +61,8 @@ class RestApiService {
             }
         )
     }
-    fun uploadPets(pets: UploadedPetsModel, onResult: (StatusResponse?) -> Unit ){
-        apiClient.getApiService(context).uploadPets(pets).enqueue(
-            object : Callback<StatusResponse> {
-                override fun onFailure(call: Call<StatusResponse>, t: Throwable) {
-                    onResult(null)
-                }
+    fun uploadPets(pets: UploadPetsModel, onResult: (StatusResponse?) -> Unit ){
 
-                override fun onResponse(
-                    call: Call<StatusResponse>,
-                    response: Response<StatusResponse>
-                ) {
-                    val score = response.body()
-                    if (response.headers().get("Authorization") != null) {
-                        val headerString: String = response.headers().get("Authorization") as String
-                        val authenticationToken = headerString.replace("Bearer", "")
-                        sessionManager.saveAuthToken(authenticationToken)
-
-                        onResult(score)
-                    }
-                }
-            }
-        )
     }
     fun sendPhoneNumber(phoneNumber:PhoneNumber, onResult: (AuthenticationToken?) -> Unit){
         signUpPresenter.sendPhoneNumber(phoneNumber,onResult)

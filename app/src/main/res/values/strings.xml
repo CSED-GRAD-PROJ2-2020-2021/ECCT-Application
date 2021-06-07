@@ -4,4 +4,6 @@
     <string name="mobileHintText">01xxxxxxxxx</string>
     <string name="pin_code">Pin Code</string>
     <string name="confirm">Confirm</string>
+    <string name="query">Query</string>
+    <string name="upload">Upload</string>
 </resources>

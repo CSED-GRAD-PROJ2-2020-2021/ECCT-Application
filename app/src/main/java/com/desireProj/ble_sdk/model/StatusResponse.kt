@@ -4,6 +4,6 @@ import com.google.gson.annotations.SerializedName
 
 class StatusResponse(
     @SerializedName("status")
-    val status : String
+    val status : Int
 ) {
 }

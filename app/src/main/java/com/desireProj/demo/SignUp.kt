@@ -45,7 +45,9 @@ class SignUp : AppCompatActivity() ,SignUpContract.SignUpView{
     }
 
     fun sendPhoneNumber(phoneNumber:PhoneNumber){
-      signUpPresenter?.restApiSendPhoneNumber(phoneNumber)
+      signUpPresenter?.sendPhoneNumber(phoneNumber){
+
+      }
     }
 
     override fun onSuccess(authenticationToken: String?) {

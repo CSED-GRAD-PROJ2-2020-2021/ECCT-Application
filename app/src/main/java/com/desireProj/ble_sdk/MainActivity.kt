@@ -149,7 +149,8 @@ class MainActivity : AppCompatActivity() , LoggerContract.LoggerView{
         var context:Context
         context = this
         loggerPresenter = LoggerPresenter(context)
-        engine = Engine(loggerPresenter as LoggerPresenter)
+        engine = Engine
+        engine!!.setLoggerPresenter(loggerPresenter as LoggerPresenter)
         engine!!.generateNewKey()
         logger_recycle_view = findViewById(R.id.logger_recycle_view)
         loggerDataListModel = LoggerDataList(engine!!)
@@ -234,19 +235,19 @@ class MainActivity : AppCompatActivity() , LoggerContract.LoggerView{
         val list = ArrayList<String>()
 
         list.add("15686a")
-        val pet = UploadedPetsModel(  key ="2468688658",
+        /*val pet = UploadedPetsModel(  key ="2468688658",
             id = "123",
             pets = list
-        )
+        )*/
 
-        apiService.uploadPets(pet) {
+        /*apiService.uploadPets(pet) {
             if (it?.status != null) {
                 // it = newly added user parsed as response
                 // it?.id = newly added user ID
             } else {
                 Log.e("here","Error registering new user")
             }
-        }
+        }*/
     }
     private fun actionOnService(action: Actions) {
         if (getServiceState(this) == ServiceState.STOPPED && action == Actions.STOP) return

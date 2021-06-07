@@ -62,12 +62,6 @@ class SignUpPresenter(signUpView: SignUpContract.SignUpView, context:Context) : 
 
     }
 
-    override fun restApiSendPhoneNumber(phoneNumber: PhoneNumber) {
-        val apiService = RestApiService(context,this)
 
-        apiService.sendPhoneNumber(phoneNumber){
-            it?.let { it1 -> sessionManager.saveAuthToken(it1.message) }
-        }
-    }
 
 }

@@ -10,6 +10,6 @@ interface SignUpContract {
     }
     interface SignUpPresenter{
         fun sendPhoneNumber(phoneNumber: PhoneNumber, onResult: (AuthenticationToken?) -> Unit)
-        fun restApiSendPhoneNumber(phoneNumber:PhoneNumber)
+
     }
 }
