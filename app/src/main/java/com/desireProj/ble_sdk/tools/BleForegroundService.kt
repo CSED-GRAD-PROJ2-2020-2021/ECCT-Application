@@ -19,7 +19,7 @@ class BleForegroundService(): Service() {
     private var isServiceStarted = false
     var engine: Engine
     init {
-        engine = Engine()
+        engine = Engine
     }
     override fun onBind(intent: Intent?): IBinder? {
         return null
@@ -75,9 +75,7 @@ class BleForegroundService(): Service() {
 
         GlobalScope.launch(Dispatchers.Default) {
             while (isServiceStarted) {
-                launch(Dispatchers.Default) {
-                    engine.startAdvertising()
-                }
+                engine.startAdvertising()
                 delay(2 * 1000)
             }
             log("End of the loop for the advertising")
