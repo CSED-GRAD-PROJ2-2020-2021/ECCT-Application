@@ -1,16 +1,49 @@
 package com.desireProj.ble_sdk.network
 
+
+import android.content.Context
+import com.desireProj.ble_sdk.model.StatusResponse
+import com.desireProj.ble_sdk.model.StoredPET
+import com.desireProj.ble_sdk.model.StoredPETsModel
+import com.desireProj.ble_sdk.model.UploadedPetsModel
 import android.util.Log
 import android.widget.Toast
+import com.desireProj.ble_sdk.Contracts.PinCodeContract
+import com.desireProj.ble_sdk.Contracts.SignUpContract
+import com.desireProj.ble_sdk.Presenters.PinCodePresenter
 import com.desireProj.ble_sdk.model.*
+import com.desireProj.ble_sdk.tools.SessionManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class RestApiService {
+    constructor(context: Context):super(){
+        this.context = context
+        this.sessionManager = SessionManager(context)
+
+    }
+    constructor(context: Context, signUpPresenter: SignUpContract.SignUpPresenter):super(){
+        this.signUpPresenter = signUpPresenter
+        this.context = context
+        this.sessionManager = SessionManager(context)
+    }
+
+    constructor(context: Context, pinCodePresenter: PinCodeContract.PinCodePresenter):super(){
+        this.context = context
+        this.pinCodePresenter = pinCodePresenter
+        this.sessionManager = SessionManager(context)
+    }
+    private lateinit var context: Context
+    lateinit var apiClient: ApiClient
+    private lateinit var signUpPresenter: SignUpContract.SignUpPresenter
+    private lateinit var pinCodePresenter:PinCodeContract.PinCodePresenter
+    private lateinit var sessionManager: SessionManager
+    init {
+        apiClient = ApiClient()
+    }
     fun queryPets(pets: StoredPETsModel, onResult: (StatusResponse?) -> Unit){
-        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
-        retrofit.queryPets(pets).enqueue(
+        apiClient.getApiService(context).queryPets(pets).enqueue(
             object : Callback<StatusResponse>{
                 override fun onFailure(call: Call<StatusResponse>, t: Throwable) {
                     onResult(null)
@@ -18,65 +51,44 @@ class RestApiService {
 
                 override fun onResponse(call: Call<StatusResponse>, response: Response<StatusResponse>) {
                     val score = response.body()
+                    if(response.headers().get("Authorization") != null){
+                        val headerString:String = response.headers().get("Authorization") as String
+                        val authenticationToken = headerString.replace("Bearer","")
+                        sessionManager.saveAuthToken(authenticationToken)
+                    }
                     onResult(score)
                 }
             }
         )
     }
-    fun uploadPets(pets: UploadedPetsModel, onResult: (StatusResponse?) -> Unit){
-        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
-        retrofit.uploadPets(pets).enqueue(
-            object : Callback<StatusResponse>{
+    fun uploadPets(pets: UploadedPetsModel, onResult: (StatusResponse?) -> Unit ){
+        apiClient.getApiService(context).uploadPets(pets).enqueue(
+            object : Callback<StatusResponse> {
                 override fun onFailure(call: Call<StatusResponse>, t: Throwable) {
                     onResult(null)
                 }
 
-                override fun onResponse(call: Call<StatusResponse>, response: Response<StatusResponse>) {
+                override fun onResponse(
+                    call: Call<StatusResponse>,
+                    response: Response<StatusResponse>
+                ) {
                     val score = response.body()
-                    onResult(score)
+                    if (response.headers().get("Authorization") != null) {
+                        val headerString: String = response.headers().get("Authorization") as String
+                        val authenticationToken = headerString.replace("Bearer", "")
+                        sessionManager.saveAuthToken(authenticationToken)
+
+                        onResult(score)
+                    }
                 }
             }
         )
     }
     fun sendPhoneNumber(phoneNumber:PhoneNumber, onResult: (AuthenticationToken?) -> Unit){
-        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
-        retrofit.sendPhoneNumber(phoneNumber).enqueue(
-            object : Callback<AuthenticationToken>{
-                override fun onResponse(call: Call<AuthenticationToken>, response: Response<AuthenticationToken>) {
-                    val score = response.body()
-                    Log.e("phone1", response.body()?.authenticationToken.toString())
-                    Log.e("phone2", response.body()?.pinCode.toString())
-                    Log.e("phone3", response.body()?.error.toString())
-                    onResult(score)
-                }
-
-                override fun onFailure(call: Call<AuthenticationToken>, t: Throwable) {
-
-                    onResult(null)
-                }
-
-            }
-        )
+        signUpPresenter.sendPhoneNumber(phoneNumber,onResult)
     }
 
-    fun sendAuthenticationToken(authenticationToken: AuthenticationToken, onResult: (AuthenticationTokenResponse?) -> Unit) {
-        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
-        retrofit.sendAuthenticationToken(authenticationToken).enqueue(
-            object : Callback<AuthenticationTokenResponse>{
-                override fun onResponse(call: Call<AuthenticationTokenResponse>, response: Response<AuthenticationTokenResponse>) {
-                    val score = response.body()
-                    Log.e("phone1", response.body()?.hashedPhoneNumber.toString())
-                    Log.e("phone2", response.body()?.key.toString())
-                    Log.e("phone3", response.body()?.iv.toString())
-                    onResult(score)
-                }
-
-                override fun onFailure(call: Call<AuthenticationTokenResponse>, t: Throwable) {
-
-                    onResult(null)
-                }
-
-            }
-        )
+    fun sendAuthenticationToken(pinCode: PinCode, onResult: (AuthenticationTokenResponse?) -> Unit) {
+        pinCodePresenter.sendAuthenticationToken(pinCode,onResult)
     }
 }

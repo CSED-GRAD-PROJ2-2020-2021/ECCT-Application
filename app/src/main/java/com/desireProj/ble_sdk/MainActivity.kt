@@ -120,17 +120,6 @@ class MainActivity : AppCompatActivity() , LoggerContract.LoggerView{
 //            Log.d("Main Activity", "rtl item : " + rtl.pet + " date: " + rtl.day)
 //        }
 
-//        Utilities.context = this
-//        var context:Context
-//        context = this
-//        loggerPresenter = LoggerPresenter(context)
-//        engine = Engine(loggerPresenter as LoggerPresenter)
-//        engine!!.generateNewKey()
-//        logger_recycle_view = findViewById(R.id.logger_recycle_view)
-//        loggerDataListModel = LoggerDataList(engine!!)
-//        loggerDataListModel.loggerDataList = loggerDataListModel.loggerDataList
-//        logger_recycle_view!!.layoutManager = LinearLayoutManager(this)
-
         Utilities.context = this
 
         val database: DataBaseHandler = DataBaseHandler
@@ -156,6 +145,17 @@ class MainActivity : AppCompatActivity() , LoggerContract.LoggerView{
 //        for (rtl in list) {
 //            Log.e("Main Activity", "rtl item : " + rtl.pet + " date: " + rtl.day)
 //        }
+
+        var context:Context
+        context = this
+        loggerPresenter = LoggerPresenter(context)
+        engine = Engine(loggerPresenter as LoggerPresenter)
+        engine!!.generateNewKey()
+        logger_recycle_view = findViewById(R.id.logger_recycle_view)
+        loggerDataListModel = LoggerDataList(engine!!)
+        loggerDataListModel.loggerDataList = loggerDataListModel.loggerDataList
+        logger_recycle_view!!.layoutManager = LinearLayoutManager(this)
+
 
 
     }
@@ -207,9 +207,9 @@ class MainActivity : AppCompatActivity() , LoggerContract.LoggerView{
         return sb.toString()
     }
     fun query(view: View) {
-        val apiService = RestApiService()
+        val apiService = RestApiService(this)
         val list = ArrayList<StoredPET>()
-        val p =StoredPET(PETID = "253",
+       /* val p =StoredPET(PETID = "253",
             RSSI = -60,
             duration = 12.53,
             meetingDate = Date().time
@@ -218,19 +218,19 @@ class MainActivity : AppCompatActivity() , LoggerContract.LoggerView{
         val pet = StoredPETsModel(  key ="2468688658",
             id = "123",
             pets = list
-        )
+        )*/
 
-        apiService.queryPets(pet) {
+       /* apiService.queryPets(pet) {
             if (it?.status != null) {
                 // it = newly added user parsed as response
                 // it?.id = newly added user ID
             } else {
                 Log.e("here","Error registering new user")
             }
-        }
+        }*/
     }
     fun upload(view: View){
-        val apiService = RestApiService()
+        val apiService = RestApiService(this)
         val list = ArrayList<String>()
 
         list.add("15686a")

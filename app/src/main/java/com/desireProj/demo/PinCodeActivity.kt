@@ -6,19 +6,24 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
+import com.desireProj.ble_sdk.Contracts.PinCodeContract
+import com.desireProj.ble_sdk.MainActivity
+import com.desireProj.ble_sdk.Presenters.PinCodePresenter
 import com.desireProj.ble_sdk.R
 import com.desireProj.ble_sdk.model.AuthenticationToken
 import com.desireProj.ble_sdk.model.AuthenticationTokenResponse
 import com.desireProj.ble_sdk.model.PhoneNumber
+import com.desireProj.ble_sdk.model.PinCode
 import com.desireProj.ble_sdk.network.RestApiService
 import com.google.android.material.textfield.TextInputEditText
 import java.lang.StringBuilder
 
-class PinCodeActivity : AppCompatActivity() {
+class PinCodeActivity : AppCompatActivity() ,PinCodeContract.PinCodeView{
     private var otp1: TextInputEditText? = null
     private var otp2: TextInputEditText? = null
     private var otp3: TextInputEditText? = null
@@ -28,20 +33,21 @@ class PinCodeActivity : AppCompatActivity() {
     private lateinit var confirmButton : Button
     private var pinCode : String? = null
     private val context : Context = this
+    private lateinit var pinCodePresenter: PinCodePresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pin_code)
 
         val authenticationToken:String = intent.getStringExtra("authenticationToken").toString()
-        val pinCode:String = intent.getStringExtra("pinCode").toString()
 
-        val authenticationTokenObject = AuthenticationToken(authenticationToken = authenticationToken, pinCode = pinCode, error = "")
+        pinCodePresenter = PinCodePresenter(this, context)
+        val pinCode = PinCode(pinCode="1234")
 
         confirmButton = findViewById(R.id.buConfirm)
         confirmButton.setOnClickListener(object : View.OnClickListener{
             override fun onClick(v: View?) {
-                sendAuthenticationToken(authenticationTokenObject)
+                sendAuthenticationToken(pinCode)
             }
         })
 
@@ -89,14 +95,17 @@ class PinCodeActivity : AppCompatActivity() {
         otp1?.addTextChangedListener(textWatcher)
     }
 
-    fun sendAuthenticationToken(authenticationToken: AuthenticationToken){
-        val apiService = RestApiService()
+    fun sendAuthenticationToken(pinCode: PinCode){
+       pinCodePresenter?.restApiSendAuthenticationToken(pinCode)
+    }
 
-        apiService.sendAuthenticationToken(authenticationToken){
-            Toast.makeText(context, it?.hashedPhoneNumber, Toast.LENGTH_SHORT).show()
-            Toast.makeText(context, it?.key, Toast.LENGTH_SHORT).show()
-            Toast.makeText(context, it?.iv, Toast.LENGTH_SHORT).show()
-        }
+    override fun onSuccess() {
+        Log.e("this","PinCode start intent")
+        startActivity(Intent(this,MainActivity::class.java))
+    }
+
+    override fun onFail() {
+        Toast.makeText(this,"PinError", Toast.LENGTH_SHORT).show()
     }
 
 }
