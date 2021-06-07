@@ -85,12 +85,15 @@ class BleForegroundService(): Service() {
 
         // delete expired pets from database
         GlobalScope.launch(Dispatchers.IO) {
+            if (isServiceStarted) {
+                engine.removeExpiredPetsFromDatabase()
+            }
             while (isServiceStarted) {
 //                Utilities.context = MyApplication.applicationContext()
                 Log.e("Foreground IO", "utilities context : " + Utilities.context)
-                engine.removeExpiredPetsFromDatabase()
                 engine.sendPetsToDatabase()
                 engine.updateDatabasePassword()
+                delay(1 *2 * 1000)
 //                var list = engine.dataBaseHandler.getRtlItems()
 //                Log.e("Main Activity", "rtl table size: " + list.size)
 //                for (rtl in list) {

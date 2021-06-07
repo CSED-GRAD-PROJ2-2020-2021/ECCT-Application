@@ -7,6 +7,8 @@ import com.desireProj.ble_sdk.Contracts.LoggerContract
 import com.desireProj.ble_sdk.ble.BleAdvertiser
 import com.desireProj.ble_sdk.ble.BleScanner
 import com.desireProj.ble_sdk.database.DataBaseHandler
+import com.desireProj.ble_sdk.database.ETLItem
+import com.desireProj.ble_sdk.database.RTLItem
 import com.desireProj.ble_sdk.diffieHellman.KeyExchanger
 import com.desireProj.ble_sdk.model.*
 
@@ -88,5 +90,15 @@ class Engine {
     @RequiresApi(Build.VERSION_CODES.M)
     fun updateDatabasePassword() {
         this.dataBaseHandler.updatePassword()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun getRTLList(): List<RTLItem> {
+        return(this.dataBaseHandler.getRtlItems())
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun getETLList(): List<ETLItem>{
+        return(this.dataBaseHandler.getEtlItems())
     }
 }

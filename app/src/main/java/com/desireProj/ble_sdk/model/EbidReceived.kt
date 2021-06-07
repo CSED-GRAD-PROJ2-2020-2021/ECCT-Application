@@ -78,7 +78,7 @@ class EbidReceived {
     }
 
     // TODO update duration
-//    fun setFirstReceived(time: Long) {
-//        this.firstReceived = time
+//    fun setFirstReceived(duration: Long) {
+//        this.firstReceived = duration
 //    }
 }
