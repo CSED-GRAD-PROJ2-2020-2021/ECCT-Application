@@ -6,7 +6,7 @@ const val LSB_INDEX = 0
 const val LSB_EBID_INDEX = 6
 const val MSB_INDEX = 17
 const val MSB_EBID_INDEX = 7
-private const val MSECTOMINUTES = 1000/60
+private const val MSECTOMINUTES = 1F/(1000*60)
 
 class EbidReceived {
     var ebid: ByteArray

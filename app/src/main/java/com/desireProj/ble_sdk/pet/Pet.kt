@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 const val PET_SIZE = 32
-private const val MSECTOMINUTES = 1000/60
+private const val MSECTOMINUTES: Float = 1F/(1000*60)
 
 class Pet {
     var pet: String // H(g^XY) string, used as map key
