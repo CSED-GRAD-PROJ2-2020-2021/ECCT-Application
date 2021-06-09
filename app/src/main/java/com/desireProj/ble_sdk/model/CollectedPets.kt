@@ -57,11 +57,8 @@ class CollectedPets(engine: Engine) {
     @RequiresApi(Build.VERSION_CODES.M)
     fun sendPetsToDatabase(db: DataBaseHandler) {
         for ((key, pet) in this.receivedPetMap) {
-            if (pet.greaterSecret) {
-                addToRTL(pet, db)
-            } else {
-                addToETL(pet, db)
-            }
+            addToRTL(pet, db)
+            addToETL(pet, db)
         }
 
         clearMap()
