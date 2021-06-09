@@ -63,10 +63,9 @@ class BleForegroundService(): Service() {
                 launch(Dispatchers.Default) {
                     Log.e("Foreground Default", "utilities context : " + Utilities.context)
                     engine.generateNewKey()
-//                    engine.clearEbidMap()
+                    engine.clearEbidMap()
                 }
                 delay(1 *16 * 1000)
-                engine.stopScanning()
             }
             log("End of the loop for the service")
         }
