@@ -6,12 +6,13 @@ const val LSB_INDEX = 0
 const val LSB_EBID_INDEX = 6
 const val MSB_INDEX = 17
 const val MSB_EBID_INDEX = 7
+private const val MSECTOMINUTES = 1000/60
 
 class EbidReceived {
     var ebid: ByteArray
     var packetId: String
     val rssi: RssiUtility
-    var duration: Long
+    var duration: Float
     var firstReceived: Long
     var lastReceived: Long
     var ebidReady: Boolean
@@ -22,7 +23,7 @@ class EbidReceived {
         ebid = ByteArray(EBID_SIZE)
         packetId = ""
         rssi = RssiUtility()
-        duration = 0
+        duration = 0.0F
         firstReceived = 0
         lastReceived = 0
         ebidReady = false
@@ -74,7 +75,7 @@ class EbidReceived {
     }
 
     fun updateDuration() {
-        this.duration = this.lastReceived - this.firstReceived
+        this.duration = ((this.lastReceived - this.firstReceived).toFloat() * MSECTOMINUTES)
     }
 
     // TODO update duration
