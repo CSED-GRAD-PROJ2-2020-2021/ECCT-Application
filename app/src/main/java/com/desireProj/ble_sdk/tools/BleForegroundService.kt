@@ -65,7 +65,7 @@ class BleForegroundService(): Service() {
                     engine.generateNewKey()
                     engine.clearEbidMap()
                 }
-                delay(1 *16 * 1000)
+                delay(1 *60 * 1000)
             }
             log("End of the loop for the service")
         }
@@ -97,7 +97,7 @@ class BleForegroundService(): Service() {
                 Log.e("Foreground IO", "utilities context : " + Utilities.context)
                 engine.sendPetsToDatabase() // send collected pets to database and clear pets map
                 engine.updateDatabasePassword()
-                delay(16 * 1000)
+                delay(60 * 1000)
             }
         }
 

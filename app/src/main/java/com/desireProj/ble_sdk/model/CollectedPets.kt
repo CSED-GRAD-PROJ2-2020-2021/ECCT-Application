@@ -79,9 +79,9 @@ class CollectedPets(engine: Engine) {
     private fun addToETL(pet: Pet, db: DataBaseHandler) {
         val etl: ETLItem?
         if (pet.greaterSecret) {    //
-            etl = ETLItem(pet.getHash1(), pet.date, pet.duration, pet.getRssi())
-        } else {
             etl = ETLItem(pet.getHash2(), pet.date, pet.duration, pet.getRssi())
+        } else {
+            etl = ETLItem(pet.getHash1(), pet.date, pet.duration, pet.getRssi())
         }
         db.insertEtlItem(etl)
     }
