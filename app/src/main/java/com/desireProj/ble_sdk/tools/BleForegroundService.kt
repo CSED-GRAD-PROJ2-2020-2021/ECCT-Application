@@ -60,12 +60,10 @@ class BleForegroundService(): Service() {
         // thread to update the status per epoch
         GlobalScope.launch(Dispatchers.Default) {
             while (isServiceStarted) {
-                launch(Dispatchers.Default) {
-                    Log.e("Foreground Default", "utilities context : " + Utilities.context)
-                    engine.generateNewKey()
-                    engine.clearEbidMap()
-                }
-                delay(2 *60 * 1000)
+                Log.e("Foreground Default", "utilities context : " + Utilities.context)
+                engine.generateNewKey()
+                engine.clearEbidMap()
+                delay(5 *60 * 1000)
             }
             log("End of the loop for the service")
         }
@@ -97,7 +95,7 @@ class BleForegroundService(): Service() {
                 Log.e("Foreground IO", "utilities context : " + Utilities.context)
                 engine.sendPetsToDatabase() // send collected pets to database and clear pets map
                 engine.updateDatabasePassword()
-                delay(2 * 60 * 1000)
+                delay(5 * 60 * 1000)
             }
         }
 

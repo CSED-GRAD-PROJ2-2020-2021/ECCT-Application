@@ -43,6 +43,9 @@ object Engine {
     fun startAdvertising(){
         bleAdvertiser.startAdvertising(keyExchanger.publicKeyByteArray!!)
     }
+    fun stopAdvertising(){
+        bleAdvertiser.stopAdvertising()
+    }
     fun startScanning(){
         bleScanner.startScanning()
     }
