@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity() , LoggerContract.LoggerView{
         stopButton.setOnClickListener(object : View.OnClickListener{
             override fun onClick(v: View?) {
                 actionOnService(Actions.STOP)
-                cancelAlarm()
+
             }})
 
         etlDatabaseButton = findViewById(R.id.etl_database_activity_btn)

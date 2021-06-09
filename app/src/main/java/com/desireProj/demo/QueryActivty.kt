@@ -16,6 +16,7 @@ import com.desireProj.ble_sdk.R
 import com.desireProj.ble_sdk.model.*
 import com.desireProj.ble_sdk.tools.Engine
 import com.desireProj.ble_sdk.tools.SessionManager
+import com.desireProj.ble_sdk.tools.log
 
 class QueryActivty:AppCompatActivity() ,QueryContract.QueryView{
     private lateinit var  queryResultButton : Button
@@ -37,6 +38,7 @@ class QueryActivty:AppCompatActivity() ,QueryContract.QueryView{
             override fun onClick(v: View?) {
                 val queryPets:QueryPetsModel = QueryPetsModel(sessionManager.fetchKey()!!,
                 sessionManager.fetchID()!!,sessionManager.fetchIv()!!,engine.getRTLList())
+                log(queryPets.pets.toString())
                 queryPresenter.queryPets(queryPets)
             }
         })

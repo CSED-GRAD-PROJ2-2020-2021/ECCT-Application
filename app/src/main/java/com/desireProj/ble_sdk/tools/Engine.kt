@@ -91,10 +91,10 @@ object Engine {
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    fun getRTLList(): List<UploadRTL> {
-        val rtlList:MutableList<UploadRTL> = mutableListOf()
+    fun getRTLList(): List<String> {
+        val rtlList:MutableList<String> = mutableListOf()
         for(rtlItem in this.dataBaseHandler.getEtlItems()){
-            val uploadedRTL:UploadRTL = UploadRTL(rtlItem.pet)
+            val uploadedRTL:String = rtlItem.pet
             rtlList.add(uploadedRTL)
         }
         return rtlList

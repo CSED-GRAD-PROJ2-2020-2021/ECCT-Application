@@ -10,7 +10,7 @@ import retrofit2.http.POST
 interface RestApi {
 
     @Headers("Content-Type: application/json")
-    @POST("/registration")
+    @POST("/exposureRequest")
     fun queryPets(@Body pets: QueryPetsModel): Call<StatusResponse>
 
     @Headers("Content-Type: application/json")

@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.desireProj.ble_sdk.Contracts.SignUpContract
+import com.desireProj.ble_sdk.MainActivity
 import com.desireProj.ble_sdk.Presenters.SignUpPresenter
 import com.desireProj.ble_sdk.R
 import com.desireProj.ble_sdk.model.PhoneNumber
@@ -29,6 +30,9 @@ class SignUp : AppCompatActivity() ,SignUpContract.SignUpView{
         phoneNumberText = findViewById(R.id.signUpEditText)
         signUpButton = findViewById(R.id.signUpButton)
         sessionManager = SessionManager(context)
+        if(sessionManager.fetchAuthToken()!=null){
+            startActivity(Intent(context,MainActivity::class.java))
+        }
         signUpButton.setOnClickListener(object : View.OnClickListener{
             override fun onClick(v: View?) {
                 if(!phoneNumberText?.text.toString().isEmpty()) {

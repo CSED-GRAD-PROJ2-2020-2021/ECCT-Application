@@ -7,6 +7,7 @@ import com.desireProj.ble_sdk.model.StatusResponse
 import com.desireProj.ble_sdk.model.StoredPETsModel
 import com.desireProj.ble_sdk.network.ApiClient
 import com.desireProj.ble_sdk.tools.SessionManager
+import com.desireProj.ble_sdk.tools.log
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,6 +31,7 @@ class QueryPresenter(queryView: QueryContract.QueryView,context:Context):QueryCo
 
                 override fun onResponse(call: Call<StatusResponse>, response: Response<StatusResponse>) {
                     val score = response.body()
+                    log(score.toString())
                     if(response.headers().get("Authorization") != null){
                         val headerString:String = response.headers().get("Authorization") as String
                         val authenticationToken = headerString.replace("Bearer","")
