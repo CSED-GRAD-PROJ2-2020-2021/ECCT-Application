@@ -24,7 +24,7 @@ private const val CREATE_TABLE_RTL = "CREATE TABLE if not exists $TABLE_RTL ($CO
         "$COL_DAY DATE);"
 // INTEGER in sqlite save values of 8 bytes, same as Long in Kotlin/Java
 private const val CREATE_TABLE_ETL = "CREATE TABLE if not exists $TABLE_ETL ($COL_PET VARCHAR(64) PRIMARY KEY, " +
-        "$COL_DAY DATE, $COL_Duration INTEGER, $COL_RSSI INTEGER);"
+        "$COL_DAY DATE, $COL_Duration REAL, $COL_RSSI INTEGER);"
 
 private const val DELETE_TABLE_RTL = "DROP TABLE if exists $TABLE_RTL;"
 private const val DELETE_TABLE_ETL = "DROP TABLE if exists $TABLE_ETL;"
@@ -164,9 +164,9 @@ object DataBaseHandler:
             do {
                 val pet = cursor.getString(cursor.getColumnIndex(COL_PET))
                 val day = cursor.getString(cursor.getColumnIndex(COL_DAY))
-                val time = cursor.getLong(cursor.getColumnIndex(COL_Duration)) // TODO check if working well
+                val duration = cursor.getFloat(cursor.getColumnIndex(COL_Duration)) // TODO check if working well
                 val rssi = cursor.getLong(cursor.getColumnIndex(COL_RSSI))
-                var etl = ETLItem(pet, day, time, rssi.toInt())
+                var etl = ETLItem(pet, day, duration, rssi.toInt())
                 // adding to rtl list
                 etlList.add(etl)
             } while (cursor.moveToNext())
@@ -244,7 +244,7 @@ object DataBaseHandler:
     }
 
     /*
-
+        return current date day
      */
     private fun getCurrentDateDay(): String {
         val sdf = SimpleDateFormat("dd")

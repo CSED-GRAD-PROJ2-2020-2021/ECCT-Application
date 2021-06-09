@@ -6,19 +6,20 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 const val PET_SIZE = 32
+private const val MSECTOMINUTES = 1000/60
 
 class Pet {
     var pet: String // H(g^XY) string, used as map key
     var petByteArray: ByteArray // g^XY
     var rssi: RssiUtility
-    var duration: Long
+    var duration: Float
     var date: String
     var firstReceived: Long
     var lastReceived: Long
     var greaterSecret: Boolean  // to indicate whether g^A is greater than g^B
 
     constructor(pet: String, petArr: ByteArray, rssi: RssiUtility, firstRec: Long,
-                    lastRec: Long, duration: Long, greaterSecret: Boolean) {
+                    lastRec: Long, duration: Float, greaterSecret: Boolean) {
         this.pet = pet
         this.petByteArray = petArr
         this.rssi = rssi
@@ -51,7 +52,7 @@ class Pet {
     }
 
     fun updateDuration() {
-        this.duration = this.lastReceived - this.firstReceived
+        this.duration = ((this.lastReceived - this.firstReceived).toFloat() * MSECTOMINUTES)
     }
 
     private fun getCurrentDate() :String {
