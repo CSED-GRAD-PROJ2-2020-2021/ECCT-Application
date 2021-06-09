@@ -5,12 +5,6 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 data class UploadPetsModel(
-    @SerializedName("key")
-    val key:String,
-    @SerializedName("id")
-    val id:String,
-    @SerializedName("iv")
-    val iv:String,
     @SerializedName("Authorization token")
     val authorizationToken:String,
     @Expose
