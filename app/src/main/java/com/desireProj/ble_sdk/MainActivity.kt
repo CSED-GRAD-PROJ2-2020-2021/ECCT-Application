@@ -27,6 +27,7 @@ import java.lang.StringBuilder
 import com.desireProj.demo.Adapters.LoggerAdapter
 import com.desireProj.demo.ETLDatabaseActivity
 import com.desireProj.demo.QueryActivty
+import com.desireProj.demo.RTLDatabaseActivity
 import com.desireProj.demo.UploadActivity
 import kotlin.collections.LinkedHashSet
 
@@ -77,6 +78,12 @@ class MainActivity : AppCompatActivity() , LoggerContract.LoggerView{
                 startActivity(Intent(context,ETLDatabaseActivity::class.java))
             }
 
+        })
+        rtlDatabaseButton = findViewById(R.id.rtl_database_activity_btn)
+        rtlDatabaseButton.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(v: View?) {
+                startActivity(Intent(context,RTLDatabaseActivity::class.java))
+            }
         })
 
 
