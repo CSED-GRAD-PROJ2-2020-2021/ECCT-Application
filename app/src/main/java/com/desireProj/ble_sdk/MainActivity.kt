@@ -26,6 +26,8 @@ import com.desireProj.ble_sdk.database.RTLItem
 import com.desireProj.ble_sdk.network.RestApiService
 import java.lang.StringBuilder
 import com.desireProj.demo.Adapters.LoggerAdapter
+import com.desireProj.demo.QueryActivty
+import com.desireProj.demo.UploadActivity
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -208,46 +210,10 @@ class MainActivity : AppCompatActivity() , LoggerContract.LoggerView{
         return sb.toString()
     }
     fun query(view: View) {
-        val apiService = RestApiService(this)
-        val list = ArrayList<StoredPET>()
-       /* val p =StoredPET(PETID = "253",
-            RSSI = -60,
-            duration = 12.53,
-            meetingDate = Date().time
-        )
-        list.add(p)
-        val pet = StoredPETsModel(  key ="2468688658",
-            id = "123",
-            pets = list
-        )*/
-
-       /* apiService.queryPets(pet) {
-            if (it?.status != null) {
-                // it = newly added user parsed as response
-                // it?.id = newly added user ID
-            } else {
-                Log.e("here","Error registering new user")
-            }
-        }*/
+       startActivity(Intent(this, QueryActivty::class.java))
     }
     fun upload(view: View){
-        val apiService = RestApiService(this)
-        val list = ArrayList<String>()
-
-        list.add("15686a")
-        /*val pet = UploadedPetsModel(  key ="2468688658",
-            id = "123",
-            pets = list
-        )*/
-
-        /*apiService.uploadPets(pet) {
-            if (it?.status != null) {
-                // it = newly added user parsed as response
-                // it?.id = newly added user ID
-            } else {
-                Log.e("here","Error registering new user")
-            }
-        }*/
+        startActivity(Intent(this, UploadActivity::class.java))
     }
     private fun actionOnService(action: Actions) {
         if (getServiceState(this) == ServiceState.STOPPED && action == Actions.STOP) return

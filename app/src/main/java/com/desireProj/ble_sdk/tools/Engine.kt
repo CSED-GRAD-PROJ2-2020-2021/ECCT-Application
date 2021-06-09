@@ -9,6 +9,8 @@ import com.desireProj.ble_sdk.ble.BleScanner
 import com.desireProj.ble_sdk.database.*
 import com.desireProj.ble_sdk.diffieHellman.KeyExchanger
 import com.desireProj.ble_sdk.model.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 object Engine {
@@ -110,5 +112,11 @@ object Engine {
 
     fun setLoggerPresenter(loggerPresenter:LoggerContract.LoggerPresenter? ){
         this.loggerPresenter = loggerPresenter!!
+    }
+    fun currentDate():String{
+        val sdf = SimpleDateFormat("yyyy-MM-dd")
+        val cal = Calendar.getInstance()
+        val date = sdf.format(cal.time)
+        return date;
     }
 }
