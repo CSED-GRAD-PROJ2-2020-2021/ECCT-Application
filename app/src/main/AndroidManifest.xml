@@ -24,10 +24,7 @@
         <activity android:name="com.desireProj.demo.QueryActivty" />
         <activity android:name="com.desireProj.demo.UploadActivity" />
         <activity android:name="com.desireProj.demo.SignUp" >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+
         </activity>
         <service
             android:name=".tools.BleForegroundService"
@@ -46,7 +43,10 @@
 
 
         <activity android:name=".MainActivity" >
-            
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 
