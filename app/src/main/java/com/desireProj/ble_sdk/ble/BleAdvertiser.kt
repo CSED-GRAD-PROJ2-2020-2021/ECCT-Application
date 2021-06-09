@@ -8,6 +8,9 @@ import android.bluetooth.le.BluetoothLeAdvertiser
 import android.util.Log
 import com.desireProj.ble_sdk.model.EbidPacket
 
+private const val ADVERTISE_INTERVAL: Long = 3000
+private const val REST_INTERVAL: Long = 1000
+
 class BleAdvertiser{
 
     private var bleAdvertiser: BluetoothLeAdvertiser = BluetoothAdapter.getDefaultAdapter().bluetoothLeAdvertiser
@@ -49,42 +52,44 @@ class BleAdvertiser{
     }
 
     /*
-        advertising ebit on two packets, advertise packet 1 and wait for 2 seconds,
-        then advertise packet 2 for 2 seconds
+        advertising ebit on two packets, advertise packet 1 and wait for 1 seconds,
+        then advertise packet 2 for 1 seconds
+
+        the whole function takes 16 seconds
      */
     public fun startAdvertising(ebid: ByteArray) {
         var ebidPacket = preparePackets(ebid)
         var ebidLsbData = buildAdvertiseData(ebidPacket.packet1)
         var ebidMsbData = buildAdvertiseData(ebidPacket.packet2)
 
-        // advertising packet 1
+        sendBothPackets(ebidLsbData, ebidMsbData)   // takes 8 seconds
+
+        sendBothPackets(ebidLsbData, ebidMsbData)   // takes 8 seconds
+
+    }
+
+    private fun sendPacket(packetData: AdvertiseData, packetNo: Int) {
         bleAdvertiser.startAdvertising(
             buildAdvertiserSettings(),
-            ebidLsbData,
+            packetData,
             advertisingCallback)
-        Log.e("ble.BleAdvertiser: ", "Advertising packet 1")
+        Log.e("ble.BleAdvertiser: ", "Advertising packet $packetNo")
         try {
-            Thread.sleep(2000)
+            Thread.sleep(ADVERTISE_INTERVAL)
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
         bleAdvertiser.stopAdvertising(advertisingCallback)
 
+        Thread.sleep(REST_INTERVAL)
+    }
 
+    private fun sendBothPackets(ebidLsbData: AdvertiseData, ebidMsbData: AdvertiseData) {
+        // advertising packet 1
+        sendPacket(ebidLsbData, 1) // takes 4 seconds
 
         // advertising packet 2
-        bleAdvertiser.startAdvertising(
-            buildAdvertiserSettings(),
-            ebidMsbData,
-            advertisingCallback)
-        Log.e("ble.BleAdvertiser: ", "Advertising packet 2")
-        try {
-            Thread.sleep(2000)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
-        bleAdvertiser.stopAdvertising(advertisingCallback)
-
+        sendPacket(ebidMsbData, 2) // takes 4 seconds
     }
 
     public fun stopAdvertising() {

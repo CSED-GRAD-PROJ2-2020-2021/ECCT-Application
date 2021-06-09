@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.desireProj.ble_sdk.model.*
 import com.desireProj.ble_sdk.tools.*
 
@@ -30,6 +31,7 @@ import com.desireProj.demo.QueryActivty
 import com.desireProj.demo.UploadActivity
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.LinkedHashSet
 
 class MainActivity : AppCompatActivity() , LoggerContract.LoggerView{
     private var mText: TextView? = null
@@ -156,8 +158,11 @@ class MainActivity : AppCompatActivity() , LoggerContract.LoggerView{
         engine!!.generateNewKey()
         logger_recycle_view = findViewById(R.id.logger_recycle_view)
         loggerDataListModel = LoggerDataList(engine!!)
-        loggerDataListModel.loggerDataList = loggerDataListModel.loggerDataList
-        logger_recycle_view!!.layoutManager = LinearLayoutManager(this)
+        //loggerDataListModel.loggerDataList = loggerDataListModel.loggerDataList
+        var layoutManger = LinearLayoutManager(this)
+        layoutManger.reverseLayout = true
+        layoutManger.stackFromEnd = true
+        logger_recycle_view!!.layoutManager = layoutManger
 
 
 
@@ -231,8 +236,11 @@ class MainActivity : AppCompatActivity() , LoggerContract.LoggerView{
 
     override fun onPetsRecieved(loggerData: LoggerData) {
 
-        loggerDataListModel?.loggerDataList?.add(loggerData)
-        logger_recycle_view!!.adapter = LoggerAdapter(loggerDataListModel.loggerDataList)
+        loggerDataListModel.loggerDataList!!.add(loggerData)
+        val list: MutableList<LoggerData> = LinkedHashSet(loggerDataListModel.loggerDataList).toMutableList()
+        mText!!.isVisible = true
+        mText!!.text = list.size.toString()
+        logger_recycle_view!!.adapter = LoggerAdapter(list)
         logger_recycle_view!!.adapter!!.notifyDataSetChanged()
     }
 

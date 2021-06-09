@@ -61,26 +61,33 @@ class BleForegroundService(): Service() {
         GlobalScope.launch(Dispatchers.Default) {
             while (isServiceStarted) {
                 launch(Dispatchers.Default) {
-//                    Utilities.context = MyApplication.applicationContext()
                     Log.e("Foreground Default", "utilities context : " + Utilities.context)
                     engine.generateNewKey()
-                    engine.clearEbidMap()
-                    engine.startScanning()
-                    engine.startAdvertising()
+//                    engine.clearEbidMap()
                 }
-                delay(1 *6 * 1000)
+                delay(1 *16 * 1000)
                 engine.stopScanning()
             }
             log("End of the loop for the service")
         }
 
-//        GlobalScope.launch(Dispatchers.Default) {
-//            while (isServiceStarted) {
-//                engine.startAdvertising()
-////                delay(2 * 1000)
-//            }
-//            log("End of the loop for the advertising")
-//        }
+        GlobalScope.launch(Dispatchers.Default) {
+            while (isServiceStarted) {
+                engine.startAdvertising()   // takes 16 seconds
+//                delay(2 * 1000)
+            }
+            log("End of the loop for the advertising")
+        }
+
+        GlobalScope.launch(Dispatchers.Default) {
+            while (isServiceStarted) {
+                engine.startScanning()
+                delay(6 * 1000)
+                engine.stopScanning()
+                delay(2 * 1000)
+            }
+            log("End of the loop for the advertising")
+        }
 
         // delete expired pets from database
         GlobalScope.launch(Dispatchers.IO) {
@@ -88,17 +95,10 @@ class BleForegroundService(): Service() {
                 engine.removeExpiredPetsFromDatabase()
             }
             while (isServiceStarted) {
-//                Utilities.context = MyApplication.applicationContext()
                 Log.e("Foreground IO", "utilities context : " + Utilities.context)
-                engine.sendPetsToDatabase()
+                engine.sendPetsToDatabase() // send collected pets to database and clear pets map
                 engine.updateDatabasePassword()
-                delay(1 *2 * 1000)
-//                var list = engine.dataBaseHandler.getRtlItems()
-//                Log.e("Main Activity", "rtl table size: " + list.size)
-//                for (rtl in list) {
-//                    Log.e("Main Activity", "rtl item : " + rtl.pet + " date: " + rtl.day)
-//                }
-//                log("Database cleaned")
+                delay(16 * 1000)
             }
         }
 
