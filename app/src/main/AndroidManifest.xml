@@ -18,7 +18,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Blesdk"
         android:usesCleartextTraffic="true">
-        <activity android:name="com.desireProj.demo.DatabaseActivity"></activity>
+        <activity android:name="com.desireProj.demo.RTLDatabaseActivity"></activity>
+        <activity android:name="com.desireProj.demo.ETLDatabaseActivity" />
         <activity android:name="com.desireProj.demo.PinCodeActivity" />
         <activity android:name="com.desireProj.demo.QueryActivty" />
         <activity android:name="com.desireProj.demo.UploadActivity" />
@@ -27,7 +28,7 @@
         <service
             android:name=".tools.BleForegroundService"
             android:enabled="true"
-            android:exported="false"></service>
+            android:exported="false" />
 
         <receiver
             android:name=".tools.AlarmBroadcastReciever"

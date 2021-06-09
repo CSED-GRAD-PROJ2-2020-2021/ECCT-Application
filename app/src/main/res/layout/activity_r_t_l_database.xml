@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.desireProj.demo.ETLDatabaseActivity">
+    tools:context="com.desireProj.demo.RTLDatabaseActivity">
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="@dimen/S10dp"
-        android:id="@+id/etl_recycle_view"
+        android:id="@+id/rtl_recycle_view"
         tools:listitem="@layout/logger_item"/>
 
 </LinearLayout>

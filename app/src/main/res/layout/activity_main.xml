@@ -52,10 +52,15 @@
         android:text="stop" />
 
     <Button
-        android:id="@+id/database_activity_btn"
+        android:id="@+id/etl_database_activity_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Database" />
+        android:text="ETL Database" />
+    <Button
+        android:id="@+id/rtl_database_activity_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="RTL Database" />
 
     <TextView
         android:id="@+id/text_tv"

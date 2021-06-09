@@ -7,29 +7,28 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.desireProj.ble_sdk.R
-import com.desireProj.ble_sdk.database.ETLItem
+import com.desireProj.ble_sdk.database.RTLItem
 
-class ETLDatabaseAdapter (private val etlList : List<ETLItem>) : RecyclerView.Adapter<ETLDatabaseAdapter.ViewHolder>(){
+class RTLDatabaseAdapter(private val rtlList : List<RTLItem>) : RecyclerView.Adapter<RTLDatabaseAdapter.ViewHolder>() {
 
-    class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
+    class ViewHolder (itemView : View) : RecyclerView.ViewHolder(itemView){
         val logDataTextView : TextView = itemView.findViewById(R.id.log_data)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.logger_item,parent,false)
+
         return ViewHolder(itemView)
     }
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val currentItem = etlList[position]
+        val currentItem = rtlList[position]
 
-        holder.logDataTextView.text = "PET:" + currentItem.pet + "\n" +
-                "Day:" + currentItem.day + "\n" +
-                "Duration:" + currentItem.duration + "\n" +
-                "RSSI:" + currentItem.rssi
+        holder.logDataTextView.text = "PET: " + currentItem.pet + "\n" +
+                "Day: " + currentItem.day
     }
 
-    override fun getItemCount() = etlList.size
+    override fun getItemCount() = rtlList.size
 }

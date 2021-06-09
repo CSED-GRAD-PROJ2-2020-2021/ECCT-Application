@@ -25,10 +25,9 @@ import com.desireProj.ble_sdk.Presenters.LoggerPresenter
 import com.desireProj.ble_sdk.database.DataBaseHandler
 import java.lang.StringBuilder
 import com.desireProj.demo.Adapters.LoggerAdapter
-import com.desireProj.demo.DatabaseActivity
+import com.desireProj.demo.ETLDatabaseActivity
 import com.desireProj.demo.QueryActivty
 import com.desireProj.demo.UploadActivity
-import kotlin.collections.ArrayList
 import kotlin.collections.LinkedHashSet
 
 class MainActivity : AppCompatActivity() , LoggerContract.LoggerView{
@@ -37,7 +36,8 @@ class MainActivity : AppCompatActivity() , LoggerContract.LoggerView{
     private var mAdvertiseButton: Button? = null
     private lateinit var startButton: Button
     private lateinit var stopButton: Button
-    private lateinit var databaseButton : Button
+    private lateinit var etlDatabaseButton : Button
+    private lateinit var rtlDatabaseButton : Button
     private var mDiscoverButton: Button? = null
     private var logger_recycle_view : RecyclerView? = null
     private lateinit var loggerDataListModel :LoggerDataList
@@ -71,11 +71,11 @@ class MainActivity : AppCompatActivity() , LoggerContract.LoggerView{
                 cancelAlarm()
             }})
 
-        databaseButton = findViewById(R.id.database_activity_btn)
-        databaseButton.setOnClickListener(object :View.OnClickListener{
+        etlDatabaseButton = findViewById(R.id.etl_database_activity_btn)
+        etlDatabaseButton.setOnClickListener(object :View.OnClickListener{
             override fun onClick(v: View?) {
-                startActivity(Intent(context,DatabaseActivity::class.java))
-            }    
+                startActivity(Intent(context,ETLDatabaseActivity::class.java))
+            }
 
         })
 
