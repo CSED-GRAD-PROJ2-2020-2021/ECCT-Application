@@ -26,10 +26,11 @@ class CollectedPets(engine: Engine) {
         val secret: ByteArray = engine.generateSecret(received.ebid)
 
         val petVal: String = Utilities.getHash(secret)
-        val greaterSecret: Boolean = engine.getPrivateKey()!!.toString() > received.ebid.toString()
+        val greaterSecret: Boolean = Utilities.
+            byteArrayToString(engine.getPublicKey()!!) > Utilities.
+            byteArrayToString(received.ebid)
 
         Log.e("CollectedPets: ", "received pet: $petVal")
-        Log.e("CollectedPets: ", "boolean: $greaterSecret")
 
         if (receivedPetMap.containsKey(petVal)) {   // update existing pet
             updateExistingPet(receivedPetMap.get(petVal)!!, received)

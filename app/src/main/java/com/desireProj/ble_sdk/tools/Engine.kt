@@ -54,8 +54,8 @@ object Engine {
         collectedEbid.receiveEbid(dataReceived, rssi)
     }
 
-    fun getPrivateKey(): ByteArray? {
-        return (keyExchanger.privateKeyByteArray)
+    fun getPublicKey(): ByteArray? {
+        return (keyExchanger.publicKeyByteArray)
     }
 
     fun generateSecret(received: ByteArray):ByteArray {
