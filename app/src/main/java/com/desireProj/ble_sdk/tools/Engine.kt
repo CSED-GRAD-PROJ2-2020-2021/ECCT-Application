@@ -93,7 +93,7 @@ object Engine {
     @RequiresApi(Build.VERSION_CODES.M)
     fun getRTLList(): List<String> {
         val rtlList:MutableList<String> = mutableListOf()
-        for(rtlItem in this.dataBaseHandler.getEtlItems()){
+        for(rtlItem in this.dataBaseHandler.getRtlItems()){
             val uploadedRTL:String = rtlItem.pet
             rtlList.add(uploadedRTL)
         }

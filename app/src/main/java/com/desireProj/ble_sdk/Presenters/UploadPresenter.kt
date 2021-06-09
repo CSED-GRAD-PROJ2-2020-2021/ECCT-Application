@@ -38,7 +38,7 @@ class UploadPresenter(uploadView: UploadContract.UploadView,context: Context):Up
                 }
 
                 override fun onFailure(call: Call<StatusResponse>, t: Throwable) {
-                    TODO("Not yet implemented")
+
                 }
 
             }

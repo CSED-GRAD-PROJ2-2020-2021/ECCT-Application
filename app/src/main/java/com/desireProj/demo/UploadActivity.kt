@@ -1,6 +1,7 @@
 package com.desireProj.demo
 
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -9,6 +10,7 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.desireProj.ble_sdk.Contracts.UploadContract
+import com.desireProj.ble_sdk.MainActivity
 import com.desireProj.ble_sdk.Presenters.UploadPresenter
 import com.desireProj.ble_sdk.R
 import com.desireProj.ble_sdk.model.QueryPetsModel
@@ -40,5 +42,6 @@ class UploadActivity:AppCompatActivity(),UploadContract.UploadView {
 
     override fun onSuccess() {
         uploadText?.setText("uploaded")
+        startActivity(Intent(context,MainActivity::class.java))
     }
 }
