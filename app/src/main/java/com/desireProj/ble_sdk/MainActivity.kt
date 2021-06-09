@@ -23,13 +23,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.desireProj.ble_sdk.Contracts.LoggerContract
 import com.desireProj.ble_sdk.Presenters.LoggerPresenter
 import com.desireProj.ble_sdk.database.DataBaseHandler
-import com.desireProj.ble_sdk.database.RTLItem
-import com.desireProj.ble_sdk.network.RestApiService
 import java.lang.StringBuilder
 import com.desireProj.demo.Adapters.LoggerAdapter
+import com.desireProj.demo.DatabaseActivity
 import com.desireProj.demo.QueryActivty
 import com.desireProj.demo.UploadActivity
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.LinkedHashSet
 
@@ -39,6 +37,7 @@ class MainActivity : AppCompatActivity() , LoggerContract.LoggerView{
     private var mAdvertiseButton: Button? = null
     private lateinit var startButton: Button
     private lateinit var stopButton: Button
+    private lateinit var databaseButton : Button
     private var mDiscoverButton: Button? = null
     private var logger_recycle_view : RecyclerView? = null
     private lateinit var loggerDataListModel :LoggerDataList
@@ -46,10 +45,14 @@ class MainActivity : AppCompatActivity() , LoggerContract.LoggerView{
     private var engine: Engine? = null
     private var loggerPresenter: LoggerContract.LoggerPresenter? = null
 
+    private lateinit var context:Context
+
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        context = this
 
         mText = findViewById(R.id.text_tv)
         ebitText = findViewById(R.id.ebid_tv)
@@ -67,6 +70,14 @@ class MainActivity : AppCompatActivity() , LoggerContract.LoggerView{
                 actionOnService(Actions.STOP)
                 cancelAlarm()
             }})
+
+        databaseButton = findViewById(R.id.database_activity_btn)
+        databaseButton.setOnClickListener(object :View.OnClickListener{
+            override fun onClick(v: View?) {
+                startActivity(Intent(context,DatabaseActivity::class.java))
+            }    
+
+        })
 
 
         val permissionCheck =
@@ -235,7 +246,6 @@ class MainActivity : AppCompatActivity() , LoggerContract.LoggerView{
     }
 
     override fun onPetsRecieved(loggerData: LoggerData) {
-
         loggerDataListModel.loggerDataList!!.add(loggerData)
         val list: MutableList<LoggerData> = LinkedHashSet(loggerDataListModel.loggerDataList).toMutableList()
         mText!!.isVisible = true

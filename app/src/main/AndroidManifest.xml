@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.desireProj.ble_sdk" >
+    package="com.desireProj.ble_sdk">
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
@@ -18,7 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Blesdk"
-        android:usesCleartextTraffic="true" >
+        android:usesCleartextTraffic="true">
+        <activity android:name="com.desireProj.demo.DatabaseActivity"></activity>
         <activity android:name="com.desireProj.demo.PinCodeActivity" />
         <activity android:name="com.desireProj.demo.QueryActivty" />
         <activity android:name="com.desireProj.demo.UploadActivity" />
@@ -27,20 +27,21 @@
         <service
             android:name=".tools.BleForegroundService"
             android:enabled="true"
-            android:exported="false">
-        </service>
-        <receiver android:name=".tools.AlarmBroadcastReciever"
+            android:exported="false"></service>
+
+        <receiver
+            android:name=".tools.AlarmBroadcastReciever"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"></action>
+                <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </receiver>
 
-
-        <activity android:name=".MainActivity" >
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.desireProj.ble_sdk.R
 import com.desireProj.ble_sdk.model.LoggerData
 
-class LoggerAdapter(private val logDataList: MutableList<LoggerData>?) : RecyclerView.Adapter<LoggerAdapter.ViewHolder>() {
+class LoggerAdapter(private val logDataList: List<LoggerData>) : RecyclerView.Adapter<LoggerAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
         val logDataTextView : TextView = itemView.findViewById(R.id.log_data)

@@ -11,6 +11,7 @@ import com.desireProj.ble_sdk.diffieHellman.KeyExchanger
 import com.desireProj.ble_sdk.model.*
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 object Engine {
@@ -108,6 +109,16 @@ object Engine {
             etlList.add(uploadedETL)
         }
         return etlList
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun getETLTable(): ArrayList<ETLItem> {
+        return(dataBaseHandler.getEtlItems())
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun getRTLTable(): ArrayList<RTLItem> {
+        return(dataBaseHandler.getRtlItems())
     }
 
     fun setLoggerPresenter(loggerPresenter:LoggerContract.LoggerPresenter? ){

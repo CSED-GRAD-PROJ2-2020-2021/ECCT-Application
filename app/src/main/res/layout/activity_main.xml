@@ -10,14 +10,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Advertise"
-        android:onClick="advertise"/>
+        android:onClick="advertise"
+        android:visibility="gone"/>
 
     <Button
         android:id="@+id/discover_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Discover"
-        android:onClick="discover"/>
+        android:onClick="discover"
+        android:visibility="gone"/>
     <Button
         android:id="@+id/request_btn"
         android:layout_width="match_parent"
@@ -49,6 +51,12 @@
         android:layout_height="wrap_content"
         android:text="stop" />
 
+    <Button
+        android:id="@+id/database_activity_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Database" />
+
     <TextView
         android:id="@+id/text_tv"
         android:layout_width="wrap_content"
@@ -63,7 +71,7 @@
         android:layout_height="wrap_content"
         android:padding="5dp"
         android:text="test"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
