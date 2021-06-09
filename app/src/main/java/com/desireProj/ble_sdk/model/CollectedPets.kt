@@ -27,7 +27,7 @@ class CollectedPets(engine: Engine) {
 
         val petVal: String = Utilities.getHash(secret)
         val greaterSecret: Boolean = Utilities.
-            byteArrayToString(engine.getPrivateKey()!!) > Utilities.
+            byteArrayToString(engine.getPublicKey()!!) > Utilities.
             byteArrayToString(received.ebid)
 
         Log.e("CollectedPets: ", "received pet: $petVal")

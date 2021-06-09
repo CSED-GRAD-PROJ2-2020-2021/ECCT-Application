@@ -19,7 +19,7 @@ class ApiClient {
         // Initialize ApiService if not initialized yet
         if (!::apiService.isInitialized) {
             val retrofit = Retrofit.Builder()
-                .baseUrl("http://192.168.43.203:3000/")
+                .baseUrl("https://192.168.43.203:3000/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okhttpClient(context))
                 .build()
@@ -34,9 +34,10 @@ class ApiClient {
      * Initialize OkhttpClient with our interceptor
      */
     private fun okhttpClient(context: Context): OkHttpClient {
-        return OkHttpClient.Builder()
+        return UnsafeOkHttpClient.getUnsafeOkHttpClient()
             .addInterceptor(AuthInterceptor(context))
             .addInterceptor(interceptor)
             .build()
     }
+
 }
