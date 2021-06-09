@@ -66,20 +66,21 @@ class BleForegroundService(): Service() {
                     engine.generateNewKey()
                     engine.clearEbidMap()
                     engine.startScanning()
+                    engine.startAdvertising()
                 }
-                delay(1 *3 * 1000)
+                delay(1 *6 * 1000)
                 engine.stopScanning()
             }
             log("End of the loop for the service")
         }
 
-        GlobalScope.launch(Dispatchers.Default) {
-            while (isServiceStarted) {
-                engine.startAdvertising()
-                delay(2 * 1000)
-            }
-            log("End of the loop for the advertising")
-        }
+//        GlobalScope.launch(Dispatchers.Default) {
+//            while (isServiceStarted) {
+//                engine.startAdvertising()
+////                delay(2 * 1000)
+//            }
+//            log("End of the loop for the advertising")
+//        }
 
         // delete expired pets from database
         GlobalScope.launch(Dispatchers.IO) {
