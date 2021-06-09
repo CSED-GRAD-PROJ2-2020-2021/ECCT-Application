@@ -42,33 +42,13 @@ class RestApiService {
     init {
         apiClient = ApiClient()
     }
-    fun queryPets(pets: QueryPetsModel, onResult: (StatusResponse?) -> Unit){
-        apiClient.getApiService(context).queryPets(pets).enqueue(
-            object : Callback<StatusResponse>{
-                override fun onFailure(call: Call<StatusResponse>, t: Throwable) {
-                    onResult(null)
-                }
 
-                override fun onResponse(call: Call<StatusResponse>, response: Response<StatusResponse>) {
-                    val score = response.body()
-                    if(response.headers().get("Authorization") != null){
-                        val headerString:String = response.headers().get("Authorization") as String
-                        val authenticationToken = headerString.replace("Bearer","")
-                        sessionManager.saveAuthToken(authenticationToken)
-                    }
-                    onResult(score)
-                }
-            }
-        )
-    }
-    fun uploadPets(pets: UploadPetsModel, onResult: (StatusResponse?) -> Unit ){
 
-    }
     fun sendPhoneNumber(phoneNumber:PhoneNumber, onResult: (AuthenticationToken?) -> Unit){
-        signUpPresenter.sendPhoneNumber(phoneNumber,onResult)
+        signUpPresenter.sendPhoneNumber(phoneNumber)
     }
 
     fun sendAuthenticationToken(pinCode: PinCode, onResult: (AuthenticationTokenResponse?) -> Unit) {
-        pinCodePresenter.sendAuthenticationToken(pinCode,onResult)
+        pinCodePresenter.sendAuthenticationToken(pinCode)
     }
 }

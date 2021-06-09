@@ -23,7 +23,7 @@ class PinCodePresenter : PinCodeContract.PinCodePresenter {
         this.pinCodeView = pinCodeView
         this.sessionManager = SessionManager(context)
     }
-    override fun sendAuthenticationToken(pinCode: PinCode, onResult: (AuthenticationTokenResponse?) -> Unit) {
+    override fun sendAuthenticationToken(pinCode: PinCode) {
         apiClient.getApiService(context).sendAuthenticationToken(pinCode).enqueue(
             object : Callback<AuthenticationTokenResponse> {
                 override fun onResponse(call: Call<AuthenticationTokenResponse>, response: Response<AuthenticationTokenResponse>) {
@@ -48,12 +48,11 @@ class PinCodePresenter : PinCodeContract.PinCodePresenter {
 
                         pinCodeView.onFail()
                     }
-                    onResult(score)
+
                 }
 
                 override fun onFailure(call: Call<AuthenticationTokenResponse>, t: Throwable) {
 
-                    onResult(null)
                 }
 
             }

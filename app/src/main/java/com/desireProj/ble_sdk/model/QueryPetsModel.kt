@@ -13,6 +13,6 @@ data class QueryPetsModel (
     @SerializedName("iv")
     val iv:String,
     @Expose
-    @SerializedName("pets")
+    @SerializedName("exposurTestPets")
     val pets: List<UploadRTL>?
 )

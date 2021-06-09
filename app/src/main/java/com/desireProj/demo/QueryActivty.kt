@@ -30,21 +30,20 @@ class QueryActivty:AppCompatActivity() ,QueryContract.QueryView{
         queryResultButton = findViewById(R.id.button_query)
         queryResultText=findViewById(R.id.query_result)
         queryPresenter=QueryPresenter(this,context)
+        sessionManager = SessionManager(context)
         engine = Engine
         queryResultButton.setOnClickListener(object : View.OnClickListener{
             @RequiresApi(Build.VERSION_CODES.M)
             override fun onClick(v: View?) {
                 val queryPets:QueryPetsModel = QueryPetsModel(sessionManager.fetchKey()!!,
                 sessionManager.fetchID()!!,sessionManager.fetchIv()!!,engine.getRTLList())
-                queryPresenter.queryPets(queryPets){
-                    queryResultText?.setText(it!!.status)
-                }
+                queryPresenter.queryPets(queryPets)
             }
         })
     }
 
     override fun onSuccess(statusResponse: StatusResponse) {
-        TODO("Not yet implemented")
+        queryResultText?.setText(statusResponse.status)
     }
 
 }

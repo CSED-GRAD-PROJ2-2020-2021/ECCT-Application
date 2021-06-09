@@ -9,7 +9,7 @@ interface PinCodeContract {
         fun onFail()
     }
     interface PinCodePresenter{
-        fun sendAuthenticationToken(pinCode: PinCode, onResult: (AuthenticationTokenResponse?) -> Unit)
+        fun sendAuthenticationToken(pinCode: PinCode)
         fun restApiSendAuthenticationToken(pinCode: PinCode)
     }
 }

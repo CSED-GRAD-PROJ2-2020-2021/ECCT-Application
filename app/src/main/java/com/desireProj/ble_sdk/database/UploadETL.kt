@@ -9,7 +9,7 @@ data class UploadETL(
     val day: String,
     @SerializedName("duration")
     val duration: Long,
-    @SerializedName("rssi")
+    @SerializedName("RSSI")
     val rssi: Int,
     @SerializedName("uploadDate")
     val uploadDate: String

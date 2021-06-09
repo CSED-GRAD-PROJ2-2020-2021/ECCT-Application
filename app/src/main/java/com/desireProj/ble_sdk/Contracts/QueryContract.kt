@@ -9,6 +9,6 @@ interface QueryContract {
        fun onSuccess(statusResponse: StatusResponse)
     }
     interface QueryPresenter{
-        fun queryPets(pets: QueryPetsModel, onResult: (StatusResponse?) -> Unit)
+        fun queryPets(pets: QueryPetsModel)
     }
 }

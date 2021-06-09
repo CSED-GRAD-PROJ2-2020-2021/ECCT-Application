@@ -27,7 +27,7 @@ class SignUpPresenter(signUpView: SignUpContract.SignUpView, context:Context) : 
 
 
 
-    override fun sendPhoneNumber(phoneNumber: PhoneNumber, onResult: (AuthenticationToken?) -> Unit) {
+    override fun sendPhoneNumber(phoneNumber: PhoneNumber) {
         apiClient.getApiService(context).sendPhoneNumber(phoneNumber).enqueue(
             object : Callback<AuthenticationToken>{
                 override fun onResponse(call: Call<AuthenticationToken>, response: Response<AuthenticationToken>) {
@@ -48,13 +48,13 @@ class SignUpPresenter(signUpView: SignUpContract.SignUpView, context:Context) : 
                     else{
                         Log.e("phone2", "5ara 5ara")
                     }
-                    onResult(null)
+
                 }
 
                 override fun onFailure(call: Call<AuthenticationToken>, t: Throwable) {
                     Log.e("phone2", "5ara 5ara")
                     signUpView.onFail()
-                    onResult(null)
+
                 }
 
             }

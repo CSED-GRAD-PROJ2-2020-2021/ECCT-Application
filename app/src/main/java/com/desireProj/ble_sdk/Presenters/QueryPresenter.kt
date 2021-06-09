@@ -21,11 +21,11 @@ class QueryPresenter(queryView: QueryContract.QueryView,context:Context):QueryCo
         this.context =context
         sessionManager = SessionManager(context)
     }
-    override fun queryPets(pets: QueryPetsModel, onResult: (StatusResponse?) -> Unit) {
+    override fun queryPets(pets: QueryPetsModel) {
         apiClient.getApiService(context).queryPets(pets).enqueue(
             object : Callback<StatusResponse> {
                 override fun onFailure(call: Call<StatusResponse>, t: Throwable) {
-                    onResult(null)
+
                 }
 
                 override fun onResponse(call: Call<StatusResponse>, response: Response<StatusResponse>) {
@@ -36,7 +36,7 @@ class QueryPresenter(queryView: QueryContract.QueryView,context:Context):QueryCo
                         sessionManager.saveAuthToken(authenticationToken)
                     }
                     queryView.onSuccess(score as StatusResponse)
-                    onResult(score)
+
                 }
             }
         )

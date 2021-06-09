@@ -64,7 +64,6 @@ class MainActivity : AppCompatActivity() , LoggerContract.LoggerView{
         startButton.setOnClickListener(object : View.OnClickListener{
             override fun onClick(v: View?) {
                 actionOnService(Actions.START)
-                setAlarm(v?.context)
             }})
         stopButton.setOnClickListener(object : View.OnClickListener{
             override fun onClick(v: View?) {
