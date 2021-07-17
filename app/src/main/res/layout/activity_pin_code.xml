@@ -125,50 +125,7 @@
                 android:textSize="@dimen/S16sp"
                 android:textStyle="bold"/>
         </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/otp5layout"
-            style="@style/TextInputLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/S1dp"
-            android:layout_marginTop="@dimen/S10dp"
-            android:layout_toRightOf="@id/otp4layout"
-            android:focusableInTouchMode="true">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/otp5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="3"
-                android:inputType="number"
-                android:maxLines="1"
-                android:maxLength="1"
-                android:textAlignment="center"
-                android:textSize="@dimen/S16sp"
-                android:textStyle="bold"/>
-        </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/otp6layout"
-            style="@style/TextInputLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/S1dp"
-            android:layout_marginTop="@dimen/S10dp"
-            android:layout_toRightOf="@id/otp5layout"
-            android:focusableInTouchMode="true">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/otp6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="3"
-                android:inputType="number"
-                android:maxLines="1"
-                android:maxLength="1"
-                android:textAlignment="center"
-                android:textSize="@dimen/S16sp"
-                android:textStyle="bold"/>
-        </com.google.android.material.textfield.TextInputLayout>
     </RelativeLayout>
 
     <Button

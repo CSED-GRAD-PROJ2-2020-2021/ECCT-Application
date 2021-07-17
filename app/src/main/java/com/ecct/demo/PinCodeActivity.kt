@@ -22,10 +22,8 @@ class PinCodeActivity : AppCompatActivity() ,PinCodeContract.PinCodeView{
     private var otp2: TextInputEditText? = null
     private var otp3: TextInputEditText? = null
     private var otp4: TextInputEditText? = null
-    private var otp5: TextInputEditText? = null
-    private var otp6: TextInputEditText? = null
+
     private lateinit var confirmButton : Button
-    private var pinCode : String? = null
     private val context : Context = this
     private lateinit var pinCodePresenter: PinCodePresenter
 
@@ -38,29 +36,34 @@ class PinCodeActivity : AppCompatActivity() ,PinCodeContract.PinCodeView{
         pinCodePresenter = PinCodePresenter(this, context)
         val pinCode = PinCode(pinCode="1234")
 
+
+
+
+        otp1 = findViewById(R.id.otp1)
+        otp2 = findViewById(R.id.otp2)
+        otp3 = findViewById(R.id.otp3)
+        otp4 = findViewById(R.id.otp4)
+
+        OTPButtonsFocus()
+
         confirmButton = findViewById(R.id.buConfirm)
         confirmButton.setOnClickListener(object : View.OnClickListener{
             override fun onClick(v: View?) {
-                sendAuthenticationToken(pinCode)
+                pinCode.pinCode =
+                    otp1.toString() + otp2.toString() + otp3.toString() + otp4.toString()
+                if (pinCode.pinCode.isEmpty() || pinCode.pinCode.length < 4) {
+
+                } else{
+                    sendAuthenticationToken(pinCode)
+                }
             }
         })
-
-
-        otp1 = findViewById(R.id.otp1);
-        otp2 = findViewById(R.id.otp2);
-        otp3 = findViewById(R.id.otp3);
-        otp4 = findViewById(R.id.otp4);
-        otp5 = findViewById(R.id.otp5);
-        otp6 = findViewById(R.id.otp6);
-        OTPButtonsFocus();
     }
 
     private fun OTPButtonsFocus() {
         OTPButtonListener(otp1, otp2);
         OTPButtonListener(otp2, otp3);
         OTPButtonListener(otp3, otp4);
-        OTPButtonListener(otp4, otp5);
-        OTPButtonListener(otp5, otp6);
     }
 
     private fun OTPButtonListener(otp1: TextInputEditText?, otp2: TextInputEditText?) {
