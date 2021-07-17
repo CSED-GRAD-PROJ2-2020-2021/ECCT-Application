@@ -15,4 +15,9 @@
     <dimen name="S16sp">16dp</dimen>
     <dimen name="S24dp">24dp</dimen>
     <dimen name="S8dp">8dp</dimen>
+    <dimen name="S20sp">20sp</dimen>
+    <dimen name="S50dp">50sp</dimen>
+    <dimen name="S70dp">70dp</dimen>
+    <dimen name="S28sp">28sp</dimen>
+    <dimen name="S36sp">36sp</dimen>
 </resources>

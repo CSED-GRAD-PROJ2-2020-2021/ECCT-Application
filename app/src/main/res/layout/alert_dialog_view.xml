@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/white_rounded_corner_background"
+    android:layout_marginLeft="@dimen/S20dp"
+    android:layout_marginTop="@dimen/S30dp"
+    android:layout_marginRight="@dimen/S20dp"
+    android:layout_marginBottom="@dimen/S30dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/S20sp"
+        android:textColor="@color/colorPrimary" />
+
+    <TextView
+        android:id="@+id/tvBody"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/S15dp"
+        android:layout_marginBottom="@dimen/S15dp"
+        android:textSize="@dimen/S16sp"
+        android:textColor="@color/black"
+        android:layout_below="@+id/tvTitle"/>
+
+    <Button
+        android:id="@+id/btn_yes"
+        android:layout_width="@dimen/S240dp"
+        android:layout_height="@dimen/S50dp"
+        android:layout_marginTop="@dimen/S15dp"
+        android:background="@drawable/round_background_primary_color"
+        android:text="Yes"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:layout_below="@+id/tvBody"/>
+
+</RelativeLayout>

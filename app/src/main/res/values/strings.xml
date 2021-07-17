@@ -1,9 +1,10 @@
 <resources>
-    <string name="app_name">ble-sdk</string>
+    <string name="app_name">ECCT</string>
     <string name="SignLabel">Sign Up</string>
     <string name="mobileHintText">01xxxxxxxxx</string>
     <string name="pin_code">Pin Code</string>
     <string name="confirm">Confirm</string>
     <string name="query">Query</string>
     <string name="upload">Upload</string>
+    <string name="qr_empty">Empty QR Code</string>
 </resources>
