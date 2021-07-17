@@ -2,12 +2,10 @@ package com.desireProj.ble_sdk.Presenters
 
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import com.desireProj.ble_sdk.Contracts.PinCodeContract
 import com.desireProj.ble_sdk.model.AuthenticationTokenResponse
 import com.desireProj.ble_sdk.model.PinCode
 import com.desireProj.ble_sdk.network.ApiClient
-import com.desireProj.ble_sdk.network.RestApiService
 import com.desireProj.ble_sdk.tools.SessionManager
 import retrofit2.Call
 import retrofit2.Callback
@@ -57,13 +55,5 @@ class PinCodePresenter : PinCodeContract.PinCodePresenter {
 
             }
         )
-    }
-
-    override fun restApiSendAuthenticationToken(pinCode: PinCode) {
-        val apiService = RestApiService(context,this)
-
-        apiService.sendAuthenticationToken(pinCode){
-
-        }
     }
 }

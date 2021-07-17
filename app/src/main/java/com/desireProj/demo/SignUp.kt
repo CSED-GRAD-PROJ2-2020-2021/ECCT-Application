@@ -13,7 +13,6 @@ import com.desireProj.ble_sdk.MainActivity
 import com.desireProj.ble_sdk.Presenters.SignUpPresenter
 import com.desireProj.ble_sdk.R
 import com.desireProj.ble_sdk.model.PhoneNumber
-import com.desireProj.ble_sdk.network.RestApiService
 import com.desireProj.ble_sdk.tools.SessionManager
 
 class SignUp : AppCompatActivity() ,SignUpContract.SignUpView{

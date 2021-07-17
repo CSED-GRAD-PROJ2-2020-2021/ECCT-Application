@@ -10,6 +10,5 @@ interface PinCodeContract {
     }
     interface PinCodePresenter{
         fun sendAuthenticationToken(pinCode: PinCode)
-        fun restApiSendAuthenticationToken(pinCode: PinCode)
     }
 }

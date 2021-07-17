@@ -10,16 +10,11 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
-import androidx.core.widget.addTextChangedListener
 import com.desireProj.ble_sdk.Contracts.PinCodeContract
 import com.desireProj.ble_sdk.MainActivity
 import com.desireProj.ble_sdk.Presenters.PinCodePresenter
 import com.desireProj.ble_sdk.R
-import com.desireProj.ble_sdk.model.AuthenticationToken
-import com.desireProj.ble_sdk.model.AuthenticationTokenResponse
-import com.desireProj.ble_sdk.model.PhoneNumber
 import com.desireProj.ble_sdk.model.PinCode
-import com.desireProj.ble_sdk.network.RestApiService
 import com.google.android.material.textfield.TextInputEditText
 import java.lang.StringBuilder
 
@@ -96,7 +91,7 @@ class PinCodeActivity : AppCompatActivity() ,PinCodeContract.PinCodeView{
     }
 
     fun sendAuthenticationToken(pinCode: PinCode){
-       pinCodePresenter?.restApiSendAuthenticationToken(pinCode)
+       pinCodePresenter?.sendAuthenticationToken(pinCode)
     }
 
     override fun onSuccess() {

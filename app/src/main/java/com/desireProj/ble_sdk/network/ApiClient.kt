@@ -11,7 +11,6 @@ class ApiClient {
     val interceptor = HttpLoggingInterceptor()
     init {
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
-        //println("https://10.0.2.201:3000/registration")
     }
 
     fun getApiService(context: Context): RestApi {

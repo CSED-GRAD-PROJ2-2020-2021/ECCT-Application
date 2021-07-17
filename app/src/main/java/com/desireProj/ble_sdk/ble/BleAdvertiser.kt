@@ -57,7 +57,7 @@ class BleAdvertiser{
 
         the whole function takes 16 seconds
      */
-    public fun startAdvertising(ebid: ByteArray) {
+    fun startAdvertising(ebid: ByteArray) {
         var ebidPacket = preparePackets(ebid)
         var ebidLsbData = buildAdvertiseData(ebidPacket.packet1)
         var ebidMsbData = buildAdvertiseData(ebidPacket.packet2)
@@ -92,7 +92,7 @@ class BleAdvertiser{
         sendPacket(ebidMsbData, 2) // takes 4 seconds
     }
 
-    public fun stopAdvertising() {
+    fun stopAdvertising() {
         bleAdvertiser.stopAdvertising(advertisingCallback)
     }
 

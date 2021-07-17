@@ -5,9 +5,7 @@ import android.util.Log
 import com.desireProj.ble_sdk.Contracts.SignUpContract
 import com.desireProj.ble_sdk.model.AuthenticationToken
 import com.desireProj.ble_sdk.model.PhoneNumber
-import com.desireProj.ble_sdk.model.Utilities
 import com.desireProj.ble_sdk.network.ApiClient
-import com.desireProj.ble_sdk.network.RestApiService
 import com.desireProj.ble_sdk.tools.SessionManager
 import retrofit2.Call
 import retrofit2.Callback
