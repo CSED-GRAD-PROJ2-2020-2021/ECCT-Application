@@ -44,7 +44,7 @@ class SignUp : AppCompatActivity() ,SignUpContract.SignUpView{
         signUpButton.setOnClickListener(object : View.OnClickListener{
             override fun onClick(v: View?) {
                 if(phoneNumberText?.text.toString().contains(phoneNumberRegex)) {
-                    var phoneNumber = PhoneNumber(phoneNumber = phoneNumberText?.text.toString())
+                    var phoneNumber = PhoneNumber(phoneNumber = "2" + phoneNumberText?.text.toString())
                     sendPhoneNumber(phoneNumber)
                 }else{
                     showDialog("Alert","Enter valid phone number","OK")

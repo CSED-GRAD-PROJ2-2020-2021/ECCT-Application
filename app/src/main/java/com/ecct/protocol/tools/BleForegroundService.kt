@@ -14,13 +14,14 @@ import com.ecct.protocol.R
 import com.ecct.protocol.model.Utilities
 import kotlinx.coroutines.*
 
+private const val EPOCH_LENGTH_MINUTES: Long = 5 *60 * 1000
+private const val SCAN_PERIOD_MINUTES: Long = 6 * 1000
+private const val SCAN_REST_PERIOD_MINUTES: Long = 2 * 1000
 
 class BleForegroundService(): Service() {
     private var isServiceStarted = false
-    var engine: Engine
-    init {
-        engine = Engine
-    }
+    var engine: Engine = Engine
+
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
@@ -63,7 +64,7 @@ class BleForegroundService(): Service() {
                 Log.e("Foreground Default", "utilities context : " + Utilities.context)
                 engine.generateNewKey()
                 engine.clearEbidMap()
-                delay(5 *60 * 1000)
+                delay(EPOCH_LENGTH_MINUTES)
             }
             log("End of the loop for the service")
         }
@@ -79,9 +80,9 @@ class BleForegroundService(): Service() {
         GlobalScope.launch(Dispatchers.Default) {
             while (isServiceStarted) {
                 engine.startScanning()
-                delay(6 * 1000)
+                delay(SCAN_PERIOD_MINUTES)
                 engine.stopScanning()
-                delay(2 * 1000)
+                delay(SCAN_REST_PERIOD_MINUTES)
             }
             log("End of the loop for the advertising")
         }
@@ -95,7 +96,7 @@ class BleForegroundService(): Service() {
                 Log.e("Foreground IO", "utilities context : " + Utilities.context)
                 engine.sendPetsToDatabase() // send collected pets to database and clear pets map
                 engine.updateDatabasePassword()
-                delay(5 * 60 * 1000)
+                delay(EPOCH_LENGTH_MINUTES)
             }
         }
 
@@ -120,7 +121,8 @@ class BleForegroundService(): Service() {
         log("The service has been destroyed".toUpperCase())
         Toast.makeText(this, "Service destroyed", Toast.LENGTH_SHORT).show()
     }
-    fun createNotification():Notification{
+
+    private fun createNotification():Notification{
         val notificationChannelId = "ENDLESS SERVICE CHANNEL"
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager;
