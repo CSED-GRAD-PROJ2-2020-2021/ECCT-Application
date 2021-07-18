@@ -36,9 +36,6 @@ class PinCodeActivity : AppCompatActivity() ,PinCodeContract.PinCodeView{
         pinCodePresenter = PinCodePresenter(this, context)
         val pinCode = PinCode(pinCode="1234")
 
-
-
-
         otp1 = findViewById(R.id.otp1)
         otp2 = findViewById(R.id.otp2)
         otp3 = findViewById(R.id.otp3)
