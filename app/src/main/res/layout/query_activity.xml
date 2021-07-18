@@ -12,6 +12,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="@dimen/S240dp"
+        android:textColor="@color/dar_grey"
         android:layout_centerHorizontal="true"
         android:textSize="@dimen/S28sp"/>
 
@@ -24,6 +25,7 @@
         android:textStyle="bold"
         android:layout_below="@+id/query_result"
         android:layout_centerHorizontal="true"
-        android:text="@string/query"/>
+        android:text="@string/query"
+        style="@style/ButtonStyle"/>
 
 </RelativeLayout>

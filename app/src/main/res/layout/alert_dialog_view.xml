@@ -24,7 +24,7 @@
         android:layout_marginTop="@dimen/S15dp"
         android:layout_marginBottom="@dimen/S15dp"
         android:textSize="@dimen/S16sp"
-        android:textColor="@color/black"
+        android:textColor="@color/dar_grey"
         android:layout_below="@+id/tvTitle"/>
 
     <Button
@@ -36,6 +36,7 @@
         android:text="Yes"
         android:textColor="@color/white"
         android:textStyle="bold"
-        android:layout_below="@+id/tvBody"/>
+        android:layout_below="@+id/tvBody"
+        style="@style/ButtonStyle"/>
 
 </RelativeLayout>

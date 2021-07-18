@@ -7,11 +7,13 @@
 
     <Button
         android:id="@+id/advertise_btn"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Advertise"
         android:onClick="advertise"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:background="@drawable/round_background_primary_color"
+        style="@style/ButtonStyle"/>
 
     <Button
         android:id="@+id/discover_btn"
@@ -19,19 +21,23 @@
         android:layout_height="wrap_content"
         android:text="Discover"
         android:onClick="discover"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:background="@drawable/round_background_primary_color"
+        style="@style/ButtonStyle"/>
     <Button
         android:id="@+id/request_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="query"
-        android:onClick="query"/>
+        android:onClick="query"
+        style="@style/ButtonStyle"/>
     <Button
         android:id="@+id/upload_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="upload"
-        android:onClick="upload"/>
+        android:onClick="upload"
+        style="@style/ButtonStyle"/>
 
 
     <Button
@@ -39,28 +45,33 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Print EBID's"
-        android:onClick="updateMapStatus"/>
+        android:onClick="updateMapStatus"
+        style="@style/ButtonStyle"/>
     <Button
         android:id="@+id/start_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="start" />
+        android:text="start"
+        style="@style/ButtonStyle"/>
     <Button
         android:id="@+id/stop_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="stop" />
+        android:text="stop"
+        style="@style/ButtonStyle"/>
 
     <Button
         android:id="@+id/etl_database_activity_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="ETL Database" />
+        android:text="ETL Database"
+        style="@style/ButtonStyle"/>
     <Button
         android:id="@+id/rtl_database_activity_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="RTL Database" />
+        android:text="RTL Database"
+        style="@style/ButtonStyle"/>
 
     <TextView
         android:id="@+id/text_tv"

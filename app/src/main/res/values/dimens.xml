@@ -20,4 +20,5 @@
     <dimen name="S70dp">70dp</dimen>
     <dimen name="S28sp">28sp</dimen>
     <dimen name="S36sp">36sp</dimen>
+    <dimen name="S200dp">200dp</dimen>
 </resources>

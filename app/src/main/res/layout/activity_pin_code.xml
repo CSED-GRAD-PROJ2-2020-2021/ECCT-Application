@@ -14,7 +14,6 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/S48dp"
-        android:background="@drawable/round_background_primary_color"
         android:orientation="horizontal"
         android:padding="@dimen/S10dp">
 
@@ -22,9 +21,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/pin_code"
-            android:textColor="@color/black"
+            android:textColor="@color/dar_grey"
             android:textSize="@dimen/S24sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
     </LinearLayout>
 
 
@@ -139,5 +138,6 @@
         android:padding="@dimen/S20dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/S30dp"/>
+        android:layout_marginBottom="@dimen/S30dp"
+        style="@style/ButtonStyle"/>
 </RelativeLayout>

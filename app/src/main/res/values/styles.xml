@@ -15,6 +15,9 @@
         <!-- Inactive and Active label color, pointing to a selector-->
         <item name="android:textColor">@color/colorAccent</item>
     </style>
+    <style name="ButtonStyle" parent="Widget.AppCompat.Button">
+        <item name="cornerRadius">@dimen/S200dp</item>
+    </style>
 
     <dimen name="S15dp">15dp</dimen>
 </resources>
