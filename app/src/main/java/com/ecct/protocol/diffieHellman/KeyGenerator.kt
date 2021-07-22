@@ -8,7 +8,7 @@ import java.security.Security
 import java.security.spec.ECGenParameterSpec
 
 class KeyGenerator {
-    lateinit var  kpgen :KeyPairGenerator
+    private var  kpgen :KeyPairGenerator
 
     private fun setupBouncyCastle() {
         val provider = Security.getProvider(BouncyCastleProvider.PROVIDER_NAME)

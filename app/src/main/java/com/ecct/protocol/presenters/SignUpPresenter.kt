@@ -1,8 +1,8 @@
-package com.ecct.protocol.Presenters
+package com.ecct.protocol.presenters
 
 import android.content.Context
 import android.util.Log
-import com.ecct.protocol.Contracts.SignUpContract
+import com.ecct.protocol.contracts.SignUpContract
 import com.ecct.protocol.model.AuthenticationToken
 import com.ecct.protocol.model.PhoneNumber
 import com.ecct.protocol.network.ApiClient
@@ -11,18 +11,11 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class SignUpPresenter(signUpView: SignUpContract.SignUpView, context:Context) : SignUpContract.SignUpPresenter{
-    private var signUpView:SignUpContract.SignUpView
+class SignUpPresenter(private var signUpView: SignUpContract.SignUpView,
+                      private var context: Context
+) : SignUpContract.SignUpPresenter{
     private var apiClient = ApiClient()
-    private lateinit var  context : Context
-    private lateinit var sessionManager: SessionManager
-
-    init {
-        this.signUpView = signUpView
-        this.context = context
-        this.sessionManager = SessionManager(context)
-    }
-
+    private var sessionManager: SessionManager = SessionManager(context)
 
 
     override fun sendPhoneNumber(phoneNumber: PhoneNumber) {

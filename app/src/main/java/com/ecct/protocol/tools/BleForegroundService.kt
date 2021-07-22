@@ -18,10 +18,9 @@ private const val EPOCH_LENGTH_MINUTES: Long = 5 *60 * 1000
 private const val SCAN_PERIOD_MINUTES: Long = 6 * 1000
 private const val SCAN_REST_PERIOD_MINUTES: Long = 2 * 1000
 
-class BleForegroundService(): Service() {
+class BleForegroundService : Service() {
     private var isServiceStarted = false
     var engine: Engine = Engine
-
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
@@ -105,7 +104,7 @@ class BleForegroundService(): Service() {
     override fun onCreate() {
         super.onCreate()
         log("The service has been created".toUpperCase())
-        var notification = createNotification()
+        val notification = createNotification()
         startForeground(1, notification)
     }
 
@@ -125,7 +124,7 @@ class BleForegroundService(): Service() {
     private fun createNotification():Notification{
         val notificationChannelId = "ENDLESS SERVICE CHANNEL"
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager;
+            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             val channel = NotificationChannel(
                 notificationChannelId,
                 "Endless Service notifications channel",

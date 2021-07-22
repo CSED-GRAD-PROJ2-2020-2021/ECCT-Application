@@ -1,8 +1,8 @@
-package com.ecct.protocol.Presenters
+package com.ecct.protocol.presenters
 
 import android.content.Context
 import android.util.Log
-import com.ecct.protocol.Contracts.PinCodeContract
+import com.ecct.protocol.contracts.PinCodeContract
 import com.ecct.protocol.model.AuthenticationTokenResponse
 import com.ecct.protocol.model.PinCode
 import com.ecct.protocol.network.ApiClient
@@ -11,21 +11,18 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class PinCodePresenter : PinCodeContract.PinCodePresenter {
-    private lateinit var pinCodeView: PinCodeContract.PinCodeView
-    private lateinit var context: Context
+class PinCodePresenter(
+    private var pinCodeView: PinCodeContract.PinCodeView,
+    private var context: Context
+) : PinCodeContract.PinCodePresenter {
     private var apiClient = ApiClient()
-    private lateinit var sessionManager: SessionManager
-    constructor(pinCodeView:PinCodeContract.PinCodeView, context: Context):super(){
-        this.context = context
-        this.pinCodeView = pinCodeView
-        this.sessionManager = SessionManager(context)
-    }
+    private var sessionManager: SessionManager = SessionManager(context)
+
     override fun sendAuthenticationToken(pinCode: PinCode) {
         apiClient.getApiService(context).sendAuthenticationToken(pinCode).enqueue(
             object : Callback<AuthenticationTokenResponse> {
                 override fun onResponse(call: Call<AuthenticationTokenResponse>, response: Response<AuthenticationTokenResponse>) {
-                    val score = response.body()
+                    //val score = response.body()
                     if(response.headers().get("Authorization") != null){
                         val headerString:String = response.headers().get("Authorization") as String
                         val authenticationToken = headerString.replace("Bearer","")

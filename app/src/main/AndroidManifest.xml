@@ -3,6 +3,7 @@
     package="com.ecct.protocol">
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -19,7 +20,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Blesdk"
         android:usesCleartextTraffic="true">
-
         <activity android:name="com.ecct.demo.RTLDatabaseActivity" />
         <activity android:name="com.ecct.demo.ETLDatabaseActivity" />
         <activity android:name="com.ecct.demo.PinCodeActivity" />

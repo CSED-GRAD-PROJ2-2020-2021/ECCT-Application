@@ -1,4 +1,4 @@
-package com.ecct.protocol.Contracts
+package com.ecct.protocol.contracts
 
 import com.ecct.protocol.model.PinCode
 

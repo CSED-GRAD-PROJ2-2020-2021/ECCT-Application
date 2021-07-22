@@ -8,26 +8,22 @@ import java.util.*
 const val PET_SIZE = 32
 private const val MSECTOMINUTES: Float = 1F/(1000*60)
 
-class Pet {
-    var pet: String // H(g^XY) string, used as map key
-    var petByteArray: ByteArray // g^XY
-    var rssi: RssiUtility
-    var duration: Float
+class Pet(// H(g^XY) string, used as map key
+    var pet: String,
+    petArr: ByteArray,
+    var rssi: RssiUtility,
+    firstRec: Long,
+    lastRec: Long,
+    var duration: Float,// to indicate whether g^A is greater than g^B
+    var greaterSecret: Boolean
+) {
+    var petByteArray: ByteArray = petArr // g^XY
     var date: String
-    var firstReceived: Long
-    var lastReceived: Long
-    var greaterSecret: Boolean  // to indicate whether g^A is greater than g^B
+    var firstReceived: Long = firstRec
+    var lastReceived: Long = lastRec
 
-    constructor(pet: String, petArr: ByteArray, rssi: RssiUtility, firstRec: Long,
-                    lastRec: Long, duration: Float, greaterSecret: Boolean) {
-        this.pet = pet
-        this.petByteArray = petArr
-        this.rssi = rssi
-        this.duration = duration
+    init {
         this.date = getCurrentDate()
-        this.firstReceived = firstRec
-        this.lastReceived = lastRec
-        this.greaterSecret = greaterSecret
     }
 
     fun getHash1() :String {

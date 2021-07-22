@@ -3,13 +3,11 @@ package com.ecct.demo
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.ecct.protocol.Contracts.QueryContract
-import com.ecct.protocol.Presenters.QueryPresenter
+import com.ecct.protocol.contracts.QueryContract
+import com.ecct.protocol.presenters.QueryPresenter
 import com.ecct.protocol.R
 import com.ecct.protocol.model.*
 import com.ecct.protocol.tools.Engine
@@ -31,15 +29,20 @@ class QueryActivty:AppCompatActivity() ,QueryContract.QueryView{
         queryPresenter=QueryPresenter(this,context)
         sessionManager = SessionManager(context)
         engine = Engine
-        queryResultButton.setOnClickListener(object : View.OnClickListener{
-            @RequiresApi(Build.VERSION_CODES.M)
-            override fun onClick(v: View?) {
-                val queryPets:QueryPetsModel = QueryPetsModel(sessionManager.fetchKey()!!,
-                sessionManager.fetchID()!!,sessionManager.fetchIv()!!,engine.getRTLList())
+        with(queryResultButton) {
+            setOnClickListener {
+                val queryPets = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    QueryPetsModel(
+                        sessionManager.fetchKey()!!,
+                        sessionManager.fetchID()!!, sessionManager.fetchIv()!!, engine.getRTLList()
+                    )
+                } else {
+                    TODO("VERSION.SDK_INT < M")
+                }
                 log(queryPets.pets.toString())
                 queryPresenter.queryPets(queryPets)
             }
-        })
+        }
     }
 
     override fun onSuccess(statusResponse: StatusResponse) {

@@ -1,4 +1,4 @@
-package com.ecct.demo.Adapters
+package com.ecct.demo.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -22,10 +22,10 @@ class LoggerAdapter(private val logDataList: List<LoggerData>) : RecyclerView.Ad
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val currentItem = logDataList!![position]
+        val currentItem = logDataList[position]
 
         holder.logDataTextView.text = currentItem.logData
     }
 
-    override fun getItemCount() = logDataList!!.size
+    override fun getItemCount() = logDataList.size
 }

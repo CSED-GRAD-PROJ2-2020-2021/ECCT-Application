@@ -1,7 +1,7 @@
-package com.ecct.protocol.Presenters
+package com.ecct.protocol.presenters
 
 import android.content.Context
-import com.ecct.protocol.Contracts.QueryContract
+import com.ecct.protocol.contracts.QueryContract
 import com.ecct.protocol.model.QueryPetsModel
 import com.ecct.protocol.model.StatusResponse
 import com.ecct.protocol.network.ApiClient
@@ -11,16 +11,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class QueryPresenter(queryView: QueryContract.QueryView,context:Context):QueryContract.QueryPresenter {
-    private var queryView: QueryContract.QueryView
-    private var context:Context
-    lateinit var sessionManager: SessionManager
+class QueryPresenter(private var queryView: QueryContract.QueryView, private var context: Context):QueryContract.QueryPresenter {
+    var sessionManager: SessionManager = SessionManager(context)
     val apiClient:ApiClient = ApiClient()
-    init {
-        this.queryView=queryView
-        this.context =context
-        sessionManager = SessionManager(context)
-    }
     override fun queryPets(pets: QueryPetsModel) {
         apiClient.getApiService(context).queryPets(pets).enqueue(
             object : Callback<StatusResponse> {

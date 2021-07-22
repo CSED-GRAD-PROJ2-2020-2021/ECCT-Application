@@ -12,8 +12,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.ecct.protocol.Contracts.UploadContract
-import com.ecct.protocol.Presenters.UploadPresenter
+import com.ecct.protocol.contracts.UploadContract
+import com.ecct.protocol.presenters.UploadPresenter
 import com.ecct.protocol.R
 import com.ecct.protocol.model.UploadPetsModel
 import com.ecct.protocol.tools.Engine
@@ -41,7 +41,7 @@ class UploadActivity:AppCompatActivity(),UploadContract.UploadView {
         uploadResultButton.setOnClickListener(object : View.OnClickListener{
             @RequiresApi(Build.VERSION_CODES.M)
             override fun onClick(v: View?) {
-                val uploadPet :UploadPetsModel = UploadPetsModel("T2",engine.getETLList(engine.currentDate()))
+                val uploadPet  = UploadPetsModel("T2",engine.getETLList(engine.currentDate()))
                 uploadPresenter.uploadPets(uploadPet)
             }
         })

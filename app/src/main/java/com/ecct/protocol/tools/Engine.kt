@@ -3,7 +3,7 @@ package com.ecct.protocol.tools
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import com.ecct.protocol.Contracts.LoggerContract
+import com.ecct.protocol.contracts.LoggerContract
 import com.ecct.protocol.ble.BleAdvertiser
 import com.ecct.protocol.ble.BleScanner
 import com.ecct.protocol.database.*
@@ -71,7 +71,7 @@ object Engine {
 
     fun addToLogger(petVal: String) {
         Log.e("Engine: addToLogger: ", "petVal = $petVal")
-        loggerPresenter.onPetsValueRecieved(petVal)
+        loggerPresenter.onPetsValueReceived(petVal)
     }
 
     fun clearEbidMap() {

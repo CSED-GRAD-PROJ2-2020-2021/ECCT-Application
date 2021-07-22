@@ -13,14 +13,9 @@ import no.nordicsemi.android.support.v18.scanner.ScanSettings
 const val p2Index:Byte = 0x00
 const val PacketIndex:Int = 6
 
-class BleScanner{
+class BleScanner(private val engine: Engine){
     private var mBluetoothLeScanner: BluetoothLeScannerCompat = BluetoothLeScannerCompat.getScanner()
 
-    private lateinit var engine: Engine
-
-    constructor(engine: Engine) {
-        this.engine = engine
-    }
 
     private val mScanCallback = object : ScanCallback() {
 

@@ -8,9 +8,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class ApiClient {
     private lateinit var apiService: RestApi
-    val interceptor = HttpLoggingInterceptor()
+    private val interceptor = HttpLoggingInterceptor()
     init {
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+        interceptor.level = HttpLoggingInterceptor.Level.BODY
     }
 
     fun getApiService(context: Context): RestApi {

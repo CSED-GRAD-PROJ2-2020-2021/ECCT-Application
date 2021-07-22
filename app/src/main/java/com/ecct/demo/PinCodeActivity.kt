@@ -7,11 +7,10 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.Toast
-import com.ecct.protocol.Contracts.PinCodeContract
-import com.ecct.protocol.Presenters.PinCodePresenter
+import com.ecct.protocol.contracts.PinCodeContract
+import com.ecct.protocol.presenters.PinCodePresenter
 import com.ecct.protocol.R
 import com.ecct.protocol.model.PinCode
 import com.google.android.material.textfield.TextInputEditText
@@ -44,23 +43,21 @@ class PinCodeActivity : AppCompatActivity() ,PinCodeContract.PinCodeView{
         OTPButtonsFocus()
 
         confirmButton = findViewById(R.id.buConfirm)
-        confirmButton.setOnClickListener(object : View.OnClickListener{
-            override fun onClick(v: View?) {
-                pinCode.pinCode =
-                    otp1.toString() + otp2.toString() + otp3.toString() + otp4.toString()
-                if (pinCode.pinCode.isEmpty() || pinCode.pinCode.length < 4) {
+        confirmButton.setOnClickListener {
+            pinCode.pinCode =
+                otp1.toString() + otp2.toString() + otp3.toString() + otp4.toString()
+            if (pinCode.pinCode.isEmpty() || pinCode.pinCode.length < 4) {
 
-                } else{
-                    sendAuthenticationToken(pinCode)
-                }
+            } else {
+                sendAuthenticationToken(pinCode)
             }
-        })
+        }
     }
 
     private fun OTPButtonsFocus() {
-        OTPButtonListener(otp1, otp2);
-        OTPButtonListener(otp2, otp3);
-        OTPButtonListener(otp3, otp4);
+        OTPButtonListener(otp1, otp2)
+        OTPButtonListener(otp2, otp3)
+        OTPButtonListener(otp3, otp4)
     }
 
     private fun OTPButtonListener(otp1: TextInputEditText?, otp2: TextInputEditText?) {
@@ -80,7 +77,7 @@ class PinCodeActivity : AppCompatActivity() ,PinCodeContract.PinCodeView{
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 stringBuilder?.append(s)
                 if (otp1?.text?.length == 1 && stringBuilder?.length == 0) {
-                    otp1?.clearFocus()
+                    otp1.clearFocus()
                     otp2?.requestFocus()
                     otp2?.isCursorVisible = true
                 }
@@ -90,7 +87,7 @@ class PinCodeActivity : AppCompatActivity() ,PinCodeContract.PinCodeView{
     }
 
     fun sendAuthenticationToken(pinCode: PinCode){
-       pinCodePresenter?.sendAuthenticationToken(pinCode)
+       pinCodePresenter.sendAuthenticationToken(pinCode)
     }
 
     override fun onSuccess() {

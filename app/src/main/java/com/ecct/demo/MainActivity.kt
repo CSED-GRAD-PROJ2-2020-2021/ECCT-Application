@@ -20,11 +20,11 @@ import com.ecct.protocol.tools.*
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.ecct.protocol.Contracts.LoggerContract
-import com.ecct.protocol.Presenters.LoggerPresenter
+import com.ecct.protocol.contracts.LoggerContract
+import com.ecct.protocol.presenters.LoggerPresenter
 import com.ecct.protocol.database.DataBaseHandler
 import java.lang.StringBuilder
-import com.ecct.demo.Adapters.LoggerAdapter
+import com.ecct.demo.adapters.LoggerAdapter
 import com.ecct.protocol.R
 import kotlin.collections.LinkedHashSet
 
@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() , LoggerContract.LoggerView{
     private lateinit var etlDatabaseButton : Button
     private lateinit var rtlDatabaseButton : Button
     private var mDiscoverButton: Button? = null
-    private var logger_recycle_view : RecyclerView? = null
+    private var loggerRecycleView : RecyclerView? = null
     private lateinit var loggerDataListModel :LoggerDataList
 
     private var engine: Engine? = null
@@ -58,28 +58,27 @@ class MainActivity : AppCompatActivity() , LoggerContract.LoggerView{
         mAdvertiseButton = findViewById(R.id.advertise_btn)
         startButton = findViewById(R.id.start_btn)
         stopButton = findViewById(R.id.stop_btn)
-        startButton.setOnClickListener(object : View.OnClickListener{
-            override fun onClick(v: View?) {
-                actionOnService(Actions.START)
-            }})
-        stopButton.setOnClickListener(object : View.OnClickListener{
-            override fun onClick(v: View?) {
-                actionOnService(Actions.STOP)
-            }})
+        startButton.setOnClickListener { actionOnService(Actions.START) }
+        stopButton.setOnClickListener { actionOnService(Actions.STOP) }
 
         etlDatabaseButton = findViewById(R.id.etl_database_activity_btn)
-        etlDatabaseButton.setOnClickListener(object :View.OnClickListener{
-            override fun onClick(v: View?) {
-                startActivity(Intent(context,ETLDatabaseActivity::class.java))
-            }
-
-        })
+        etlDatabaseButton.setOnClickListener {
+            startActivity(
+                Intent(
+                    context,
+                    ETLDatabaseActivity::class.java
+                )
+            )
+        }
         rtlDatabaseButton = findViewById(R.id.rtl_database_activity_btn)
-        rtlDatabaseButton.setOnClickListener(object : View.OnClickListener{
-            override fun onClick(v: View?) {
-                startActivity(Intent(context,RTLDatabaseActivity::class.java))
-            }
-        })
+        rtlDatabaseButton.setOnClickListener {
+            startActivity(
+                Intent(
+                    context,
+                    RTLDatabaseActivity::class.java
+                )
+            )
+        }
 
 
         val permissionCheck =
@@ -108,10 +107,10 @@ class MainActivity : AppCompatActivity() , LoggerContract.LoggerView{
 
         Utilities.context = this
 
-        val database: DataBaseHandler = DataBaseHandler
+        val database = DataBaseHandler
 
 
-        var list = database.getRtlItems()
+        val list = database.getRtlItems()
         Log.e("Main Activity", "rtl table size: " + list.size)
         for (rtl in list) {
             Log.e("Main Activity", "rtl item : " + rtl.pet + " date: " + rtl.day)
@@ -119,19 +118,19 @@ class MainActivity : AppCompatActivity() , LoggerContract.LoggerView{
 
 
 
-        var context:Context
+        val context:Context
         context = this
         loggerPresenter = LoggerPresenter(context)
         engine = Engine
         engine!!.setLoggerPresenter(loggerPresenter as LoggerPresenter)
         engine!!.generateNewKey()
-        logger_recycle_view = findViewById(R.id.logger_recycle_view)
+        loggerRecycleView = findViewById(R.id.logger_recycle_view)
         loggerDataListModel = LoggerDataList(engine!!)
         //loggerDataListModel.loggerDataList = loggerDataListModel.loggerDataList
-        var layoutManger = LinearLayoutManager(this)
+        val layoutManger = LinearLayoutManager(this)
         layoutManger.reverseLayout = true
         layoutManger.stackFromEnd = true
-        logger_recycle_view!!.layoutManager = layoutManger
+        loggerRecycleView!!.layoutManager = layoutManger
 
     }
 
@@ -174,13 +173,13 @@ class MainActivity : AppCompatActivity() , LoggerContract.LoggerView{
         }
     }
 
-    override fun onPetsRecieved(loggerData: LoggerData) {
+    override fun onPetsReceived(loggerData: LoggerData) {
         loggerDataListModel.loggerDataList!!.add(loggerData)
         val list: MutableList<LoggerData> = LinkedHashSet(loggerDataListModel.loggerDataList).toMutableList()
         mText!!.isVisible = true
         mText!!.text = list.size.toString()
-        logger_recycle_view!!.adapter = LoggerAdapter(list)
-        logger_recycle_view!!.adapter!!.notifyDataSetChanged()
+        loggerRecycleView!!.adapter = LoggerAdapter(list)
+        loggerRecycleView!!.adapter!!.notifyDataSetChanged()
     }
 
 }

@@ -12,15 +12,15 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import com.ecct.protocol.Contracts.SignUpContract
-import com.ecct.protocol.Presenters.SignUpPresenter
+import com.ecct.protocol.contracts.SignUpContract
+import com.ecct.protocol.presenters.SignUpPresenter
 import com.ecct.protocol.R
 import com.ecct.protocol.model.PhoneNumber
 import com.ecct.protocol.tools.SessionManager
 import kotlin.system.exitProcess
 
 class SignUp : AppCompatActivity() ,SignUpContract.SignUpView{
-    private val phoneNumberRegex = Regex("^01[0,1,2,5]{1}[0-9]{8}")
+    private val phoneNumberRegex = Regex("^01[0125][0-9]{8}")
     private lateinit var  signUpButton : Button
     private var phoneNumberText : EditText? = null
     private val context : Context = this
@@ -41,17 +41,16 @@ class SignUp : AppCompatActivity() ,SignUpContract.SignUpView{
         if(sessionManager.fetchAuthToken()!=null){
             startActivity(Intent(context, MainActivity::class.java))
         }
-        signUpButton.setOnClickListener(object : View.OnClickListener{
-            override fun onClick(v: View?) {
-                if(phoneNumberText?.text.toString().contains(phoneNumberRegex)) {
-                    var phoneNumber = PhoneNumber(phoneNumber = "2" + phoneNumberText?.text.toString())
-                    sendPhoneNumber(phoneNumber)
-                }else{
-                    showDialog("Alert","Enter valid phone number","OK")
-                    Toast.makeText(context, "Please enter valid phone number", Toast.LENGTH_SHORT).show()
-                }
+        signUpButton.setOnClickListener {
+            if (phoneNumberText?.text.toString().contains(phoneNumberRegex)) {
+                val phoneNumber = PhoneNumber(phoneNumber = phoneNumberText?.text.toString())
+                sendPhoneNumber(phoneNumber)
+            } else {
+                showDialog("Alert", "Enter valid phone number", "OK")
+                Toast.makeText(context, "Please enter valid phone number", Toast.LENGTH_SHORT)
+                    .show()
             }
-        })
+        }
         /*if(sessionManager.fetchAuthToken() != "user_token"){
 !(phoneNumberText?.text.toString().isEmpty() ||
                             (phoneNumberText?.text.toString().length < 11) ||
@@ -69,18 +68,18 @@ class SignUp : AppCompatActivity() ,SignUpContract.SignUpView{
         }
     }
 
-    fun sendPhoneNumber(phoneNumber:PhoneNumber){
-      signUpPresenter?.sendPhoneNumber(phoneNumber)
+    private fun sendPhoneNumber(phoneNumber:PhoneNumber){
+      signUpPresenter.sendPhoneNumber(phoneNumber)
     }
 
-    fun openBluetooth(){
+    private fun openBluetooth(){
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
         if (bluetoothAdapter == null){
             Toast.makeText(applicationContext,"Bluetooth Not Supported",Toast.LENGTH_SHORT).show()
         }else{
             if(!bluetoothAdapter!!.isEnabled){
                 startActivityForResult(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE),BLUETOOTH_CODE)
-                Toast.makeText(getApplicationContext(),"Bluetooth Turned ON",Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext,"Bluetooth Turned ON",Toast.LENGTH_SHORT).show()
             }
         }
     }

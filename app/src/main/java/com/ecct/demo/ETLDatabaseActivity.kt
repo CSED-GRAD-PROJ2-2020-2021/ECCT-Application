@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ecct.protocol.R
 import com.ecct.protocol.tools.Engine
-import com.ecct.demo.Adapters.ETLDatabaseAdapter
+import com.ecct.demo.adapters.ETLDatabaseAdapter
 
 class ETLDatabaseActivity : AppCompatActivity() {
 
@@ -23,7 +23,7 @@ class ETLDatabaseActivity : AppCompatActivity() {
         engine = Engine
 
         etlRecyclerView = findViewById(R.id.etl_recycle_view)
-        var layoutManger = LinearLayoutManager(this)
+        val layoutManger = LinearLayoutManager(this)
         etlRecyclerView!!.layoutManager = layoutManger
         etlRecyclerView!!.adapter = ETLDatabaseAdapter(engine!!.getETLTable())
     }

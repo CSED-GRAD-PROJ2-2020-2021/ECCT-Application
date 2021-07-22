@@ -1,12 +1,12 @@
-package com.ecct.protocol.Contracts
+package com.ecct.protocol.contracts
 
 import com.ecct.protocol.model.LoggerData
 
 interface LoggerContract {
     interface LoggerView{
-        fun onPetsRecieved(loggerData:LoggerData)
+        fun onPetsReceived(loggerData:LoggerData)
     }
     interface LoggerPresenter{
-        fun onPetsValueRecieved(petVal:String)
+        fun onPetsValueReceived(petVal:String)
     }
 }

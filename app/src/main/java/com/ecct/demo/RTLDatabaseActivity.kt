@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ecct.protocol.R
 import com.ecct.protocol.tools.Engine
-import com.ecct.demo.Adapters.RTLDatabaseAdapter
+import com.ecct.demo.adapters.RTLDatabaseAdapter
 
 class RTLDatabaseActivity : AppCompatActivity() {
 
@@ -23,7 +23,7 @@ class RTLDatabaseActivity : AppCompatActivity() {
         engine = Engine
 
         rtlRecyclerView = findViewById(R.id.rtl_recycle_view)
-        var layoutManger = LinearLayoutManager(this)
+        val layoutManger = LinearLayoutManager(this)
         rtlRecyclerView!!.layoutManager = layoutManger
         rtlRecyclerView!!.adapter = RTLDatabaseAdapter(engine!!.getRTLTable())
     }

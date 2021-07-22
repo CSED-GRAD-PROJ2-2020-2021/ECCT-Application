@@ -27,8 +27,8 @@ class BleAdvertiser{
         }
     }
 
-    fun preparePackets(ebid: ByteArray): EbidPacket{
-        var ebidPacket = EbidPacket(ebid)
+    private fun preparePackets(ebid: ByteArray): EbidPacket{
+        val ebidPacket = EbidPacket(ebid)
         ebidPacket.generateEbidPacket()
         return ebidPacket
     }
@@ -58,9 +58,9 @@ class BleAdvertiser{
         the whole function takes 16 seconds
      */
     fun startAdvertising(ebid: ByteArray) {
-        var ebidPacket = preparePackets(ebid)
-        var ebidLsbData = buildAdvertiseData(ebidPacket.packet1)
-        var ebidMsbData = buildAdvertiseData(ebidPacket.packet2)
+        val ebidPacket = preparePackets(ebid)
+        val ebidLsbData = buildAdvertiseData(ebidPacket.packet1)
+        val ebidMsbData = buildAdvertiseData(ebidPacket.packet2)
 
         sendBothPackets(ebidLsbData, ebidMsbData)   // takes 8 seconds
 

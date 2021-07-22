@@ -1,7 +1,7 @@
-package com.ecct.protocol.Presenters
+package com.ecct.protocol.presenters
 
 import android.content.Context
-import com.ecct.protocol.Contracts.UploadContract
+import com.ecct.protocol.contracts.UploadContract
 import com.ecct.protocol.model.StatusResponse
 import com.ecct.protocol.model.UploadPetsModel
 import com.ecct.protocol.network.ApiClient
@@ -11,16 +11,9 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class UploadPresenter(uploadView: UploadContract.UploadView,context: Context):UploadContract.UploadPresenter {
-    private var uploadView:UploadContract.UploadView
-    private var context:Context
-    private lateinit var sessionManager:SessionManager
+class UploadPresenter(private var uploadView: UploadContract.UploadView, private var context: Context):UploadContract.UploadPresenter {
+    private var sessionManager:SessionManager = SessionManager(context)
     val apiClient:ApiClient = ApiClient()
-    init{
-        this.context =context
-        this.uploadView = uploadView
-        sessionManager = SessionManager(context)
-    }
     override fun uploadPets(uploadPetsModel: UploadPetsModel) {
         apiClient.getApiService(context).uploadPets(uploadPetsModel).enqueue(
             object :Callback<StatusResponse>{
@@ -28,7 +21,7 @@ class UploadPresenter(uploadView: UploadContract.UploadView,context: Context):Up
                     call: Call<StatusResponse>,
                     response: Response<StatusResponse>
                 ) {
-                    val score = response.body()
+                    //val score = response.body()
                     if(response.headers().get("Authorization") != null){
                         val headerString:String = response.headers().get("Authorization") as String
                         val authenticationToken = headerString.replace("Bearer","")

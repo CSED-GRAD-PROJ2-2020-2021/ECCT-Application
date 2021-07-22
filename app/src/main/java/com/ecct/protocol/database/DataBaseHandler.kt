@@ -118,7 +118,7 @@ object DataBaseHandler:
     /*
     * empty RTL table without deleting it
     */
-    fun emptyRtlTable() {
+    private fun emptyRtlTable() {
         SQLiteDatabase.loadLibs(Utilities.context)
 
         val db = this.getWritableDatabase(passKey!!.getPasswordString())
@@ -181,7 +181,7 @@ object DataBaseHandler:
     /*
     * empty ETL table without deleting it
     */
-    fun emptyEtlTable() {
+    private fun emptyEtlTable() {
         SQLiteDatabase.loadLibs(Utilities.context)
         val db = this.getWritableDatabase(passKey!!.getPasswordString())
         val emptyTableQuery = "DELETE FROM $TABLE_ETL"
