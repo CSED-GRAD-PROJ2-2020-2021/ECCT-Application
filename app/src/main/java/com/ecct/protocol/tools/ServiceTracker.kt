@@ -1,3 +1,6 @@
+/**
+ * Author: Ziad Taha
+ */
 package com.ecct.protocol.tools
 
 import android.content.Context

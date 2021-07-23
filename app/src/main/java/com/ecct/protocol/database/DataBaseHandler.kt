@@ -1,3 +1,6 @@
+/**
+ * Author: Karim Atef
+ */
 package com.ecct.protocol.database
 import android.content.ContentValues
 import android.os.Build
@@ -66,11 +69,9 @@ object DataBaseHandler:
         onCreate(db)
     }
 
-
-
     /*
-        * Creating a RTL item
-        */
+     * Creating a RTL item
+     */
     fun insertRtlItem(rtl: RTLItem) {
         SQLiteDatabase.loadLibs(Utilities.context)
         val db = this.getWritableDatabase(passKey!!.getPasswordString())

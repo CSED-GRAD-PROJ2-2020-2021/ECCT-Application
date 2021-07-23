@@ -1,3 +1,6 @@
+/**
+ * Author: Mohamed Samy
+ */
 package com.ecct.protocol.contracts
 
 import com.ecct.protocol.model.LoggerData

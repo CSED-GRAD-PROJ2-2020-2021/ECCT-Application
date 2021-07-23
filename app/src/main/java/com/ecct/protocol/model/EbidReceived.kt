@@ -1,3 +1,6 @@
+/**
+ * Author: Karim Atef
+ */
 package com.ecct.protocol.model
 
 const val EBID_SIZE = 33

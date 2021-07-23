@@ -1,3 +1,6 @@
+/**
+ * Author: Karim Atef
+ */
 package com.ecct.protocol.ble
 
 import android.bluetooth.BluetoothAdapter
@@ -52,9 +55,8 @@ class BleAdvertiser{
     }
 
     /*
-        advertising ebit on two packets, advertise packet 1 and wait for 1 seconds,
+        advertising ebid on two packets, advertise packet 1 and wait for 1 seconds,
         then advertise packet 2 for 1 seconds
-
         the whole function takes 16 seconds
      */
     fun startAdvertising(ebid: ByteArray) {
@@ -65,7 +67,6 @@ class BleAdvertiser{
         sendBothPackets(ebidLsbData, ebidMsbData)   // takes 8 seconds
 
         sendBothPackets(ebidLsbData, ebidMsbData)   // takes 8 seconds
-
     }
 
     private fun sendPacket(packetData: AdvertiseData, packetNo: Int) {

@@ -1,3 +1,6 @@
+/**
+ * Author: Ziad Taha
+ */
 package com.ecct.demo
 import android.Manifest
 import android.content.Context

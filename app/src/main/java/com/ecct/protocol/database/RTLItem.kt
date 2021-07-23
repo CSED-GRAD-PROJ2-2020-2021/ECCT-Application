@@ -1,3 +1,6 @@
+/**
+ * Author: Karim Atef
+ */
 package com.ecct.protocol.database
 
 class RTLItem {

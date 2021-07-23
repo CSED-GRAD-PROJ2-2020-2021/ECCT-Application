@@ -1,3 +1,6 @@
+/**
+ * Author: Ziad Taha
+ */
 package com.ecct.protocol.diffieHellman
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider

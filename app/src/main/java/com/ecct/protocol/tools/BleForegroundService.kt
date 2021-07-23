@@ -1,3 +1,6 @@
+/**
+ * Author: Ziad Taha
+ */
 package com.ecct.protocol.tools
 
 import android.app.*
@@ -14,9 +17,9 @@ import com.ecct.protocol.R
 import com.ecct.protocol.model.Utilities
 import kotlinx.coroutines.*
 
-private const val EPOCH_LENGTH_MINUTES: Long = 5 *60 * 1000
-private const val SCAN_PERIOD_MINUTES: Long = 6 * 1000
-private const val SCAN_REST_PERIOD_MINUTES: Long = 2 * 1000
+private const val EPOCH_LENGTH_MSEC: Long = 5 *60 * 1000    // 5 minutes
+private const val SCAN_PERIOD_MSEC: Long = 6 * 1000     // 6 seconds
+private const val SCAN_REST_PERIOD_MSEC: Long = 2 * 1000    // 2 seconds
 
 class BleForegroundService : Service() {
     private var isServiceStarted = false
@@ -63,7 +66,7 @@ class BleForegroundService : Service() {
                 Log.e("Foreground Default", "utilities context : " + Utilities.context)
                 engine.generateNewKey()
                 engine.clearEbidMap()
-                delay(EPOCH_LENGTH_MINUTES)
+                delay(EPOCH_LENGTH_MSEC)
             }
             log("End of the loop for the service")
         }
@@ -79,9 +82,9 @@ class BleForegroundService : Service() {
         GlobalScope.launch(Dispatchers.Default) {
             while (isServiceStarted) {
                 engine.startScanning()
-                delay(SCAN_PERIOD_MINUTES)
+                delay(SCAN_PERIOD_MSEC)
                 engine.stopScanning()
-                delay(SCAN_REST_PERIOD_MINUTES)
+                delay(SCAN_REST_PERIOD_MSEC)
             }
             log("End of the loop for the advertising")
         }
@@ -95,7 +98,7 @@ class BleForegroundService : Service() {
                 Log.e("Foreground IO", "utilities context : " + Utilities.context)
                 engine.sendPetsToDatabase() // send collected pets to database and clear pets map
                 engine.updateDatabasePassword()
-                delay(EPOCH_LENGTH_MINUTES)
+                delay(EPOCH_LENGTH_MSEC)
             }
         }
 

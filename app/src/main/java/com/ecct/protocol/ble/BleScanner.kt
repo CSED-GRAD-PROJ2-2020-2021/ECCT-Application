@@ -1,3 +1,6 @@
+/**
+ * Author: Karim Atef
+ */
 package com.ecct.protocol.ble
 
 import android.util.Log
@@ -38,10 +41,6 @@ class BleScanner(private val engine: Engine){
                 "ble.onScanResult: ",
                 if (dataReceived?.get(PacketIndex)?.equals(p2Index)!!) "Packet 2 received" else "Packet 1 received"
             )
-            var ss: String = ""
-            for(c : Byte in dataReceived)
-                ss+=c
-            Log.e("ble.ByteArray: ",ss )
             val rssi = result.rssi
             Log.e("ble.onScanResult: ", rssi.toString())
 

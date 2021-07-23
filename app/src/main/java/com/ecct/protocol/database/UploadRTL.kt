@@ -1,3 +1,6 @@
+/**
+ * Author: Karim Atef
+ */
 package com.ecct.protocol.database
 
 import com.google.gson.annotations.SerializedName

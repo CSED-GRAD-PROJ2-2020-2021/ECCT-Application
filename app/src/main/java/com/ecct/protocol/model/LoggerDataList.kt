@@ -1,3 +1,6 @@
+/**
+ * Author: Mohamed Samy
+ */
 package com.ecct.protocol.model
 
 import com.ecct.protocol.tools.Engine

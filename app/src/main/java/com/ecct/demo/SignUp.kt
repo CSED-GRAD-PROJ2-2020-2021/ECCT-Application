@@ -1,3 +1,6 @@
+/**
+ * Author: Mohamed Samy
+ */
 package com.ecct.demo
 
 import android.app.Dialog

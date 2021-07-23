@@ -1,3 +1,6 @@
+/**
+ * Author: Karim Atef
+ */
 package com.ecct.protocol.model
 
 import com.ecct.protocol.tools.Engine
