@@ -8,7 +8,7 @@ const val packet2Index: Byte = 0x00
 
 class CollectedEbid(engine: Engine) {
 
-    private lateinit var engine: Engine
+    private var engine: Engine
 
     init {
         this.engine = engine

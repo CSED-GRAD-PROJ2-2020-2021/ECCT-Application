@@ -139,7 +139,6 @@ class MainActivity : AppCompatActivity() , LoggerContract.LoggerView{
     }
 
     fun advertise(view: View) {
-
         engine!!.startAdvertising()
     }
 

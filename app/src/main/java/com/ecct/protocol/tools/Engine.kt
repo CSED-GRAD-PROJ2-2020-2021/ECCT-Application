@@ -15,14 +15,14 @@ import kotlin.collections.ArrayList
 
 
 object Engine {
-    private lateinit var bleScanner: BleScanner
-    private lateinit var bleAdvertiser: BleAdvertiser
-    private lateinit var keyExchanger: KeyExchanger
-    private lateinit var collectedEbid: CollectedEbid
-    private lateinit var loggerDataList: LoggerDataList
+    private var bleScanner: BleScanner
+    private var bleAdvertiser: BleAdvertiser
+    private var keyExchanger: KeyExchanger
+    private var collectedEbid: CollectedEbid
+    private var loggerDataList: LoggerDataList
     private lateinit var loggerPresenter: LoggerContract.LoggerPresenter
-    private lateinit var collectedPets: CollectedPets
-    private lateinit var dataBaseHandler: DataBaseHandler
+    private var collectedPets: CollectedPets
+    private var dataBaseHandler: DataBaseHandler
 
     
     init {
