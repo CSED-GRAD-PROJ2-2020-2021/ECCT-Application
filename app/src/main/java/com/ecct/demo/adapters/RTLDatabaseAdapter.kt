@@ -1,3 +1,6 @@
+/**
+ * Author: Mohamed Samy
+ */
 package com.ecct.demo.adapters
 
 import android.annotation.SuppressLint
