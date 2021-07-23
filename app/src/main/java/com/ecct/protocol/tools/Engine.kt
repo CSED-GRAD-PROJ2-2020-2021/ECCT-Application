@@ -21,8 +21,7 @@ object Engine {
     private lateinit var collectedEbid: CollectedEbid
     private lateinit var loggerDataList: LoggerDataList
     private lateinit var loggerPresenter: LoggerContract.LoggerPresenter
-    // TODO to be private
-    lateinit var collectedPets: CollectedPets
+    private lateinit var collectedPets: CollectedPets
     private lateinit var dataBaseHandler: DataBaseHandler
 
     

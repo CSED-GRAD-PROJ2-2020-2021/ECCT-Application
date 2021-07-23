@@ -17,8 +17,7 @@ class CollectedPets(engine: Engine) {
         this.engine = engine
     }
 
-    // TODO to be private
-    var receivedPetMap: MutableMap<String, Pet> = mutableMapOf()
+    private var receivedPetMap: MutableMap<String, Pet> = mutableMapOf()
 
     fun receivedPet(received: EbidReceived) {
         if (!received.ebidReady) return

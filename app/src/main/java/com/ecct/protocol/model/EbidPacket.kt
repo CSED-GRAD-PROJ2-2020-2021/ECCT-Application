@@ -14,22 +14,17 @@ const val PACKET_INDEX = 6
 const val PACKETSENT_SIZE = 16
 
 class EbidPacket {
-    // TODO getters and setters gave error
-//    private var ebid: String
-    var ebidByteArray: ByteArray
 
-    var packet1: ByteArray
+    private var ebidByteArray: ByteArray
 
-    var packet2: ByteArray
+    var packet1: ByteArray = ByteArray(PACKET_SIZE)
 
-    var packetId: ByteArray
+    var packet2: ByteArray = ByteArray(PACKET_SIZE)
+
+    var packetId: ByteArray = ByteArray(PACKETID_SIZE)
 
 
     constructor(ebidByteArray : ByteArray) {
-//        this.ebid = ebid
-        this.packet1 = ByteArray(PACKET_SIZE)
-        this.packet2 = ByteArray(PACKET_SIZE)
-        this.packetId = ByteArray(PACKETID_SIZE)
 
         Random().nextBytes(packetId)
         this.ebidByteArray = ebidByteArray

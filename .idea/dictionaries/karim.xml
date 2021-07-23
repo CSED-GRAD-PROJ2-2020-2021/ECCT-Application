@@ -2,6 +2,9 @@
   <dictionary name="karim">
     <words>
       <w>ebid</w>
+      <w>msectominutes</w>
+      <w>packetid</w>
+      <w>packetsent</w>
       <w>rssi</w>
     </words>
   </dictionary>

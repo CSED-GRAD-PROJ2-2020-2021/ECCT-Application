@@ -31,8 +31,6 @@ private const val DELETE_TABLE_ETL = "DROP TABLE if exists $TABLE_ETL;"
 
 private const val DAY_REMOVED_KEY = "ExpRemDay"
 
-// TODO pass context to Utilities class
-
 @RequiresApi(Build.VERSION_CODES.M)
 object DataBaseHandler:
     SQLiteOpenHelper(Utilities.context,DATABASE_NAME,null,DATABASE_VERSION) {
@@ -164,7 +162,7 @@ object DataBaseHandler:
             do {
                 val pet = cursor.getString(cursor.getColumnIndex(COL_PET))
                 val day = cursor.getString(cursor.getColumnIndex(COL_DAY))
-                val duration = cursor.getFloat(cursor.getColumnIndex(COL_Duration)) // TODO check if working well
+                val duration = cursor.getFloat(cursor.getColumnIndex(COL_Duration))
                 val rssi = cursor.getLong(cursor.getColumnIndex(COL_RSSI))
                 var etl = ETLItem(pet, day, duration, rssi.toInt())
                 // adding to rtl list

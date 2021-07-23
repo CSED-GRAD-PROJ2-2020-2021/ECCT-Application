@@ -58,8 +58,7 @@ class CollectedEbid(engine: Engine) {
         else
             ebid.setLsbEbid(data)
 
-        // TODO update first received
-        // ebid.setFirstReceived(System.currentTimeMillis())
+        // update first received
         ebid.firstReceived = System.currentTimeMillis()
         // update rssi
         ebid.addRssi(rssi)
@@ -76,6 +75,4 @@ class CollectedEbid(engine: Engine) {
         this.receivedEbidMap.clear()
     }
 
-
-    // TODO need to periodically clean receivedEbidMap
 }

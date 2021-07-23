@@ -78,8 +78,4 @@ class EbidReceived {
         this.duration = ((this.lastReceived - this.firstReceived).toFloat() * MSECTOMINUTES)
     }
 
-    // TODO update duration
-//    fun setFirstReceived(duration: Long) {
-//        this.firstReceived = duration
-//    }
 }
